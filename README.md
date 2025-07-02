@@ -1,6 +1,6 @@
 # Estoque
 
-![Badge de Status](https://trello.com/b/u22kLYGl/meu-quadro-do-trello)
+https://trello.com/b/u22kLYGl/meu-quadro-do-trello
 
 
 ## 📂 Como usar
