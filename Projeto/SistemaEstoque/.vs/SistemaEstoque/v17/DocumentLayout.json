@@ -1,0 +1,165 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A7DABF01-8E59-4815-A490-76E571DB4AC0}|ProductsService\\ProductsService.csproj|c:\\users\\aluno\\desktop\\projeto\\sistemaestoque\\productsservice\\data\\produtosservicecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7DABF01-8E59-4815-A490-76E571DB4AC0}|ProductsService\\ProductsService.csproj|solutionrelative:productsservice\\data\\produtosservicecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7DABF01-8E59-4815-A490-76E571DB4AC0}|ProductsService\\ProductsService.csproj|c:\\users\\aluno\\desktop\\projeto\\sistemaestoque\\productsservice\\model\\produto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7DABF01-8E59-4815-A490-76E571DB4AC0}|ProductsService\\ProductsService.csproj|solutionrelative:productsservice\\model\\produto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7DABF01-8E59-4815-A490-76E571DB4AC0}|ProductsService\\ProductsService.csproj|c:\\users\\aluno\\desktop\\projeto\\sistemaestoque\\productsservice\\model\\base\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7DABF01-8E59-4815-A490-76E571DB4AC0}|ProductsService\\ProductsService.csproj|solutionrelative:productsservice\\model\\base\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7DABF01-8E59-4815-A490-76E571DB4AC0}|ProductsService\\ProductsService.csproj|c:\\users\\aluno\\desktop\\projeto\\sistemaestoque\\productsservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7DABF01-8E59-4815-A490-76E571DB4AC0}|ProductsService\\ProductsService.csproj|solutionrelative:productsservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{88FEEFD1-C3E7-4D47-8771-28BAEB1F3DD1}|Estoque\\Estoque.csproj|c:\\users\\aluno\\desktop\\projeto\\sistemaestoque\\estoque\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{88FEEFD1-C3E7-4D47-8771-28BAEB1F3DD1}|Estoque\\Estoque.csproj|solutionrelative:estoque\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{88FEEFD1-C3E7-4D47-8771-28BAEB1F3DD1}|Estoque\\Estoque.csproj|c:\\users\\aluno\\desktop\\projeto\\sistemaestoque\\estoque\\estoque.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{88FEEFD1-C3E7-4D47-8771-28BAEB1F3DD1}|Estoque\\Estoque.csproj|solutionrelative:estoque\\estoque.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7DABF01-8E59-4815-A490-76E571DB4AC0}|ProductsService\\ProductsService.csproj|c:\\users\\aluno\\desktop\\projeto\\sistemaestoque\\productsservice\\productsservice.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{A7DABF01-8E59-4815-A490-76E571DB4AC0}|ProductsService\\ProductsService.csproj|solutionrelative:productsservice\\productsservice.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7DABF01-8E59-4815-A490-76E571DB4AC0}|ProductsService\\ProductsService.csproj|c:\\users\\aluno\\desktop\\projeto\\sistemaestoque\\productsservice\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A7DABF01-8E59-4815-A490-76E571DB4AC0}|ProductsService\\ProductsService.csproj|solutionrelative:productsservice\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{88FEEFD1-C3E7-4D47-8771-28BAEB1F3DD1}|Estoque\\Estoque.csproj|c:\\users\\aluno\\desktop\\projeto\\sistemaestoque\\estoque\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{88FEEFD1-C3E7-4D47-8771-28BAEB1F3DD1}|Estoque\\Estoque.csproj|solutionrelative:estoque\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Produto.cs",
+              "DocumentMoniker": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\ProductsService\\Model\\Produto.cs",
+              "RelativeDocumentMoniker": "ProductsService\\Model\\Produto.cs",
+              "ToolTip": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\ProductsService\\Model\\Produto.cs",
+              "RelativeToolTip": "ProductsService\\Model\\Produto.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAgAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-02T18:31:40.946Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ProdutosServiceContext.cs",
+              "DocumentMoniker": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\ProductsService\\Data\\ProdutosServiceContext.cs",
+              "RelativeDocumentMoniker": "ProductsService\\Data\\ProdutosServiceContext.cs",
+              "ToolTip": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\ProductsService\\Data\\ProdutosServiceContext.cs",
+              "RelativeToolTip": "ProductsService\\Data\\ProdutosServiceContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAABaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-02T18:31:11.103Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\ProductsService\\Program.cs",
+              "RelativeDocumentMoniker": "ProductsService\\Program.cs",
+              "ToolTip": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\ProductsService\\Program.cs",
+              "RelativeToolTip": "ProductsService\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-02T18:28:51.331Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BaseEntity.cs",
+              "DocumentMoniker": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\ProductsService\\Model\\Base\\BaseEntity.cs",
+              "RelativeDocumentMoniker": "ProductsService\\Model\\Base\\BaseEntity.cs",
+              "ToolTip": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\ProductsService\\Model\\Base\\BaseEntity.cs",
+              "RelativeToolTip": "ProductsService\\Model\\Base\\BaseEntity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-02T17:54:49.059Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Estoque.csproj",
+              "DocumentMoniker": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\Estoque\\Estoque.csproj",
+              "RelativeDocumentMoniker": "Estoque\\Estoque.csproj",
+              "ToolTip": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\Estoque\\Estoque.csproj",
+              "RelativeToolTip": "Estoque\\Estoque.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-07-02T15:50:24.613Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ProductsService.http",
+              "DocumentMoniker": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\ProductsService\\ProductsService.http",
+              "RelativeDocumentMoniker": "ProductsService\\ProductsService.http",
+              "ToolTip": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\ProductsService\\ProductsService.http",
+              "RelativeToolTip": "ProductsService\\ProductsService.http",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2025-07-02T15:48:29.559Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\ProductsService\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "ProductsService\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\ProductsService\\Properties\\launchSettings.json",
+              "RelativeToolTip": "ProductsService\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-07-02T15:47:42.579Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\Estoque\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "Estoque\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\Estoque\\Properties\\launchSettings.json",
+              "RelativeToolTip": "Estoque\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-07-02T15:46:21.632Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\Estoque\\appsettings.json",
+              "RelativeDocumentMoniker": "Estoque\\appsettings.json",
+              "ToolTip": "C:\\Users\\Aluno\\Desktop\\Projeto\\SistemaEstoque\\Estoque\\appsettings.json",
+              "RelativeToolTip": "Estoque\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-07-02T15:46:13.996Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
