@@ -3,6 +3,18 @@
   "WorkspaceRootPath": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\SistemaEstoque\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B8B3A0F5-3C9E-4CCB-88CD-3107DC492AD1}|ProductsService\\ProductsService.csproj|c:\\users\\vynny\\onedrive\\documentos\\github\\projeto.net\\sistemaestoque\\productsservice\\models\\produto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8B3A0F5-3C9E-4CCB-88CD-3107DC492AD1}|ProductsService\\ProductsService.csproj|solutionrelative:productsservice\\models\\produto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8B3A0F5-3C9E-4CCB-88CD-3107DC492AD1}|ProductsService\\ProductsService.csproj|c:\\users\\vynny\\onedrive\\documentos\\github\\projeto.net\\sistemaestoque\\productsservice\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8B3A0F5-3C9E-4CCB-88CD-3107DC492AD1}|ProductsService\\ProductsService.csproj|solutionrelative:productsservice\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8B3A0F5-3C9E-4CCB-88CD-3107DC492AD1}|ProductsService\\ProductsService.csproj|c:\\users\\vynny\\onedrive\\documentos\\github\\projeto.net\\sistemaestoque\\productsservice\\controllers\\produtoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8B3A0F5-3C9E-4CCB-88CD-3107DC492AD1}|ProductsService\\ProductsService.csproj|solutionrelative:productsservice\\controllers\\produtoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B8B3A0F5-3C9E-4CCB-88CD-3107DC492AD1}|ProductsService\\ProductsService.csproj|c:\\users\\vynny\\onedrive\\documentos\\github\\projeto.net\\sistemaestoque\\productsservice\\productsservice.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{B8B3A0F5-3C9E-4CCB-88CD-3107DC492AD1}|ProductsService\\ProductsService.csproj|solutionrelative:productsservice\\productsservice.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
@@ -13,10 +25,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{B8B3A0F5-3C9E-4CCB-88CD-3107DC492AD1}|ProductsService\\ProductsService.csproj|c:\\users\\vynny\\onedrive\\documentos\\github\\projeto.net\\sistemaestoque\\productsservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B8B3A0F5-3C9E-4CCB-88CD-3107DC492AD1}|ProductsService\\ProductsService.csproj|solutionrelative:productsservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8B3A0F5-3C9E-4CCB-88CD-3107DC492AD1}|ProductsService\\ProductsService.csproj|c:\\users\\vynny\\onedrive\\documentos\\github\\projeto.net\\sistemaestoque\\productsservice\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8B3A0F5-3C9E-4CCB-88CD-3107DC492AD1}|ProductsService\\ProductsService.csproj|solutionrelative:productsservice\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B8B3A0F5-3C9E-4CCB-88CD-3107DC492AD1}|ProductsService\\ProductsService.csproj|c:\\users\\vynny\\onedrive\\documentos\\github\\projeto.net\\sistemaestoque\\productsservice\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -30,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -39,6 +47,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "ProdutosController.cs",
+              "DocumentMoniker": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\Controllers\\ProdutosController.cs",
+              "RelativeDocumentMoniker": "ProductsService\\Controllers\\ProdutosController.cs",
+              "ToolTip": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\Controllers\\ProdutosController.cs",
+              "RelativeToolTip": "ProductsService\\Controllers\\ProdutosController.cs",
+              "ViewState": "AgIAAF8AAAAAAAAAAAAswAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-04T14:18:38.098Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Produto.cs",
+              "DocumentMoniker": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\Models\\Produto.cs",
+              "RelativeDocumentMoniker": "ProductsService\\Models\\Produto.cs",
+              "ToolTip": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\Models\\Produto.cs",
+              "RelativeToolTip": "ProductsService\\Models\\Produto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-04T14:18:26.787Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\Program.cs",
               "RelativeDocumentMoniker": "ProductsService\\Program.cs",
@@ -46,12 +80,11 @@
               "RelativeToolTip": "ProductsService\\Program.cs",
               "ViewState": "AgIAAA8AAAAAAAAAAAAAABIAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-04T14:10:25.165Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-04T14:10:25.165Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "ProdutoRepository.cs",
               "DocumentMoniker": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\Repositories\\ProdutoRepository.cs",
               "RelativeDocumentMoniker": "ProductsService\\Repositories\\ProdutoRepository.cs",
@@ -59,12 +92,11 @@
               "RelativeToolTip": "ProductsService\\Repositories\\ProdutoRepository.cs",
               "ViewState": "AgIAAAUAAAAAAAAAAAAuwBoAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-04T14:10:05.476Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-04T14:10:05.476Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "AppDbContext.cs",
               "DocumentMoniker": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\Data\\AppDbContext.cs",
               "RelativeDocumentMoniker": "ProductsService\\Data\\AppDbContext.cs",
@@ -77,8 +109,8 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ProductsService",
+              "DocumentIndex": 3,
+              "Title": "ProductsService.csproj",
               "DocumentMoniker": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\ProductsService.csproj",
               "RelativeDocumentMoniker": "ProductsService\\ProductsService.csproj",
               "ToolTip": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\ProductsService.csproj",
@@ -90,7 +122,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "WeatherForecastController.cs",
               "DocumentMoniker": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\Controllers\\WeatherForecastController.cs",
               "RelativeDocumentMoniker": "ProductsService\\Controllers\\WeatherForecastController.cs",
@@ -98,8 +130,7 @@
               "RelativeToolTip": "ProductsService\\Controllers\\WeatherForecastController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-04T14:07:30.771Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-04T14:07:30.771Z"
             }
           ]
         }
