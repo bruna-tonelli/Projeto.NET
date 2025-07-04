@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Aluno\\Documents\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\ProductsService.csproj": {}
+    "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\ProductsService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Aluno\\Documents\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\ProductsService.csproj": {
+    "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\ProductsService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Aluno\\Documents\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\ProductsService.csproj",
+        "projectUniqueName": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\ProductsService.csproj",
         "projectName": "ProductsService",
-        "projectPath": "C:\\Users\\Aluno\\Documents\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\ProductsService.csproj",
-        "packagesPath": "C:\\Users\\Aluno\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Aluno\\Documents\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\obj\\",
+        "projectPath": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\ProductsService.csproj",
+        "packagesPath": "C:\\Users\\vynny\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\SistemaEstoque\\ProductsService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Aluno\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\vynny\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -52,6 +52,14 @@
           "targetAlias": "net9.0",
           "dependencies": {
             "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[9.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[9.0.6, )"
             },
