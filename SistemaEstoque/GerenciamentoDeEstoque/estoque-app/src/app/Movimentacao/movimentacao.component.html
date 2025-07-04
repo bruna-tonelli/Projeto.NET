@@ -1,0 +1,56 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input 
+        type="text" 
+        placeholder="DIGITAR NOME OU ID"
+        [(ngModel)]="termoBusca"
+        (input)="buscar()">
+    </div>
+    <div class="actions">
+      <button class="btn btn-primary" (click)="buscar()">
+        <i class="fas fa-search"></i> BUSCAR
+      </button>
+      <button 
+        class="btn btn-secondary" 
+        (click)="editar()"
+        [disabled]="!itemSelecionado">
+        <i class="fas fa-edit"></i> EDITAR
+      </button>
+    </div>
+  </header>
+
+  <section class="page-content">
+    <div *ngIf="isLoading" class="status-message">Carregando...</div>
+    <ng-container *ngIf="!isLoading">
+      <div *ngIf="movimentacoesExibidas.length === 0" class="status-message">Nenhuma movimentação encontrada.</div>
+      <div class="item-list">
+        <div 
+          class="item-card" 
+          *ngFor="let mov of movimentacoesExibidas"
+          (click)="selecionarItem(mov)"
+          [ngClass]="{'item-selecionado': mov.id === itemSelecionado?.id && mov.tipo === itemSelecionado?.tipo}">
+          <div class="card-section id-section">
+            <span class="card-label">ID</span>
+            <span class="card-value">{{ mov.id }}</span>
+          </div>
+          <div class="card-section name-section">
+            <span class="card-label">NOME</span>
+            <span class="card-value">{{ mov.nomeProduto }}</span>
+          </div>
+          <div class="card-section quantity-section">
+            <span class="card-label">QUANTIDADE</span>
+            <span class="card-value">{{ mov.quantidade | number }}</span>
+          </div>
+          <div class="card-section type-section">
+            <span class="card-label">TIPO</span>
+            <span class="card-value" [ngClass]="{'tipo-compra': mov.tipo === 'COMPRA', 'tipo-venda': mov.tipo === 'VENDA'}">
+              {{ mov.tipo }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </section>
+</div>

@@ -1,0 +1,67 @@
+// Estilo para o container principal da aplicação
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f7f6; // Um cinza claro para o fundo
+}
+
+// Estilo para a barra lateral
+.sidebar {
+  width: 260px;
+  flex-shrink: 0; // Impede que a sidebar encolha
+  background: linear-gradient(145deg, #11478E, #0353A4);
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+
+  .logo-container {
+    padding: 30px 20px;
+    text-align: center;
+    font-size: 3.5rem;
+    color: #FFFFFF;
+  }
+
+  .menu {
+    flex-grow: 1; // Ocupa o espaço vertical disponível
+  }
+
+  .menu-item, .logout-item {
+    display: flex;
+    align-items: center;
+    padding: 18px 25px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #FFFFFF;
+    border-left: 4px solid transparent;
+    transition: background-color 0.2s ease-in-out, border-left 0.2s ease-in-out;
+
+    i {
+      width: 24px;
+      margin-right: 15px;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+
+    span {
+      font-weight: 500;
+    }
+
+    &:hover, &.active {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-left: 4px solid #FFFFFF;
+    }
+  }
+
+  .logout-item {
+    margin-top: auto; // Empurra o item "Sair" para o final
+  }
+}
+
+// Estilo para a área de conteúdo principal
+.main-view {
+  flex-grow: 1; // Ocupa todo o resto do espaço
+  overflow-y: auto; // Adiciona scroll se o conteúdo for muito grande
+}
