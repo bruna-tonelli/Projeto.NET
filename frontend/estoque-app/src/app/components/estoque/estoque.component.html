@@ -1,12 +1,21 @@
 <div class="page-container">
   <header class="page-header">
-    <div class="search-box search-box-small">
-      <i class="fas fa-search"></i>
-      <input 
-        type="text" 
-        placeholder="Pesquise por nome ou por Id"
-        [(ngModel)]="termoBusca"
-        (input)="buscar()">
+    <div class="search-container">
+      <div class="search-box search-box-small">
+        <i class="fas fa-search search-icon"></i>
+        <input 
+          type="text" 
+          placeholder="Pesquise por nome ou por Id"
+          [(ngModel)]="termoBusca"
+          (input)="buscar()"
+          (keyup.enter)="pesquisarPorBotao()">
+        <button *ngIf="pesquisaRealizada || termoBusca" class="btn-clear-inline" (click)="limparPesquisa()" title="Limpar pesquisa">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <button class="btn btn-search" (click)="pesquisarPorBotao()" title="Pesquisar">
+        <i class="fas fa-search"></i>
+      </button>
     </div>
     <div class="actions">
       <button class="btn btn-primary" (click)="abrirModalAdicionar()">
@@ -18,7 +27,13 @@
   <section class="page-content">
     <div *ngIf="isLoading" class="status-message">Carregando...</div>
     <ng-container *ngIf="!isLoading">
-      <div *ngIf="estoqueExibido.length === 0" class="status-message">Nenhum produto encontrado.</div>
+      <div *ngIf="pesquisaRealizada && termoBusca && estoqueExibido.length > 0" class="search-result-message">
+        Resultados da pesquisa por "{{ termoBusca }}": {{ estoqueExibido.length }} produto(s) encontrado(s)
+      </div>
+      <div *ngIf="pesquisaRealizada && termoBusca && estoqueExibido.length === 0" class="search-result-message no-results">
+        Nenhum produto encontrado para "{{ termoBusca }}"
+      </div>
+      <div *ngIf="estoqueExibido.length === 0 && !pesquisaRealizada" class="status-message">Nenhum produto encontrado.</div>
       <div class="item-list">
         <div 
           class="item-card" 

@@ -30,4 +30,14 @@ export class EstoqueService {
   removerProduto(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  pesquisarProdutos(termo: string): Observable<ProdutoEstoque[]> {
+    if (!termo || termo.trim() === '') {
+      return this.getEstoque();
+    }
+    console.log('Pesquisando no frontend por:', termo);
+    const url = `${this.apiUrl}/pesquisar?termo=${encodeURIComponent(termo.trim())}`;
+    console.log('URL da pesquisa:', url);
+    return this.http.get<ProdutoEstoque[]>(url);
+  }
 }

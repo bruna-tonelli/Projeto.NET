@@ -1,5 +1,5 @@
 export interface ProdutoEstoque {
-  id?: string;
+  id?: number;
   nome: string;
   quantidade: number;
   precoUnitario: number;

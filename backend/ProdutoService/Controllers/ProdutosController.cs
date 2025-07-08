@@ -16,6 +16,19 @@ namespace ProdutoService.Controllers
         [HttpGet]
         public async Task<IActionResult> Get() => Ok(await _service.GetAllAsync());
 
+        [HttpGet("pesquisar")]
+        public async Task<IActionResult> Pesquisar([FromQuery] string termo)
+        {
+            Console.WriteLine($"Termo de pesquisa recebido: '{termo}'");
+            var produtos = await _service.SearchAsync(termo);
+            Console.WriteLine($"Produtos encontrados: {produtos.Count()}");
+            foreach (var produto in produtos)
+            {
+                Console.WriteLine($"- ID: {produto.Id}, Nome: {produto.Nome}");
+            }
+            return Ok(produtos);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {

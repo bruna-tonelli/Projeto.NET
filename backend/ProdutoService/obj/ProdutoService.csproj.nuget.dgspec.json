@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\edval\\Downloads\\controle-estoque\\backend\\ProdutoService\\ProdutoService.csproj": {}
+    "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\ProdutoService\\ProdutoService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\edval\\Downloads\\controle-estoque\\backend\\ProdutoService\\ProdutoService.csproj": {
+    "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\ProdutoService\\ProdutoService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\edval\\Downloads\\controle-estoque\\backend\\ProdutoService\\ProdutoService.csproj",
+        "projectUniqueName": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\ProdutoService\\ProdutoService.csproj",
         "projectName": "ProdutoService",
-        "projectPath": "C:\\Users\\edval\\Downloads\\controle-estoque\\backend\\ProdutoService\\ProdutoService.csproj",
+        "projectPath": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\ProdutoService\\ProdutoService.csproj",
         "packagesPath": "C:\\Users\\edval\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\edval\\Downloads\\controle-estoque\\backend\\ProdutoService\\obj\\",
+        "outputPath": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\ProdutoService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

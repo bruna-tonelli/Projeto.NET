@@ -28,22 +28,32 @@ $gray-text: #6c757d;
     font-weight: 600;
   }
 
+  .search-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-right: 280px;
+  }
+
   .search-box {
     flex-grow: 1;
     position: relative;
-    margin-right: 300px;
+    display: flex;
+    align-items: center;
 
-    i {
+    .search-icon {
       position: absolute;
       left: 15px;
       top: 50%;
       transform: translateY(-50%);
       color: $gray-text;
+      z-index: 2;
     }
 
     input {
       width: 100%;
-      padding: 12px 15px 12px 45px;
+      padding: 12px 45px 12px 45px; // Espaço para ícone da lupa e botão X
       border: 1px solid #ccc;
       border-radius: 8px;
       font-size: 1rem;
@@ -122,6 +132,66 @@ $gray-text: #6c757d;
   }
 }
 
+.btn-search {
+  background-color: $primary-color;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  height: 48px;
+  margin-left: -8px; // Move um pouco para a esquerda
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  i {
+    font-size: 1rem;
+  }
+}
+
+.btn-clear-inline {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: $gray-text;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  transition: all 0.2s ease;
+  z-index: 3;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: $dark-text;
+  }
+
+  i {
+    font-size: 12px;
+  }
+}
+
 // Espaçamento lateral da lista e cards menores
 .page-content {
   padding: 0 32px; // Espaço das bordas da página
@@ -168,7 +238,23 @@ $gray-text: #6c757d;
   text-align: center;
   padding: 40px;
   color: $gray-text;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+}
+
+.search-result-message {
+  background-color: #e7f3ff;
+  color: $primary-color;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  border-left: 4px solid $primary-color;
+
+  &.no-results {
+    background-color: #fff3cd;
+    color: #856404;
+    border-left-color: #ffc107;
+  }
 }
 
 // Barra de pesquisa menor
