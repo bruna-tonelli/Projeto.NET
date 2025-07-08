@@ -41,8 +41,17 @@ export class MovimentacaoComponent implements OnInit {
     const termo = this.termoBusca.toLowerCase();
     this.movimentacoesExibidas = this.listaCompletaMovimentacoes.filter(mov =>
       mov.nomeProduto.toLowerCase().includes(termo) ||
-      mov.id.toLowerCase().includes(termo)
+      String(mov.id).toLowerCase().includes(termo)
     );
+  }
+
+  pesquisarPorBotao(): void {
+    this.buscar();
+  }
+
+  limparPesquisa(): void {
+    this.termoBusca = '';
+    this.movimentacoesExibidas = this.listaCompletaMovimentacoes;
   }
 
   selecionarItem(movimentacao: Movimentacao): void {

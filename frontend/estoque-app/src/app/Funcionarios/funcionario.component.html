@@ -1,0 +1,123 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="search-container">
+      <div class="search-box search-box-small">
+        <i class="fas fa-search search-icon"></i>
+        <input 
+          type="text" 
+          placeholder="Pesquise por nome ou por Id"
+          [(ngModel)]="termoBusca"
+          (input)="buscar()"
+          (keyup.enter)="pesquisarPorBotao()">
+        <button *ngIf="pesquisaRealizada || termoBusca" class="btn-clear-inline" (click)="limparPesquisa()" title="Limpar pesquisa">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <button class="btn btn-search" (click)="pesquisarPorBotao()" title="Pesquisar">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+    <div class="actions">
+      <button class="btn btn-primary" (click)="abrirModalAdicionar()">
+        <i class="fas fa-plus"></i> ADICIONAR FUNCIONÁRIO
+      </button>
+    </div>
+  </header>
+
+  <section class="page-content">
+    <div *ngIf="isLoading" class="status-message">Carregando...</div>
+    <ng-container *ngIf="!isLoading">
+      <div *ngIf="pesquisaRealizada && termoBusca && funcionariosExibidos.length > 0" class="search-result-message">
+        Resultados da pesquisa por "{{ termoBusca }}": {{ funcionariosExibidos.length }} funcionário(s) encontrado(s)
+      </div>
+      <div *ngIf="pesquisaRealizada && termoBusca && funcionariosExibidos.length === 0" class="search-result-message no-results">
+        Nenhum funcionário encontrado para "{{ termoBusca }}"
+      </div>
+      <div *ngIf="funcionariosExibidos.length === 0 && !pesquisaRealizada" class="status-message">Nenhum funcionário encontrado.</div>
+      <div class="item-list">
+        <div 
+          class="item-card" 
+          *ngFor="let funcionario of funcionariosExibidos"
+          (click)="selecionarFuncionario(funcionario)"
+          [ngClass]="{'item-selecionado': funcionario.id === funcionarioSelecionado?.id}">
+          <div class="card-section id-section">
+            <span class="card-label">ID</span>
+            <span class="card-value">{{ funcionario.id }}</span>
+          </div>
+          <div class="card-section name-section">
+            <span class="card-label">NOME</span>
+            <span class="card-value">{{ funcionario.nome }}</span>
+          </div>
+          <div class="card-section cargo-section">
+            <span class="card-label">CARGO</span>
+            <span class="card-value">{{ funcionario.cargo }}</span>
+          </div>
+          <div class="card-section email-section">
+            <span class="card-label">EMAIL</span>
+            <span class="card-value">{{ funcionario.email }}</span>
+          </div>
+          <button 
+            class="btn btn-edit" 
+            type="button"
+            (click)="editarFuncionario(funcionario); $event.stopPropagation()"
+            title="Editar funcionário">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button 
+            class="btn btn-delete" 
+            type="button"
+            (click)="removerFuncionario(funcionario.id!); $event.stopPropagation()"
+            title="Remover funcionário">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </section>
+
+  <!-- Modal de Adicionar Funcionário -->
+  <div class="modal-backdrop" *ngIf="modalAberto">
+    <div class="modal-produto">
+      <h2>Novo Funcionário</h2>
+      <form (ngSubmit)="adicionarFuncionario()" #formFuncionario="ngForm">
+        <label for="nome">Nome</label>
+        <input id="nome" type="text" placeholder="Ex. João Silva" [(ngModel)]="novoFuncionario.nome" name="nome" required>
+
+        <label for="cargo">Cargo</label>
+        <input id="cargo" type="text" placeholder="Ex. Analista" [(ngModel)]="novoFuncionario.cargo" name="cargo" required>
+
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="Ex. joao@email.com" [(ngModel)]="novoFuncionario.email" name="email" required>
+
+        <label for="salario">Salário</label>
+        <input id="salario" type="number" placeholder="Ex. 3500.00" [(ngModel)]="novoFuncionario.salario" name="salario" required min="0" step="0.01">
+
+        <button class="btn btn-primary" type="submit" [disabled]="formFuncionario.invalid">Salvar</button>
+        <button class="btn btn-secondary" type="button" (click)="fecharModal()">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Editar Funcionário -->
+  <div class="modal-backdrop" *ngIf="modalEditarAberto">
+    <div class="modal-produto" *ngIf="funcionarioEditando">
+      <h2>Editar Funcionário</h2>
+      <form (ngSubmit)="salvarEdicaoFuncionario()" #formEditar="ngForm">
+        <label for="edit-nome">Nome</label>
+        <input id="edit-nome" type="text" [(ngModel)]="funcionarioEditando.nome" name="editNome" required>
+
+        <label for="edit-cargo">Cargo</label>
+        <input id="edit-cargo" type="text" [(ngModel)]="funcionarioEditando.cargo" name="editCargo" required>
+
+        <label for="edit-email">Email</label>
+        <input id="edit-email" type="email" [(ngModel)]="funcionarioEditando.email" name="editEmail" required>
+
+        <label for="edit-salario">Salário</label>
+        <input id="edit-salario" type="number" [(ngModel)]="funcionarioEditando.salario" name="editSalario" required min="0" step="0.01">
+
+        <button class="btn btn-primary" type="submit" [disabled]="formEditar.invalid">Salvar</button>
+        <button class="btn btn-secondary" type="button" (click)="fecharModalEditar()">Cancelar</button>
+      </form>
+    </div>
+  </div>
+</div>

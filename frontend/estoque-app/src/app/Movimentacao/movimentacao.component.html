@@ -1,25 +1,37 @@
 <div class="page-container">
-  <header class="page-header">
-    <div class="search-box">
-      <i class="fas fa-search"></i>
+ <header class="page-header">
+  <div class="search-container">
+    <div class="search-box search-box-small">
+      <i class="fas fa-search search-icon"></i>
       <input 
         type="text" 
-        placeholder="DIGITAR NOME OU ID"
+        placeholder="Pesquise por nome ou por Id"
         [(ngModel)]="termoBusca"
-        (input)="buscar()">
-    </div>
-    <div class="actions">
-      <button class="btn btn-primary" (click)="buscar()">
-        <i class="fas fa-search"></i> BUSCAR
-      </button>
+        (input)="buscar()"
+        (keyup.enter)="pesquisarPorBotao()">
       <button 
-        class="btn btn-secondary" 
-        (click)="editar()"
-        [disabled]="!itemSelecionado">
-        <i class="fas fa-edit"></i> EDITAR
+        *ngIf="termoBusca" 
+        class="btn-clear-inline" 
+        (click)="limparPesquisa()" 
+        title="Limpar pesquisa">
+        <i class="fas fa-times"></i>
       </button>
     </div>
-  </header>
+    <button class="btn btn-search" (click)="pesquisarPorBotao()" title="Pesquisar">
+      <i class="fas fa-search"></i>
+    </button>
+  </div>
+
+  <div class="actions">
+    <button 
+      class="btn btn-secondary" 
+      (click)="editar()"
+      [disabled]="!itemSelecionado">
+      <i class="fas fa-edit"></i> EDITAR
+    </button>
+  </div>
+</header>
+
 
   <section class="page-content">
     <div *ngIf="isLoading" class="status-message">Carregando...</div>

@@ -1,56 +1,92 @@
-// Estilos principais para esta página
 $primary-color: #0353A4;
 $secondary-color: #6c757d;
 $light-gray: #f8f9fa;
 $dark-text: #343a40;
 $gray-text: #6c757d;
-$success-color: #28a745; // Verde para Compra
-$danger-color: #dc3545; // Vermelho para Venda
 
-.page-container {
-  padding: 0; // Troque de 30px para 0
-  height: 100vh; // Garante altura total
-  box-sizing: border-box;
-}
 
-// Cabeçalho da página
 .page-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 20px;
   margin-bottom: 30px;
   flex-wrap: wrap;
 
-  .page-title {
-    margin: 0;
-    color: $primary-color;
-    font-size: 1.8rem;
-    font-weight: 600;
+  .search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-grow: 1;
+    max-width: 600px;
   }
 
   .search-box {
-    flex-grow: 1;
     position: relative;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
 
-    i {
+    &.search-box-small input {
+      padding: 10px 40px 10px 40px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 100%;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 5px rgba($primary-color, 0.5);
+      }
+    }
+
+    .search-icon {
       position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
+      left: 12px;
       color: $gray-text;
+      font-size: 1.1rem;
+      pointer-events: none;
     }
 
     input {
       width: 100%;
-      padding: 12px 15px 12px 45px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 1rem;
-      &:focus {
-        outline: none;
-        border-color: $primary-color;
-        box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
+      padding-left: 40px;
+    }
+
+    .btn-clear-inline {
+      position: absolute;
+      right: 10px;
+      background: transparent;
+      border: none;
+      color: $gray-text;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        color: $primary-color;
       }
+    }
+  }
+
+  .btn-search {
+    background-color: $primary-color;
+    border: none;
+    color: white;
+    padding: 11px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
     }
   }
 
@@ -58,100 +94,23 @@ $danger-color: #dc3545; // Vermelho para Venda
     display: flex;
     gap: 10px;
   }
-}
 
-// Estilo base para os botões
-.btn {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  }
-}
-
-.btn-primary {
-  background-color: $primary-color;
-  color: white;
-}
-
-.btn-secondary {
-  background-color: $light-gray;
-  color: $dark-text;
-  border: 1px solid #ccc;
-}
-
-// Lista de itens
-.item-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.item-card {
-  display: flex;
-  align-items: center;
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  gap: 20px;
-}
-
-.card-section {
-  display: flex;
-  flex-direction: column;
-
-  &.id-section { flex: 0.5; }
-  &.name-section { flex: 2; }
-  &.quantity-section { flex: 1; }
-  &.type-section { flex: 1; text-align: right; }
-
-  .card-label {
-    color: $gray-text;
-    font-size: 0.9rem;
-    margin-bottom: 5px;
-    font-weight: 500;
-  }
-
-  .card-value {
+  .btn-secondary {
+    background-color: $light-gray;
     color: $dark-text;
-    font-size: 1.5rem;
-    font-weight: 700;
+    border: 1px solid #ccc;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: darken($light-gray, 5%);
+    }
   }
-}
-
-// Estilos específicos para o tipo de movimentação
-.card-value {
-  &.tipo-compra {
-    color: $success-color;
-  }
-  &.tipo-venda {
-    color: $danger-color;
-  }
-}
-
-// Mensagens de status
-.status-message {
-  text-align: center;
-  padding: 40px;
-  color: $gray-text;
-  font-size: 1.2rem;
-}
-
-// ... (cole todo o seu SCSS anterior aqui) ...
-
-// ADICIONE ESTE ESTILO NO FINAL DO ARQUIVO
-.item-card {
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
 }
