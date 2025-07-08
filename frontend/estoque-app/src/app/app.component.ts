@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // Importa todas as ferramentas de roteamento necessárias
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
@@ -16,17 +16,27 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   sidebarColapsada = false;
-  showFallback = false;
 
   toggleSidebar() {
     this.sidebarColapsada = !this.sidebarColapsada;
   }
 
-  onImageError(event: any) {
-    console.log('Logo não encontrada, usando ícone de fallback');
-    this.showFallback = true;
-    event.target.style.display = 'none';
+  onLogoLoad() {
+    console.log('✅ Logo carregada com sucesso!');
+  }
+
+  onLogoError() {
+    console.log('❌ Erro ao carregar logo. Verifique o caminho do arquivo.');
+  }
+
+  ngOnInit() {
+    // Debug: verificar se a imagem está sendo carregada
+    console.log('Verificando se a logo está carregando...');
+    const img = new Image();
+    img.onload = () => console.log('Logo carregada com sucesso!');
+    img.onerror = () => console.log('Erro ao carregar logo. Verifique o caminho.');
+    img.src = 'assets/images/logo.png';
   }
 }

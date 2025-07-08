@@ -7,8 +7,8 @@
       <img src="assets/images/logo.png" 
            alt="Logo da Empresa" 
            class="logo-image"
-           (error)="onImageError($event)">
-      <i class="fas fa-warehouse logo-fallback" [style.display]="showFallback ? 'block' : 'none'"></i>
+           (load)="onLogoLoad()"
+           (error)="onLogoError()">
     </div>
     <nav class="menu">
       <a class="menu-item" routerLink="/estoque" routerLinkActive="active">
