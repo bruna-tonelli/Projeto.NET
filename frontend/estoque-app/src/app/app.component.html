@@ -4,7 +4,11 @@
       <i class="fas fa-bars"></i>
     </button>
     <div class="logo-container">
-      <i class="fas fa-warehouse"></i>
+      <img src="assets/images/logo.png" 
+           alt="Logo da Empresa" 
+           class="logo-image"
+           (error)="onImageError($event)">
+      <i class="fas fa-warehouse logo-fallback" [style.display]="showFallback ? 'block' : 'none'"></i>
     </div>
     <nav class="menu">
       <a class="menu-item" routerLink="/estoque" routerLinkActive="active">

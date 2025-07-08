@@ -3,10 +3,6 @@ import { CommonModule } from '@angular/common';
 // Importa todas as ferramentas de roteamento necessárias
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 
-// Importa os componentes que serão acessados via rota
-import { EstoqueComponent } from './components/estoque/estoque.component';
-import { MovimentacaoComponent } from './Movimentacao/movimentacao.component';
-
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -15,18 +11,22 @@ import { MovimentacaoComponent } from './Movimentacao/movimentacao.component';
     // Adiciona as ferramentas ao componente
     RouterOutlet,
     RouterLink,
-    RouterLinkActive,
-    // Adiciona os componentes para que o Angular os "conheça"
-    EstoqueComponent,
-    MovimentacaoComponent
+    RouterLinkActive
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   sidebarColapsada = false;
+  showFallback = false;
 
   toggleSidebar() {
     this.sidebarColapsada = !this.sidebarColapsada;
+  }
+
+  onImageError(event: any) {
+    console.log('Logo não encontrada, usando ícone de fallback');
+    this.showFallback = true;
+    event.target.style.display = 'none';
   }
 }
