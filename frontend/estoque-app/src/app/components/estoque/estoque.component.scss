@@ -331,12 +331,6 @@ $gray-text: #6c757d;
 .item-card {
   cursor: pointer; // Mostra que o card é clicável
   transition: all 0.2s ease-in-out;
-
-  &.item-selecionado {
-    border: 2px solid #0353A4; // Cor primária definida no seu estilo
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(#0353A4, 0.2);
-  }
 }
 
 /* Remove as setas dos inputs type="number" */

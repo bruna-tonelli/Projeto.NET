@@ -1,0 +1,103 @@
+version: '3.8'
+
+services:
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./backend/ApiGateway/ApiGateway
+      dockerfile: Dockerfile
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - produto-service
+      - estoque-service
+      - usuario-service
+    networks:
+      - microservices-network
+
+  # Produto Service
+  produto-service:
+    build:
+      context: ./backend/ProdutoService
+      dockerfile: Dockerfile
+    ports:
+      - "5001:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ProdutosDB;User Id=sa;Password=StrongPassword123!;TrustServerCertificate=true;
+    depends_on:
+      - sqlserver
+    networks:
+      - microservices-network
+
+  # Estoque Service
+  estoque-service:
+    build:
+      context: ./backend/EstoqueService/EstoqueService
+      dockerfile: Dockerfile
+    ports:
+      - "5002:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=EstoqueDB;User Id=sa;Password=StrongPassword123!;TrustServerCertificate=true;
+    depends_on:
+      - sqlserver
+    networks:
+      - microservices-network
+
+  # Usuario Service
+  usuario-service:
+    build:
+      context: ./backend/UsuarioService/UsuarioService
+      dockerfile: Dockerfile
+    ports:
+      - "5003:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=UsuariosDB;User Id=sa;Password=StrongPassword123!;TrustServerCertificate=true;
+    depends_on:
+      - sqlserver
+    networks:
+      - microservices-network
+
+  # Frontend Angular
+  frontend:
+    build:
+      context: ./frontend/estoque-app
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - microservices-network
+
+  # SQL Server
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=StrongPassword123!
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - microservices-network
+
+  # Redis (para cache entre microsserviços)
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - microservices-network
+
+networks:
+  microservices-network:
+    driver: bridge
+
+volumes:
+  sqlserver_data:

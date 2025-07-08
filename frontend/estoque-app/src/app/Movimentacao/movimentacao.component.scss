@@ -154,10 +154,4 @@ $danger-color: #dc3545; // Vermelho para Venda
 .item-card {
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-
-  &.item-selecionado {
-    border: 2px solid #0353A4;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(#0353A4, 0.2);
-  }
 }
