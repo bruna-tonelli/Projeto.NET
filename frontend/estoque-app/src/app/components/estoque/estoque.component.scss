@@ -1,0 +1,261 @@
+// Cores principais para esta página
+$primary-color: #0353A4;
+$secondary-color: #6c757d;
+$light-gray: #f8f9fa;
+$dark-text: #343a40;
+$gray-text: #6c757d;
+
+.page-container {
+  padding: 0; // Troque de 30px para 0
+  height: 100vh; // Garante altura total
+  box-sizing: border-box;
+}
+
+// Cabeçalho da página
+.page-header {
+  padding: 0 32px; // Espaço lateral no cabeçalho (inclui barra de pesquisa)
+  margin-bottom: 30px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+
+  .page-title {
+    margin: 0;
+    color: $primary-color;
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+
+  .search-box {
+    flex-grow: 1;
+    position: relative;
+    margin-right: 300px;
+
+    i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $gray-text;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 15px 12px 45px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
+      }
+    }
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+  }
+}
+
+// Estilo base para os botões (sem Bootstrap)
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+}
+
+.btn-delete {
+  background: transparent;
+  color: #d32f2f;
+  border: none;
+  font-size: 1.3rem;
+  margin-left: 16px;
+  cursor: pointer;
+  transition: color 0.2s;
+  align-self: center;
+
+  &:hover {
+    color: #b71c1c;
+  }
+}
+
+.btn-primary {
+  background-color: $primary-color;
+  color: white;
+}
+
+.btn-secondary {
+  background-color: $primary-color;
+  color: white;
+  border: none;
+}
+
+.btn-edit {
+  background: transparent;
+  color: $primary-color;
+  border: none;
+  font-size: 1.3rem;
+  margin-left: 8px;
+  margin-right: -50px;
+  cursor: pointer;
+  transition: color 0.2s;
+  align-self: center;
+
+  &:hover {
+    color: darken($primary-color, 10%);
+  }
+}
+
+// Espaçamento lateral da lista e cards menores
+.page-content {
+  padding: 0 32px; // Espaço das bordas da página
+}
+
+.item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; // Menor distância entre os cards
+}
+
+.item-card {
+  display: flex;
+  background-color: white;
+  padding: 12px 18px; // Cards mais compactos
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  gap: 20px;
+}
+
+.card-section {
+  display: flex;
+  flex-direction: column;
+
+  &.id-section { flex: 0.5; }
+  &.name-section { flex: 2; }
+  &.quantity-section { flex: 1; text-align: right; }
+
+  .card-label {
+    color: $gray-text;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+  .card-value {
+    color: $dark-text;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+}
+
+// Mensagens de status
+.status-message {
+  text-align: center;
+  padding: 40px;
+  color: $gray-text;
+  font-size: 1.2rem;
+}
+
+// Barra de pesquisa menor
+.search-box-small {
+  width: 280px;
+  min-width: 200px;
+
+  input {
+    font-size: 0.95rem;
+    padding: 10px 10px 10px 38px;
+    border-radius: 6px;
+  }
+}
+
+// Modal estilizado
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-produto {
+  background: #fff;
+  border-radius: 12px;
+  padding: 32px 28px 24px 28px;
+  box-shadow: 0 8px 32px rgba(3,83,164,0.15);
+  min-width: 320px;
+  max-width: 95vw;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  h2 {
+    color: #0353A4;
+    margin-bottom: 18px;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    input {
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      margin-bottom: 6px;
+
+      &:focus {
+        border-color: #0353A4;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(3,83,164,0.15);
+      }
+    }
+
+    .btn {
+      margin-top: 8px;
+    }
+  }
+}
+
+// ADICIONE ESTE ESTILO NO FINAL DO ARQUIVO
+.item-card {
+  cursor: pointer; // Mostra que o card é clicável
+  transition: all 0.2s ease-in-out;
+
+  &.item-selecionado {
+    border: 2px solid #0353A4; // Cor primária definida no seu estilo
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(#0353A4, 0.2);
+  }
+}
+
+/* Remove as setas dos inputs type="number" */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

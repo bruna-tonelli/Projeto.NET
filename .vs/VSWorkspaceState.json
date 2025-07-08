@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\SistemaEstoque"
+    "\\backend",
+    "\\backend\\ProdutoService",
+    "\\backend\\ProdutoService\\Controllers"
   ],
-  "SelectedNode": "\\SistemaEstoque\\SistemaEstoque.sln",
+  "SelectedNode": "\\backend\\ProdutoService\\Controllers\\ProdutosController.cs",
   "PreviewInSolutionExplorer": false
 }
