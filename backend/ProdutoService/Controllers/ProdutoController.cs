@@ -10,8 +10,8 @@ namespace ProdutoService.Controllers
     [Route("api/produtos")]
     public class ProdutoController : ControllerBase
     {
-        private readonly ProdutoService.Services.ProdutoService _service;
-        public ProdutoController(ProdutoService.Services.ProdutoService service) => _service = service;
+        private readonly Services.ProdutoService _service;
+        public ProdutoController(Services.ProdutoService service) => _service = service;
 
         [HttpGet]
         public async Task<IActionResult> Get() => Ok(await _service.GetAllAsync());
