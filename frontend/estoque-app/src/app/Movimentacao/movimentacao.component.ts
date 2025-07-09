@@ -17,6 +17,19 @@ export class MovimentacaoComponent implements OnInit {
   public movimentacoesExibidas: Movimentacao[] = [];
   public itemSelecionado: Movimentacao | null = null;
   private listaCompletaMovimentacoes: Movimentacao[] = [];
+  public pesquisaRealizada: boolean = false; 
+
+
+  modalAberto = false;
+    novaMovimentacao: { tipo: string; quantidade: number; produto_id: number;} = {
+      tipo: '',
+      quantidade: 0,
+      produto_id: 0
+    };
+  
+    modalEditarAberto = false;
+      movimentacaoEditando: Movimentacao | null = null;
+  
 
   constructor(private movimentacaoService: MovimentacaoService) {}
 
@@ -41,8 +54,27 @@ export class MovimentacaoComponent implements OnInit {
     const termo = this.termoBusca.toLowerCase();
     this.movimentacoesExibidas = this.listaCompletaMovimentacoes.filter(mov =>
       mov.nomeProduto.toLowerCase().includes(termo) ||
-      mov.id.toLowerCase().includes(termo)
+      String(mov.id).toLowerCase().includes(termo)
     );
+  }
+
+  adicionarMovimentacao(): void {
+    if (
+      !this.novaMovimentacao.tipo ||
+      this.novaMovimentacao.quantidade === null ||
+      this.novaMovimentacao.quantidade < 0 ||
+      this.novaMovimentacao.produto_id === null ||
+      this.novaMovimentacao.produto_id< 0
+    ) return;
+  }
+
+  pesquisarPorBotao(): void {
+    this.buscar();
+  }
+
+  limparPesquisa(): void {
+    this.termoBusca = '';
+    this.movimentacoesExibidas = this.listaCompletaMovimentacoes;
   }
 
   selecionarItem(movimentacao: Movimentacao): void {
@@ -53,11 +85,19 @@ export class MovimentacaoComponent implements OnInit {
     }
   }
 
-  editar(): void {
-    if (!this.itemSelecionado) {
-      alert('Por favor, selecione uma movimentação da lista para editar.');
-      return;
-    }
-    alert(`Editando a movimentação do produto: ${this.itemSelecionado.nomeProduto}`);
+  abrirModalAdicionar(): void {
+    this.novaMovimentacao = { tipo: '', quantidade: 0, produto_id: 0};
+    this.modalAberto = true;
   }
+
+  fecharModal(): void {
+    this.modalAberto = false;
+  }
+
+  
+
+  editarMovimentacao(movimentacao: Movimentacao): void {
+      this.movimentacaoEditando = { ...movimentacao };
+      this.modalEditarAberto = true;
+    }
 }

@@ -12,10 +12,10 @@ export class MovimentacaoService {
 
   getMovimentacoes(): Observable<Movimentacao[]> {
     const mockMovimentacoes: Movimentacao[] = [
-      { id: '0001', nomeProduto: 'PRODUTO X', quantidade: 10001, tipo: 'COMPRA' },
-      { id: '0001', nomeProduto: 'PRODUTO X', quantidade: 10001, tipo: 'VENDA' },
-      { id: '0001', nomeProduto: 'PRODUTO X', quantidade: 10001, tipo: 'VENDA' },
-      { id: '0001', nomeProduto: 'PRODUTO X', quantidade: 10001, tipo: 'COMPRA' }
+      { id: '01', nomeProduto: 'PRODUTO X', quantidade: 1, tipo: 'COMPRA' },
+      { id: '02', nomeProduto: 'PRODUTO Y', quantidade: 1, tipo: 'VENDA' },
+      { id: '03', nomeProduto: 'PRODUTO Z', quantidade: 1, tipo: 'VENDA' },
+      { id: '04', nomeProduto: 'PRODUTO W', quantidade: 1, tipo: 'COMPRA' }
     ];
 
     return of(mockMovimentacoes).pipe(delay(500));
