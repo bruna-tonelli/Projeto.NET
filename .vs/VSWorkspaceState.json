@@ -1,10 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\backend",
-    "\\backend\\ProdutoService",
     "\\backend\\ProdutoService\\Properties"
   ],
-  "SelectedNode": "\\backend\\ProdutoService\\Properties\\launchSettings.json",
+  "SelectedNode": "\\controle-estoque.sln",
   "PreviewInSolutionExplorer": false
 }

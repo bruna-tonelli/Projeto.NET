@@ -1,0 +1,55 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Aluno\\Documents\\GitHub\\Projeto.NET\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{90831E0B-BD98-4EDB-A077-2D1ACD9AA2AE}|MovimentacaoService\\MovimentacaoService.csproj|c:\\users\\aluno\\documents\\github\\projeto.net\\movimentacaoservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{90831E0B-BD98-4EDB-A077-2D1ACD9AA2AE}|MovimentacaoService\\MovimentacaoService.csproj|solutionrelative:movimentacaoservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A1B6F54-8BD5-ADA0-B6EE-B60288904E07}|backend\\ProdutoService\\ProdutoService.csproj|c:\\users\\aluno\\documents\\github\\projeto.net\\backend\\produtoservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5A1B6F54-8BD5-ADA0-B6EE-B60288904E07}|backend\\ProdutoService\\ProdutoService.csproj|solutionrelative:backend\\produtoservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Aluno\\Documents\\GitHub\\Projeto.NET\\backend\\ProdutoService\\Program.cs",
+              "RelativeDocumentMoniker": "backend\\ProdutoService\\Program.cs",
+              "ToolTip": "C:\\Users\\Aluno\\Documents\\GitHub\\Projeto.NET\\backend\\ProdutoService\\Program.cs",
+              "RelativeToolTip": "backend\\ProdutoService\\Program.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAADMAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-09T15:04:34.16Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Aluno\\Documents\\GitHub\\Projeto.NET\\MovimentacaoService\\Program.cs",
+              "RelativeDocumentMoniker": "MovimentacaoService\\Program.cs",
+              "ToolTip": "C:\\Users\\Aluno\\Documents\\GitHub\\Projeto.NET\\MovimentacaoService\\Program.cs",
+              "RelativeToolTip": "MovimentacaoService\\Program.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAYwBQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-09T15:04:06.518Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
