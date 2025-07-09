@@ -14,15 +14,9 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("UsuarioService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-<<<<<<< HEAD:backend/UsuarioService/UsuarioService/obj/Debug/net8.0/UsuarioService.AssemblyInfo.cs
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad7427f6198e063e23be7747feb09d7f975865dd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+330d0f439dddf82c6aae12594827a596613a404a")]
 [assembly: System.Reflection.AssemblyProductAttribute("UsuarioService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("UsuarioService")]
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d43cb007c1d8c36ae564db13f9759bf5a0a91712")]
-[assembly: System.Reflection.AssemblyProductAttribute("EstoqueService")]
-[assembly: System.Reflection.AssemblyTitleAttribute("EstoqueService")]
->>>>>>> e31a42f3cbe1cac03968346956fb8fb85b1a7de6:backend/EstoqueService/EstoqueService/obj/Debug/net9.0/EstoqueService.AssemblyInfo.cs
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Gerado pela classe WriteCodeFragment do MSBuild.

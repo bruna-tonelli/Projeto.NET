@@ -1,28 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\ApiGateway\\ApiGateway\\ApiGateway.csproj": {}
+    "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\backend\\ApiGateway\\ApiGateway\\ApiGateway.csproj": {}
   },
   "projects": {
-    "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\ApiGateway\\ApiGateway\\ApiGateway.csproj": {
+    "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\backend\\ApiGateway\\ApiGateway\\ApiGateway.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\ApiGateway\\ApiGateway\\ApiGateway.csproj",
+        "projectUniqueName": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\backend\\ApiGateway\\ApiGateway\\ApiGateway.csproj",
         "projectName": "ApiGateway",
-        "projectPath": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\ApiGateway\\ApiGateway\\ApiGateway.csproj",
-        "packagesPath": "C:\\Users\\edval\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\ApiGateway\\ApiGateway\\obj\\",
+        "projectPath": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\backend\\ApiGateway\\ApiGateway\\ApiGateway.csproj",
+        "packagesPath": "C:\\Users\\vynny\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\backend\\ApiGateway\\ApiGateway\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\edval\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\vynny\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net9.0"
+          "net8.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
@@ -30,8 +30,8 @@
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net9.0": {
-            "targetAlias": "net9.0",
+          "net8.0": {
+            "targetAlias": "net8.0",
             "projectReferences": {}
           }
         },
@@ -48,12 +48,12 @@
         "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
-        "net9.0": {
-          "targetAlias": "net9.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "dependencies": {
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
-              "version": "[9.0.6, )"
+              "version": "[8.0.11, )"
             },
             "Ocelot": {
               "target": "Package",
@@ -61,7 +61,7 @@
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[9.0.2, )"
+              "version": "[6.4.0, )"
             }
           },
           "imports": [
