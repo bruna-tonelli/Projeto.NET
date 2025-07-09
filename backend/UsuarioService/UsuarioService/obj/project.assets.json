@@ -282,23 +282,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\edval\\.nuget\\packages\\": {},
+    "C:\\Users\\vynny\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\UsuarioService\\UsuarioService\\UsuarioService.csproj",
+      "projectUniqueName": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\backend\\UsuarioService\\UsuarioService\\UsuarioService.csproj",
       "projectName": "UsuarioService",
-      "projectPath": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\UsuarioService\\UsuarioService\\UsuarioService.csproj",
-      "packagesPath": "C:\\Users\\edval\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\UsuarioService\\UsuarioService\\obj\\",
+      "projectPath": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\backend\\UsuarioService\\UsuarioService\\UsuarioService.csproj",
+      "packagesPath": "C:\\Users\\vynny\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\backend\\UsuarioService\\UsuarioService\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\edval\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\vynny\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
