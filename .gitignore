@@ -26,3 +26,6 @@ SistemaEstoque/ProductsService/obj/
 
 MovimentacaoService/bin/
 MovimentacaoService/obj/
+
+FinanceiroService/bin/
+FinanceiroService/obj/
