@@ -8,8 +8,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProdutoService", "backend\P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "backend\ApiGateway\ApiGateway\ApiGateway.csproj", "{A1B2C3D4-5E6F-7A8B-9C0D-1E2F3A4B5C6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstoqueService", "backend\EstoqueService\EstoqueService\EstoqueService.csproj", "{B2C3D4E5-6F7A-8B9C-0D1E-2F3A4B5C6D7E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsuarioService", "backend\UsuarioService\UsuarioService\UsuarioService.csproj", "{C3D4E5F6-7A8B-9C0D-1E2F-3A4B5C6D7E8F}"
 EndProject
 Global

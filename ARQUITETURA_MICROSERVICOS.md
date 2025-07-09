@@ -15,11 +15,12 @@ Esta aplicação foi transformada de uma arquitetura monolítica para uma arquit
                               │
                     ┌─────────┼─────────┐
                     │         │         │
-            ┌───────▼──┐ ┌────▼───┐ ┌───▼─────┐
-            │ Produto  │ │Estoque │ │ Usuario │
-            │ Service  │ │Service │ │ Service │
-            │Port: 5001│ │Port:5002│ │Port:5003│
-            └──────────┘ └────────┘ └─────────┘
+            ┌───────▼──┐      │   ┌─────▼─────┐
+            │ Produto  │      │   │  Usuario  │
+            │ Service  │      │   │  Service  │
+            │(+Estoque)│      │   │Port: 5002 │
+            │Port: 5001│      │   └───────────┘
+            └──────────┘      │         │
                     │         │         │
                     └─────────┼─────────┘
                               │
@@ -37,22 +38,18 @@ Esta aplicação foi transformada de uma arquitetura monolítica para uma arquit
 - **Endpoints:** Todos os endpoints são roteados através deste gateway
 
 ### 2. **ProdutoService** (Port: 5001)
-- **Responsabilidade:** CRUD de produtos
+- **Responsabilidade:** CRUD de produtos + Gestão de estoque
 - **Endpoints:**
   - `GET /api/produtos` - Listar produtos
   - `POST /api/produtos` - Criar produto
   - `PUT /api/produtos/{id}` - Atualizar produto
   - `DELETE /api/produtos/{id}` - Deletar produto
   - `GET /api/produtos/pesquisar` - Pesquisar produtos
-
-### 3. **EstoqueService** (Port: 5002)
-- **Responsabilidade:** Gestão de estoque e movimentações
-- **Endpoints:**
   - `GET /api/estoque` - Consultar estoque
-  - `POST /api/estoque/movimentacao` - Registrar movimentação
-  - `GET /api/estoque/historico` - Histórico de movimentações
+  - `GET /api/estoque/pesquisar` - Pesquisar no estoque
+  - `PUT /api/estoque/{id}/quantidade` - Atualizar quantidade
 
-### 4. **UsuarioService** (Port: 5003)
+### 3. **UsuarioService** (Port: 5002)
 - **Responsabilidade:** Autenticação e gestão de usuários
 - **Endpoints:**
   - `POST /api/usuarios/login` - Login
@@ -76,8 +73,7 @@ docker-compose up --build
 - **Frontend:** http://localhost:4200
 - **API Gateway:** http://localhost:5000
 - **ProdutoService:** http://localhost:5001
-- **EstoqueService:** http://localhost:5002
-- **UsuarioService:** http://localhost:5003
+- **UsuarioService:** http://localhost:5002
 - **SQL Server:** localhost:1433
 
 ## 🔧 Desenvolvimento Local
@@ -86,10 +82,6 @@ docker-compose up --build
 ```bash
 # ProdutoService
 cd backend/ProdutoService
-dotnet run
-
-# EstoqueService
-cd backend/EstoqueService/EstoqueService
 dotnet run
 
 # UsuarioService

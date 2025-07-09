@@ -17,7 +17,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "estoque-service",
+          "Host": "produto-service",
           "Port": 8080
         }
       ],

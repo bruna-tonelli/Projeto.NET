@@ -16,8 +16,8 @@ export class EstoqueComponent implements OnInit {
   public isLoading: boolean = true;
   public estoqueExibido: ProdutoEstoque[] = [];
   public itemSelecionado: ProdutoEstoque | null = null; // Guarda o item clicado
+  public pesquisaRealizada: boolean = false; // Adicionar propriedade faltante
   private listaCompletaEstoque: ProdutoEstoque[] = [];
-  public pesquisaRealizada: boolean = false; // Controla se uma pesquisa foi feita pelo botão
 
   modalAberto = false;
   novoProduto: { nome: string; quantidade: number | null; precoUnitario: number | null; descricao: string } = {
@@ -38,86 +38,45 @@ export class EstoqueComponent implements OnInit {
 
   carregarEstoque(): void {
     this.isLoading = true;
-    this.estoqueService.getEstoque().subscribe(data => {
-      this.listaCompletaEstoque = data;
-      this.estoqueExibido = data;
-      this.isLoading = false;
+    console.log('Carregando estoque...');
+    this.estoqueService.getEstoque().subscribe({
+      next: (data) => {
+        console.log('Dados recebidos:', data);
+        this.listaCompletaEstoque = data;
+        this.estoqueExibido = data;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Erro ao carregar estoque:', error);
+        this.isLoading = false;
+      }
     });
   }
-
-  private searchTimeout: any;
 
   // Função de busca em tempo real
   buscar(): void {
-    this.pesquisaRealizada = false; // Reset quando digitando
-    
-    // Debounce para evitar muitas requisições
-    if (this.searchTimeout) {
-      clearTimeout(this.searchTimeout);
-    }
-    
-    this.searchTimeout = setTimeout(() => {
-      this.realizarPesquisa();
-    }, 300);
-  }
-
-  private realizarPesquisa(): void {
-    if (!this.termoBusca || this.termoBusca.trim() === '') {
+    if (!this.termoBusca) {
       this.estoqueExibido = this.listaCompletaEstoque;
+      this.pesquisaRealizada = false;
       return;
     }
-
-    this.isLoading = true;
-    this.estoqueService.pesquisarProdutos(this.termoBusca.trim()).subscribe({
-      next: (data) => {
-        console.log('Resultados da pesquisa recebidos:', data);
-        console.log('Número de produtos:', data.length);
-        data.forEach(p => console.log(`- ${p.id}: ${p.nome}`));
-        this.estoqueExibido = data;
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Erro na pesquisa:', error);
-        this.estoqueExibido = this.listaCompletaEstoque;
-        this.isLoading = false;
-      }
-    });
-  }
-
-  // Função de busca acionada pelo botão
-  pesquisarPorBotao(): void {
+    const termo = this.termoBusca.toLowerCase();
+    this.estoqueExibido = this.listaCompletaEstoque.filter(produto =>
+      produto.nome.toLowerCase().includes(termo) ||
+      (produto.id && produto.id.toString().toLowerCase().includes(termo))
+    );
     this.pesquisaRealizada = true;
-    
-    if (!this.termoBusca.trim()) {
-      this.estoqueExibido = this.listaCompletaEstoque;
-      return;
-    }
-
-    console.log('Pesquisando por botão:', this.termoBusca.trim());
-    this.isLoading = true;
-    this.estoqueService.pesquisarProdutos(this.termoBusca.trim()).subscribe({
-      next: (data) => {
-        console.log('Resultados da pesquisa por botão:', data);
-        console.log('Número de produtos encontrados:', data.length);
-        data.forEach(p => console.log(`- ${p.id}: ${p.nome}`));
-        this.estoqueExibido = data;
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Erro na pesquisa:', error);
-        this.estoqueExibido = this.listaCompletaEstoque;
-        this.isLoading = false;
-      }
-    });
   }
 
-  // Função para limpar a pesquisa
+  // Método para pesquisar por botão
+  pesquisarPorBotao(): void {
+    this.buscar();
+  }
+
+  // Método para limpar pesquisa
   limparPesquisa(): void {
     this.termoBusca = '';
     this.pesquisaRealizada = false;
-    if (this.searchTimeout) {
-      clearTimeout(this.searchTimeout);
-    }
     this.estoqueExibido = this.listaCompletaEstoque;
   }
 

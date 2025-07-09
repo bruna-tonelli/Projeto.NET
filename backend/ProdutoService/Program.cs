@@ -28,6 +28,13 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Migração automática do banco de dados
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    context.Database.EnsureCreated();
+}
+
 // Configuração do pipeline HTTP
 if (app.Environment.IsDevelopment())
 {

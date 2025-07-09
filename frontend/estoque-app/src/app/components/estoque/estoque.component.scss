@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 // Cores principais para esta página
 $primary-color: #0353A4;
 $secondary-color: #6c757d;
@@ -128,7 +130,7 @@ $gray-text: #6c757d;
   align-self: center;
 
   &:hover {
-    color: darken($primary-color, 10%);
+    color: color.adjust($primary-color, $lightness: -10%);
   }
 }
 
@@ -149,7 +151,7 @@ $gray-text: #6c757d;
   margin-left: -8px; // Move um pouco para a esquerda
 
   &:hover {
-    background-color: darken($primary-color, 10%);
+    background-color: color.adjust($primary-color, $lightness: -10%);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
   }

@@ -7,7 +7,7 @@ import { ProdutoEstoque } from '../models/produto-estoque.model'; // ajuste conf
   providedIn: 'root'
 })
 export class EstoqueService {
-  private apiUrl = 'http://localhost:5232/api/produtos'; // URL do seu backend
+  private apiUrl = 'http://localhost:5000/api/produtos'; // URL do API Gateway
 
   constructor(private http: HttpClient) {}
 
@@ -29,15 +29,5 @@ export class EstoqueService {
 
   removerProduto(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
-  }
-
-  pesquisarProdutos(termo: string): Observable<ProdutoEstoque[]> {
-    if (!termo || termo.trim() === '') {
-      return this.getEstoque();
-    }
-    console.log('Pesquisando no frontend por:', termo);
-    const url = `${this.apiUrl}/pesquisar?termo=${encodeURIComponent(termo.trim())}`;
-    console.log('URL da pesquisa:', url);
-    return this.http.get<ProdutoEstoque[]>(url);
   }
 }
