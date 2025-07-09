@@ -1,0 +1,33 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{1AE8ACA6-933B-BF2A-3671-3E2EAC007D16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProdutoService", "backend\ProdutoService\ProdutoService.csproj", "{5A1B6F54-8BD5-ADA0-B6EE-B60288904E07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "backend\ApiGateway\ApiGateway\ApiGateway.csproj", "{A1B2C3D4-5E6F-7A8B-9C0D-1E2F3A4B5C6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsuarioService", "backend\UsuarioService\UsuarioService\UsuarioService.csproj", "{C3D4E5F6-7A8B-9C0D-1E2F-3A4B5C6D7E8F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5A1B6F54-8BD5-ADA0-B6EE-B60288904E07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A1B6F54-8BD5-ADA0-B6EE-B60288904E07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A1B6F54-8BD5-ADA0-B6EE-B60288904E07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A1B6F54-8BD5-ADA0-B6EE-B60288904E07}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5A1B6F54-8BD5-ADA0-B6EE-B60288904E07} = {1AE8ACA6-933B-BF2A-3671-3E2EAC007D16}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A87EA674-7B1F-4CA8-B72A-225EE6468206}
+	EndGlobalSection
+EndGlobal

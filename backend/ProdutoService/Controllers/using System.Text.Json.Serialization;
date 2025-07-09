@@ -1,0 +1,8 @@
+using System.Text.Json.Serialization;
+
+public class Produto
+{
+    [Key]
+    public int Id { get; set; } // Não envie esse campo no POST!
+    // ...restante do modelo...
+}

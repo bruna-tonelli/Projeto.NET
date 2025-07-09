@@ -1,0 +1,119 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="search-container">
+      <div class="search-box search-box-small">
+        <i class="fas fa-search search-icon"></i>
+        <input 
+          type="text" 
+          placeholder="Pesquise por nome ou por Id"
+          [(ngModel)]="termoBusca"
+          (input)="buscar()"
+          (keyup.enter)="pesquisarPorBotao()">
+        <button *ngIf="pesquisaRealizada || termoBusca" class="btn-clear-inline" (click)="limparPesquisa()" title="Limpar pesquisa">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <button class="btn btn-search" (click)="pesquisarPorBotao()" title="Pesquisar">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+    <div class="actions">
+      <button class="btn btn-primary" (click)="abrirModalAdicionar()">
+        <i class="fas fa-plus"></i> ADICIONAR PRODUTO
+      </button>
+    </div>
+  </header>
+
+  <section class="page-content">
+    <div *ngIf="isLoading" class="status-message">Carregando...</div>
+    <ng-container *ngIf="!isLoading">
+      <div *ngIf="pesquisaRealizada && termoBusca && estoqueExibido.length > 0" class="search-result-message">
+        Resultados da pesquisa por "{{ termoBusca }}": {{ estoqueExibido.length }} produto(s) encontrado(s)
+      </div>
+      <div *ngIf="pesquisaRealizada && termoBusca && estoqueExibido.length === 0" class="search-result-message no-results">
+        Nenhum produto encontrado para "{{ termoBusca }}"
+      </div>
+      <div *ngIf="estoqueExibido.length === 0 && !pesquisaRealizada" class="status-message">Nenhum produto encontrado.</div>
+      <div class="item-list">
+        <div 
+          class="item-card" 
+          *ngFor="let produto of estoqueExibido"
+          (click)="selecionarItem(produto)"
+          [ngClass]="{'item-selecionado': produto.id === itemSelecionado?.id}">
+          <div class="card-section id-section">
+            <span class="card-label">ID</span>
+            <span class="card-value">{{ produto.id }}</span>
+          </div>
+          <div class="card-section name-section">
+            <span class="card-label">NOME</span>
+            <span class="card-value">{{ produto.nome }}</span>
+          </div>
+          <div class="card-section quantity-section">
+            <span class="card-label">QUANTIDADE</span>
+            <span class="card-value">{{ produto.quantidade | number }}</span>
+          </div>
+          <button 
+            class="btn btn-edit" 
+            type="button"
+            (click)="editarProduto(produto); $event.stopPropagation()"
+            title="Editar produto">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button 
+            class="btn btn-delete" 
+            type="button"
+            (click)="removerProduto(produto.id!); $event.stopPropagation()"
+            title="Remover produto">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </section>
+
+  <!-- Modal de Adicionar Produto -->
+  <div class="modal-backdrop" *ngIf="modalAberto">
+    <div class="modal-produto">
+      <h2>Novo Produto</h2>
+      <form (ngSubmit)="adicionarProduto()" #formProduto="ngForm">
+        <label for="nome">Nome</label>
+        <input id="nome" type="text" placeholder="Ex. Mouse Razer X" [(ngModel)]="novoProduto.nome" name="nome" required>
+
+        <label for="quantidade">Quantidade</label>
+        <input id="quantidade" type="number" placeholder="Ex. 10" [(ngModel)]="novoProduto.quantidade" name="quantidade" required min="0">
+
+        <label for="precoUnitario">Preço Unitário</label>
+        <input id="precoUnitario" type="number" placeholder="Ex. R$15,69" [(ngModel)]="novoProduto.precoUnitario" name="precoUnitario" required min="0" step="0.01">
+
+        <label for="descricao">Descrição</label>
+        <textarea id="descricao" placeholder="Ex. Mouse modelo XYZ" [(ngModel)]="novoProduto.descricao" name="descricao" rows="4" style="resize: vertical;"></textarea>
+
+        <button class="btn btn-primary" type="submit" [disabled]="formProduto.invalid">Salvar</button>
+        <button class="btn btn-secondary" type="button" (click)="fecharModal()">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Editar Produto -->
+  <div class="modal-backdrop" *ngIf="modalEditarAberto">
+    <div class="modal-produto" *ngIf="produtoEditando">
+      <h2>Editar Produto</h2>
+      <form (ngSubmit)="salvarEdicaoProduto()" #formEditar="ngForm">
+        <label for="edit-nome">Nome</label>
+        <input id="edit-nome" type="text" [(ngModel)]="produtoEditando.nome" name="editNome" required>
+
+        <label for="edit-quantidade">Quantidade</label>
+        <input id="edit-quantidade" type="number" [(ngModel)]="produtoEditando.quantidade" name="editQuantidade" required min="0">
+
+        <label for="edit-precoUnitario">Preço Unitário</label>
+        <input id="edit-precoUnitario" type="number" [(ngModel)]="produtoEditando.precoUnitario" name="editPrecoUnitario" required min="0" step="0.01">
+
+        <label for="edit-descricao">Descrição</label>
+        <textarea id="edit-descricao" [(ngModel)]="produtoEditando.descricao" name="editDescricao" rows="4"></textarea>
+
+        <button class="btn btn-primary" type="submit" [disabled]="formEditar.invalid">Salvar</button>
+        <button class="btn btn-secondary" type="button" (click)="fecharModalEditar()">Cancelar</button>
+      </form>
+    </div>
+  </div>
+</div>
