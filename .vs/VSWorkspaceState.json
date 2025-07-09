@@ -3,8 +3,8 @@
     "",
     "\\backend",
     "\\backend\\ProdutoService",
-    "\\backend\\ProdutoService\\Controllers"
+    "\\backend\\ProdutoService\\Properties"
   ],
-  "SelectedNode": "\\backend\\ProdutoService\\Controllers\\ProdutosController.cs",
+  "SelectedNode": "\\backend\\ProdutoService\\Properties\\launchSettings.json",
   "PreviewInSolutionExplorer": false
 }

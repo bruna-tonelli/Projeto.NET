@@ -1,68 +1,81 @@
 <div class="page-container">
- <header class="page-header">
-  <div class="search-container">
-    <div class="search-box search-box-small">
-      <i class="fas fa-search search-icon"></i>
-      <input 
-        type="text" 
-        placeholder="Pesquise por nome ou por Id"
-        [(ngModel)]="termoBusca"
-        (input)="buscar()"
-        (keyup.enter)="pesquisarPorBotao()">
-      <button 
-        *ngIf="termoBusca" 
-        class="btn-clear-inline" 
-        (click)="limparPesquisa()" 
-        title="Limpar pesquisa">
-        <i class="fas fa-times"></i>
+  <header class="page-header">
+    <div class="search-container">
+      <div class="search-box search-box-small">
+        <i class="fas fa-search search-icon"></i>
+        <input 
+          type="text" 
+          placeholder="Pesquise por nome ou por Id"
+          [(ngModel)]="termoBusca"
+          (input)="buscar()"
+          (keyup.enter)="pesquisarPorBotao()">
+        <button *ngIf="pesquisaRealizada || termoBusca" class="btn-clear-inline" (click)="limparPesquisa()" title="Limpar pesquisa">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <button class="btn btn-search" (click)="pesquisarPorBotao()" title="Pesquisar">
+        <i class="fas fa-search"></i>
       </button>
     </div>
-    <button class="btn btn-search" (click)="pesquisarPorBotao()" title="Pesquisar">
-      <i class="fas fa-search"></i>
-    </button>
-  </div>
-
-  <div class="actions">
-    <button 
-      class="btn btn-secondary" 
-      (click)="editar()"
-      [disabled]="!itemSelecionado">
-      <i class="fas fa-edit"></i> EDITAR
-    </button>
-  </div>
-</header>
-
+    <div class="actions">
+      <button class="btn btn-primary" (click)="abrirModalAdicionar()">
+        <i class="fas fa-plus"></i> ADICIONAR MOVIMENTAÇÃO
+      </button>
+    </div>
+  </header>
 
   <section class="page-content">
     <div *ngIf="isLoading" class="status-message">Carregando...</div>
     <ng-container *ngIf="!isLoading">
-      <div *ngIf="movimentacoesExibidas.length === 0" class="status-message">Nenhuma movimentação encontrada.</div>
+      <div *ngIf="pesquisaRealizada && termoBusca && movimentacoesExibidas.length > 0" class="search-result-message">
+        Resultados da pesquisa por "{{ termoBusca }}": {{ movimentacoesExibidas.length }} movimenação(s) encontrada(s)
+      </div>
+      <div *ngIf="pesquisaRealizada && termoBusca && movimentacoesExibidas.length === 0" class="search-result-message no-results">
+        Nenhuma movimentação encontrada para "{{ termoBusca }}"
+      </div>
+      <div *ngIf="movimentacoesExibidas.length === 0 && !pesquisaRealizada" class="status-message">Nenhum produto encontrado.</div>
       <div class="item-list">
         <div 
           class="item-card" 
-          *ngFor="let mov of movimentacoesExibidas"
-          (click)="selecionarItem(mov)"
-          [ngClass]="{'item-selecionado': mov.id === itemSelecionado?.id && mov.tipo === itemSelecionado?.tipo}">
+          *ngFor="let movimentacao of movimentacoesExibidas"
+          (click)="selecionarItem(movimentacao)"
+          [ngClass]="{'item-selecionado': movimentacao.id === itemSelecionado?.id}">
           <div class="card-section id-section">
             <span class="card-label">ID</span>
-            <span class="card-value">{{ mov.id }}</span>
+            <span class="card-value">{{ movimentacao.id }}</span>
           </div>
           <div class="card-section name-section">
-            <span class="card-label">NOME</span>
-            <span class="card-value">{{ mov.nomeProduto }}</span>
+            <span class="card-label">TIPO</span>
+            <span class="card-value">{{ movimentacao.tipo }}</span>
           </div>
           <div class="card-section quantity-section">
             <span class="card-label">QUANTIDADE</span>
-            <span class="card-value">{{ mov.quantidade | number }}</span>
+            <span class="card-value">{{ movimentacao.quantidade | number }}</span>
           </div>
-          <div class="card-section type-section">
-            <span class="card-label">TIPO</span>
-            <span class="card-value" [ngClass]="{'tipo-compra': mov.tipo === 'COMPRA', 'tipo-venda': mov.tipo === 'VENDA'}">
-              {{ mov.tipo }}
-            </span>
-          </div>
+          
         </div>
       </div>
     </ng-container>
   </section>
-</div>
+
+  <!-- Modal de Adicionar Produto -->
+  <div class="modal-backdrop" *ngIf="modalAberto">
+    <div class="modal-produto">
+      <h2>Nova Movimentação</h2>
+      <form (ngSubmit)="adicionarMovimentacao()" #formMovimentacao="ngForm">
+        <label for="nome">Tipo</label>
+        <input id="nome" type="text" placeholder="Ex. SAÍDA" [(ngModel)]="novaMovimentacao.tipo" name="tipo" required>
+
+        <label for="quantidade">Quantidade</label>
+        <input id="quantidade" type="number" placeholder="Ex. 10" [(ngModel)]="novaMovimentacao.quantidade" name="quantidade" required min="0">
+
+        <label for="produto_id">Id do produto</label>
+        <input id="produto_id" type="number" placeholder="Ex. 1" [(ngModel)]="novaMovimentacao.produto_id" name="produto_id" required min="0" step="0.01">
+
+        <button class="btn btn-primary" type="submit" [disabled]="formMovimentacao.invalid">Salvar</button>
+        <button class="btn btn-secondary" type="button" (click)="fecharModal()">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+ 
