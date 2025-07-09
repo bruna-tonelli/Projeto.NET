@@ -1,5 +1,5 @@
-<div class="app-container" [class.sidebar-collapsed]="sidebarColapsada">
-  <aside class="sidebar">
+<div class="app-container" [class.sidebar-collapsed]="sidebarColapsada" [class.no-sidebar]="!showSidebar">
+  <aside class="sidebar" *ngIf="showSidebar">
     <button class="sidebar-toggle" (click)="toggleSidebar()" aria-label="Abrir/Fechar menu">
       <i class="fas fa-bars"></i>
     </button>
