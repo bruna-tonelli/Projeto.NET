@@ -18,3 +18,8 @@ backend/ProdutoService/obj/
 backend/UsuarioService/UsuarioService/bin/
 backend/UsuarioService/UsuarioService/obj/
 
+backend/MovimentacaoService/bin/
+backend/MovimentacaoService/obj/
+
+SistemaEstoque/ProductsService/bin/
+SistemaEstoque/ProductsService/obj/
