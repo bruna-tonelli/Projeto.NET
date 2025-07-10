@@ -31,3 +31,11 @@ npm install
 
 # Inicie o projeto
 npm start
+
+# Baixar angular
+cd frontend/estoque-app
+npm install @angular/cli
+npm install
+
+# Iniciar projeto angular
+ng serve

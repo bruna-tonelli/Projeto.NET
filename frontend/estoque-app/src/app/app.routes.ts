@@ -5,6 +5,7 @@ import { FuncionarioComponent } from './Funcionarios/funcionario.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthGuard } from './guards/auth.guard';
+import { FinanceiroComponent } from './Financeiro/financeiro.component';
 
 export const routes: Routes = [
   // Rotas de autenticação (não protegidas)
@@ -18,7 +19,24 @@ export const routes: Routes = [
   { path: 'estoque', component: EstoqueComponent, canActivate: [AuthGuard] },
   { path: 'movimentacao', component: MovimentacaoComponent, canActivate: [AuthGuard] },
   { path: 'funcionarios', component: FuncionarioComponent, canActivate: [AuthGuard] },
-
-  // Rota coringa: redireciona para login se não encontrar a rota
   { path: '**', redirectTo: '/login' }
+  {
+    path: 'funcionarios',
+    component: FuncionarioComponent
+  },
+  
+  { path: 'financeiro', 
+    component: FinanceiroComponent 
+  },
+
+  {
+    path: '',
+    redirectTo: '/funcionarios',
+    pathMatch: 'full'
+  },
+
+  {
+    path: '**',
+    redirectTo: '/funcionarios'
+  }
 ];
