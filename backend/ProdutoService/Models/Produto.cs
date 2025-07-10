@@ -10,16 +10,5 @@ namespace ProdutoService.Models
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public int Quantidade { get; set; }
-
-        [Column("preco_unitario")]
-        public decimal? PrecoUnitario { get; set; }
-
-        [Column("data_cadastro")]
-        public DateTime DataCadastro { get; set; }
-
-        [Column("data_atualizacao")]
-        public DateTime DataAtualizacao { get; set; }
-
-        public bool Ativo { get; set; }
     }
 }
