@@ -1,16 +1,18 @@
-// Local: src/app/app.config.ts
-
 import { ApplicationConfig } from '@angular/core';
-import { provideRouter } from '@angular/router'; // Importa a função do roteador
-import { provideHttpClient } from '@angular/common/http';
-
-import { routes } from './app.routes'; // <-- 1. IMPORTA O SEU MAPA DE ROTAS
+import { provideRouter } from '@angular/router';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { routes } from './app.routes';
+import { JwtInterceptor } from './services/jwt.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    // 2. ATIVA AS ROTAS NA APLICAÇÃO
     provideRouter(routes),
-
-    provideHttpClient() // Para os seus serviços funcionarem
+    provideHttpClient(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    }
   ]
 };

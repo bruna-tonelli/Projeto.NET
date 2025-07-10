@@ -1,0 +1,26 @@
+### Registro de usuário
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "João Silva",
+  "email": "joao@teste.com",
+  "password": "123456",
+  "role": "User"
+}
+
+### Login
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "joao@teste.com",
+  "password": "123456"
+}
+
+### Obter usuário atual (requer token)
+GET http://localhost:5000/api/auth/me
+Authorization: Bearer {{token}}
+
+### Variáveis (substitua pelo token obtido no login)
+# @token = SEU_TOKEN_AQUI
