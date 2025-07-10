@@ -33,7 +33,7 @@ npm install
 npm start
 
 # Baixar angular
-cd pasta-frontend
+cd frontend/estoque-app
 npm install @angular/cli
 npm install
 
