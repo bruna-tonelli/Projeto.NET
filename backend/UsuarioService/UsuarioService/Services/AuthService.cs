@@ -10,7 +10,7 @@ public interface IAuthService
 {
     Task<LoginResponse> LoginAsync(LoginRequest request);
     Task<BaseResponse> RegisterAsync(RegisterRequest request);
-    Task<Usuario?> GetUserByIdAsync(string id);
+    Task<Usuario?> GetUserByIdAsync(string userId);
 }
 
 public class AuthService : IAuthService
@@ -30,7 +30,16 @@ public class AuthService : IAuthService
         {
             var user = await _usuarioRepository.GetByEmailAsync(request.Email);
             
-            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+            if (user == null)
+            {
+                return new LoginResponse
+                {
+                    Success = false,
+                    Message = "Credenciais inválidas"
+                };
+            }
+            
+            if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             {
                 return new LoginResponse
                 {
@@ -70,31 +79,37 @@ public class AuthService : IAuthService
     {
         try
         {
-            if (await _usuarioRepository.ExistsAsync(request.Email))
+            // Verificar se o email já existe
+            var existingUser = await _usuarioRepository.GetByEmailAsync(request.Email);
+            if (existingUser != null)
             {
                 return new BaseResponse
                 {
                     Success = false,
-                    Message = "E-mail já está em uso"
+                    Message = "Email já cadastrado"
                 };
             }
 
-            var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-
-            var usuario = new Usuario
+            // Criar novo usuário
+            var user = new Usuario
             {
+                Id = Guid.NewGuid().ToString(),
                 Name = request.Name,
                 Email = request.Email,
-                PasswordHash = passwordHash,
-                Role = request.Role ?? "User"
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+                Role = "User", // Sempre criar como User
+                CreatedAt = DateTime.UtcNow,
+                IsActive = true,
+                EmailConfirmed = false,
+                FailedLoginAttempts = 0
             };
 
-            await _usuarioRepository.CreateAsync(usuario);
+            await _usuarioRepository.CreateAsync(user);
 
             return new BaseResponse
             {
                 Success = true,
-                Message = "Usuário criado com sucesso"
+                Message = "Usuário cadastrado com sucesso"
             };
         }
         catch (Exception ex)
@@ -102,14 +117,14 @@ public class AuthService : IAuthService
             return new BaseResponse
             {
                 Success = false,
-                Message = "Erro ao criar usuário",
+                Message = "Erro interno do servidor",
                 Error = ex.Message
             };
         }
     }
 
-    public async Task<Usuario?> GetUserByIdAsync(string id)
+    public async Task<Usuario?> GetUserByIdAsync(string userId)
     {
-        return await _usuarioRepository.GetByIdAsync(id);
+        return await _usuarioRepository.GetByIdAsync(userId);
     }
 }
