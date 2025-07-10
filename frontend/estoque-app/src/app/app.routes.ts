@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { EstoqueComponent } from './components/estoque/estoque.component';
 import { MovimentacaoComponent } from './Movimentacao/movimentacao.component';
 import { FuncionarioComponent } from './Funcionarios/funcionario.component';
+import { FinanceiroComponent } from './Financeiro/financeiro.component';
 
 export const routes: Routes = [
   // Rota padrão: Se o usuário acessar a raiz, redirecione para /estoque
@@ -18,11 +19,17 @@ export const routes: Routes = [
     path: 'funcionarios',
     component: FuncionarioComponent
   },
+  
+  { path: 'financeiro', 
+    component: FinanceiroComponent 
+  },
+
   {
     path: '',
     redirectTo: '/funcionarios',
     pathMatch: 'full'
   },
+
   {
     path: '**',
     redirectTo: '/funcionarios'
