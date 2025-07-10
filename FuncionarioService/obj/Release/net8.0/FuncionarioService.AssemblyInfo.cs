@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FuncionarioService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ef3527f1de9394be039bcace3c6ffb0324548040")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+468b5eec7f13b2896ae691deef1a04f331b310c4")]
 [assembly: System.Reflection.AssemblyProductAttribute("FuncionarioService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FuncionarioService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
