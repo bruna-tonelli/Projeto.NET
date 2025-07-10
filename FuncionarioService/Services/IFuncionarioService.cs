@@ -1,11 +1,11 @@
-using SeuProjeto.DTOs;
-using SeuProjeto.Models;
+
+using FuncionarioServices.DTOs;
+using FuncionarioServices.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SeuProjeto.Services
+namespace FuncionarioServices.Services
 {
-    // A interface do serviço. Note que ela trabalha com DTOs para entrada de dados.
     public interface IFuncionarioService
     {
         Task<IEnumerable<Funcionario>> GetAllFuncionariosAsync();

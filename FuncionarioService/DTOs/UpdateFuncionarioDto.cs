@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace SeuProjeto.DTOs
+namespace FuncionarioServices.DTOs
 {
-    // Este objeto define os dados necessários para ATUALIZAR um funcionário.
     public class UpdateFuncionarioDto
     {
         [Required(ErrorMessage = "O nome é obrigatório.")]
@@ -16,5 +15,9 @@ namespace SeuProjeto.DTOs
         [Required(ErrorMessage = "O cargo é obrigatório.")]
         [StringLength(50)]
         public string Cargo { get; set; }
+
+        [Required(ErrorMessage = "O salário é obrigatório.")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "O salário deve ser maior que zero.")]
+        public decimal Salario { get; set; }
     }
 }

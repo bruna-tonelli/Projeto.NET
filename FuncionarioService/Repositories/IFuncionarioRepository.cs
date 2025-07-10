@@ -1,10 +1,10 @@
-using SeuProjeto.Models;
+
+using FuncionarioServices.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace FuncionarioService.Repositories
+namespace FuncionarioServices.Repositories
 {
-    // A interface define um "contrato" de quais métodos de acesso a dados devem existir.
     public interface IFuncionarioRepository
     {
         Task<IEnumerable<Funcionario>> GetAllAsync();
