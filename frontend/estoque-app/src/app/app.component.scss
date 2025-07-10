@@ -43,6 +43,14 @@
       transition: margin-left 0.3s;
     }
   }
+
+  &.no-sidebar {
+    .main-view {
+      margin-left: 0;
+      width: 100%;
+      flex-grow: 1;
+    }
+  }
 }
 
 // Estilo para a barra lateral
