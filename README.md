@@ -13,7 +13,8 @@ Projeto para controle e gerenciamento de estoque, com funcionalidades como entra
 
 ## 🧠 Diagrama Entidade-Relacionamento (DER)
 
-![DER do Projeto](https://github.com/user-attachments/assets/192c93a0-ea1c-478a-b8d2-fcfaae5f4498)
+![DER: Modelo Lógico](https://github.com/bruna-tonelli/Projeto.NET/blob/main/Captura%20de%20tela%202025-07-11%20095941.png)
+![DER: Modelo Coneitual](https://github.com/bruna-tonelli/Projeto.NET/blob/main/Captura%20de%20tela%202025-07-11%20095848.png)
 
 ---
 
