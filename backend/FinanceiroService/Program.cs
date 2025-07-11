@@ -1,6 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using FinanceiroService.Data;
+using FinanceiroService.Repositories;
+using FinanceiroService.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<FinanceiroDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<ITransacaoRepository, TransacaoRepository>();
+builder.Services.AddScoped<IFinanceiroService, FinanceiroServiceImpl>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

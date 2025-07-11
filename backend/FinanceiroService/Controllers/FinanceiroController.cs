@@ -29,7 +29,7 @@ namespace FinanceiroService.Controllers
     public class TransacaoRequest
     {
         public int MOVIMENTACAO_ID { get; set; }
-        public string TIPO { get; set; }
+        public string TIPO { get; set; } = string.Empty;
         public decimal VALOR_TOTAL { get; set; }
     }
 }

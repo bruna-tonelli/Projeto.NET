@@ -1,6 +1,9 @@
-﻿namespace FinanceiroService.Repositories
-{
+﻿using Microsoft.EntityFrameworkCore;
+using FinanceiroService.Models;
+using FinanceiroService.Data;
 
+namespace FinanceiroService.Repositories
+{
     public class TransacaoRepository : ITransacaoRepository
     {
         private readonly FinanceiroDbContext _context;

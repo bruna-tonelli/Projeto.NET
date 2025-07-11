@@ -1,4 +1,6 @@
-﻿namespace FinanceiroService.Repositories
+﻿using FinanceiroService.Models;
+
+namespace FinanceiroService.Repositories
 {
     public interface ITransacaoRepository
     {

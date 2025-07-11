@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using FinanceiroService.Models;
 
-public class FinanceiroDbContext : DbContext
+namespace FinanceiroService.Data
 {
-    public FinanceiroDbContext(DbContextOptions<FinanceiroDbContext> options) : base(options) { }
-    public DbSet<TransacaoFinanceira> Transacoes { get; set; }
+    public class FinanceiroDbContext : DbContext
+    {
+        public FinanceiroDbContext(DbContextOptions<FinanceiroDbContext> options) : base(options) { }
+        public DbSet<TransacaoFinanceira> Transacoes { get; set; }
+    }
 }

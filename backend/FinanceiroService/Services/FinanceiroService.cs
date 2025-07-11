@@ -3,10 +3,10 @@ using FinanceiroService.Repositories;
 
 namespace FinanceiroService.Services
 {
-    public class FinanceiroService : IFinanceiroService
+    public class FinanceiroServiceImpl : IFinanceiroService
     {
         private readonly ITransacaoRepository _repository;
-        public FinanceiroService(ITransacaoRepository repository) => _repository = repository;
+        public FinanceiroServiceImpl(ITransacaoRepository repository) => _repository = repository;
 
         public async Task RegistrarTransacaoAsync(int movimentacaoId, string tipo, decimal valorTotal)
         {
@@ -20,6 +20,6 @@ namespace FinanceiroService.Services
         }
 
         public async Task<decimal> CalcularSaldoAsync()
-            => (await _repository.ObterTodasAsync()).Sum(t => t.ValorTotal);
+            => (await _repository.ObterTodasAsync()).Sum(t => t.VALOR_TOTAL);
     }
 }
