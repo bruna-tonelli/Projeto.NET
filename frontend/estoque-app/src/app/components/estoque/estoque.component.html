@@ -108,7 +108,17 @@
         <input id="edit-nome" type="text" [(ngModel)]="produtoEditando.nome" name="editNome" required>
 
         <label for="edit-quantidade">Quantidade</label>
-        <input id="edit-quantidade" type="number" [(ngModel)]="produtoEditando.quantidade" name="editQuantidade" required min="0">
+        <input 
+          id="edit-quantidade" 
+          type="number" 
+          [value]="produtoEditando.quantidade" 
+          readonly 
+          class="input-readonly"
+          title="A quantidade só pode ser alterada através das movimentações de estoque">
+        <small class="info-text">
+          <i class="fas fa-info-circle"></i>
+          A quantidade só pode ser alterada através das movimentações de estoque
+        </small>
 
         <label for="edit-precoUnitario">Preço Unitário</label>
         <input id="edit-precoUnitario" type="number" [(ngModel)]="produtoEditando.precoUnitario" name="editPrecoUnitario" required min="0" step="0.01">

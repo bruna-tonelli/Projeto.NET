@@ -206,18 +206,27 @@ export class EstoqueComponent implements OnInit {
     if (
       !this.produtoEditando ||
       !this.produtoEditando.nome ||
-      this.produtoEditando.quantidade === null ||
-      this.produtoEditando.quantidade < 0 ||
       this.produtoEditando.precoUnitario === null ||
       this.produtoEditando.precoUnitario < 0
     ) return;
 
-    // Atualiza dataAtualizacao
-    this.produtoEditando.dataAtualizacao = new Date().toISOString();
+    // Buscar o produto original para preservar a quantidade
+    const produtoOriginal = this.listaCompletaEstoque.find(p => p.id === this.produtoEditando!.id);
+    if (!produtoOriginal) {
+      alert('Erro: produto original não encontrado');
+      return;
+    }
+
+    // Criar o objeto para atualização preservando a quantidade original
+    const produtoParaAtualizar = {
+      ...this.produtoEditando,
+      quantidade: produtoOriginal.quantidade, // Preservar a quantidade original
+      dataAtualizacao: new Date().toISOString()
+    };
 
     this.estoqueService.atualizarProduto(
       Number(this.produtoEditando.id),
-      this.produtoEditando
+      produtoParaAtualizar
     ).subscribe(() => {
       this.fecharModalEditar();
       this.carregarEstoque();

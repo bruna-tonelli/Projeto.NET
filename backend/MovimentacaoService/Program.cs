@@ -17,6 +17,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Adicionar HttpClient
+builder.Services.AddHttpClient();
+
 builder.Services.AddScoped<MovimentacaoService.Services.MovimentacaoService>();
 
 builder.Services.AddCors(options => {
@@ -29,14 +32,14 @@ builder.Services.AddCors(options => {
 
 var app = builder.Build();
 
-// Migração automática do banco de dados
+// Migraï¿½ï¿½o automï¿½tica do banco de dados
 using (var scope = app.Services.CreateScope()) {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     context.Database.Migrate();
 
 }
 
-// Configuração do pipeline HTTP
+// Configuraï¿½ï¿½o do pipeline HTTP
 if (app.Environment.IsDevelopment()) {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();

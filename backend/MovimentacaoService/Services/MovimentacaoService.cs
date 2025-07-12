@@ -1,12 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovimentacaoService.Data;
 using MovimentacaoService.Models;
+using System.Text;
+using System.Text.Json;
 
 namespace MovimentacaoService.Services {
     public class MovimentacaoService {
 
         private readonly AppDbContext _context;
-        public MovimentacaoService(AppDbContext context) => _context = context;
+        private readonly HttpClient _httpClient;
+        private readonly string _produtoServiceUrl = "http://produto-service:8080/api/produtos";
+
+        public MovimentacaoService(AppDbContext context, HttpClient httpClient) {
+            _context = context;
+            _httpClient = httpClient;
+        }
 
         public async Task<IEnumerable<Movimentacao>> GetAllAsync() =>
             await _context.movimentacao.ToListAsync();
@@ -15,11 +23,121 @@ namespace MovimentacaoService.Services {
             await _context.movimentacao.FindAsync(id);
 
         public async Task AddAsync(Movimentacao movimentar) {
+            // Primeiro, verificar se o produto existe e obter suas informações
+            var produtoResponse = await _httpClient.GetAsync($"{_produtoServiceUrl}/{movimentar.ProdutoId}");
+            if (!produtoResponse.IsSuccessStatusCode) {
+                throw new Exception($"Produto com ID {movimentar.ProdutoId} não encontrado");
+            }
+
+            var produtoJson = await produtoResponse.Content.ReadAsStringAsync();
+            var produto = JsonSerializer.Deserialize<ProdutoDto>(produtoJson, new JsonSerializerOptions {
+                PropertyNameCaseInsensitive = true
+            });
+
+            if (produto == null) {
+                throw new Exception("Erro ao deserializar dados do produto");
+            }
+
+            // Calcular nova quantidade baseada no tipo de movimentação
+            int novaQuantidade;
+            if (movimentar.Tipo.ToUpper() == "ENTRADA") {
+                novaQuantidade = produto.Quantidade + movimentar.Quantidade;
+            } else if (movimentar.Tipo.ToUpper() == "SAÍDA" || movimentar.Tipo.ToUpper() == "SAIDA") {
+                novaQuantidade = produto.Quantidade - movimentar.Quantidade;
+                if (novaQuantidade < 0) {
+                    throw new Exception($"Estoque insuficiente. Quantidade atual: {produto.Quantidade}, solicitado: {movimentar.Quantidade}");
+                }
+            } else {
+                throw new Exception("Tipo de movimentação inválido. Use 'ENTRADA' ou 'SAÍDA'");
+            }
+
+            // Atualizar o produto via API
+            var produtoAtualizado = new {
+                id = produto.Id,
+                nome = produto.Nome,
+                descricao = produto.Descricao,
+                quantidade = novaQuantidade,
+                precoUnitario = produto.PrecoUnitario,
+                ativo = produto.Ativo
+            };
+
+            var jsonContent = JsonSerializer.Serialize(produtoAtualizado);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            
+            var updateResponse = await _httpClient.PutAsync($"{_produtoServiceUrl}/{produto.Id}", content);
+            if (!updateResponse.IsSuccessStatusCode) {
+                var errorContent = await updateResponse.Content.ReadAsStringAsync();
+                throw new Exception($"Erro ao atualizar estoque do produto: {errorContent}");
+            }
+
+            // Se chegou até aqui, pode salvar a movimentação
             _context.movimentacao.Add(movimentar);
             await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Movimentacao movimentar) {
+            // Buscar a movimentação original para reverter o estoque
+            var movimentacaoOriginal = await _context.movimentacao.AsNoTracking().FirstOrDefaultAsync(m => m.Id == movimentar.Id);
+            if (movimentacaoOriginal == null) {
+                throw new Exception("Movimentação não encontrada");
+            }
+
+            // Verificar se o produto existe
+            var produtoResponse = await _httpClient.GetAsync($"{_produtoServiceUrl}/{movimentar.ProdutoId}");
+            if (!produtoResponse.IsSuccessStatusCode) {
+                throw new Exception($"Produto com ID {movimentar.ProdutoId} não encontrado");
+            }
+
+            var produtoJson = await produtoResponse.Content.ReadAsStringAsync();
+            var produto = JsonSerializer.Deserialize<ProdutoDto>(produtoJson, new JsonSerializerOptions {
+                PropertyNameCaseInsensitive = true
+            });
+
+            if (produto == null) {
+                throw new Exception("Erro ao deserializar dados do produto");
+            }
+
+            // Reverter a movimentação original
+            int quantidadeAtual = produto.Quantidade;
+            if (movimentacaoOriginal.Tipo.ToUpper() == "ENTRADA") {
+                quantidadeAtual -= movimentacaoOriginal.Quantidade; // Remove o que foi adicionado
+            } else if (movimentacaoOriginal.Tipo.ToUpper() == "SAÍDA" || movimentacaoOriginal.Tipo.ToUpper() == "SAIDA") {
+                quantidadeAtual += movimentacaoOriginal.Quantidade; // Adiciona o que foi removido
+            }
+
+            // Aplicar a nova movimentação
+            int novaQuantidade;
+            if (movimentar.Tipo.ToUpper() == "ENTRADA") {
+                novaQuantidade = quantidadeAtual + movimentar.Quantidade;
+            } else if (movimentar.Tipo.ToUpper() == "SAÍDA" || movimentar.Tipo.ToUpper() == "SAIDA") {
+                novaQuantidade = quantidadeAtual - movimentar.Quantidade;
+                if (novaQuantidade < 0) {
+                    throw new Exception($"Estoque insuficiente. Quantidade disponível: {quantidadeAtual}, solicitado: {movimentar.Quantidade}");
+                }
+            } else {
+                throw new Exception("Tipo de movimentação inválido. Use 'ENTRADA' ou 'SAÍDA'");
+            }
+
+            // Atualizar o produto
+            var produtoAtualizado = new {
+                id = produto.Id,
+                nome = produto.Nome,
+                descricao = produto.Descricao,
+                quantidade = novaQuantidade,
+                precoUnitario = produto.PrecoUnitario,
+                ativo = produto.Ativo
+            };
+
+            var jsonContent = JsonSerializer.Serialize(produtoAtualizado);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            
+            var updateResponse = await _httpClient.PutAsync($"{_produtoServiceUrl}/{produto.Id}", content);
+            if (!updateResponse.IsSuccessStatusCode) {
+                var errorContent = await updateResponse.Content.ReadAsStringAsync();
+                throw new Exception($"Erro ao atualizar estoque do produto: {errorContent}");
+            }
+
+            // Atualizar a movimentação
             _context.Entry(movimentar).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
@@ -27,6 +145,54 @@ namespace MovimentacaoService.Services {
         public async Task DeleteAsync(int id) {
             var movimentar = await _context.movimentacao.FindAsync(id);
             if (movimentar != null) {
+                // Verificar se o produto existe
+                var produtoResponse = await _httpClient.GetAsync($"{_produtoServiceUrl}/{movimentar.ProdutoId}");
+                if (!produtoResponse.IsSuccessStatusCode) {
+                    throw new Exception($"Produto com ID {movimentar.ProdutoId} não encontrado");
+                }
+
+                var produtoJson = await produtoResponse.Content.ReadAsStringAsync();
+                var produto = JsonSerializer.Deserialize<ProdutoDto>(produtoJson, new JsonSerializerOptions {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                if (produto == null) {
+                    throw new Exception("Erro ao deserializar dados do produto");
+                }
+
+                // Reverter a movimentação no estoque
+                int novaQuantidade;
+                if (movimentar.Tipo.ToUpper() == "ENTRADA") {
+                    novaQuantidade = produto.Quantidade - movimentar.Quantidade; // Remove o que foi adicionado
+                    if (novaQuantidade < 0) {
+                        throw new Exception($"Não é possível excluir esta movimentação. O estoque atual ({produto.Quantidade}) ficaria negativo.");
+                    }
+                } else if (movimentar.Tipo.ToUpper() == "SAÍDA" || movimentar.Tipo.ToUpper() == "SAIDA") {
+                    novaQuantidade = produto.Quantidade + movimentar.Quantidade; // Adiciona de volta o que foi removido
+                } else {
+                    throw new Exception("Tipo de movimentação inválido");
+                }
+
+                // Atualizar o produto
+                var produtoAtualizado = new {
+                    id = produto.Id,
+                    nome = produto.Nome,
+                    descricao = produto.Descricao,
+                    quantidade = novaQuantidade,
+                    precoUnitario = produto.PrecoUnitario,
+                    ativo = produto.Ativo
+                };
+
+                var jsonContent = JsonSerializer.Serialize(produtoAtualizado);
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                
+                var updateResponse = await _httpClient.PutAsync($"{_produtoServiceUrl}/{produto.Id}", content);
+                if (!updateResponse.IsSuccessStatusCode) {
+                    var errorContent = await updateResponse.Content.ReadAsStringAsync();
+                    throw new Exception($"Erro ao atualizar estoque do produto: {errorContent}");
+                }
+
+                // Remover a movimentação
                 _context.movimentacao.Remove(movimentar);
                 await _context.SaveChangesAsync();
             }
