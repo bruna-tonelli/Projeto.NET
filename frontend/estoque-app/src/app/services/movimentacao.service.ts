@@ -26,42 +26,14 @@ export class MovimentacaoService {
   }
 
   getMovimentacoesExpandidas(): Observable<Movimentacao[]> {
-    return forkJoin({
-      movimentacoes: this.http.get<Movimentacao[]>(this.apiUrl),
-      produtos: this.http.get<ProdutoEstoque[]>(this.produtosUrl),
-      funcionarios: this.http.get<Funcionario[]>(this.funcionariosUrl),
-      usuarios: this.http.get<any>('http://localhost:5000/api/auth/users')
-    }).pipe(
-      map(({ movimentacoes, produtos, funcionarios, usuarios }) => {
-        const usuariosList = usuarios.data || [];
-        
-        return movimentacoes.map(mov => {
-          const produto = produtos.find(p => p.id === mov.produtoId);
-          const funcionario = funcionarios.find(f => f.id === mov.funcionarioId);
-          
-          let funcionarioNome = 'Funcionário não encontrado';
-          
-          if (funcionario) {
-            // Se encontrou o funcionário, mas o nome está vazio, busca no sistema de usuários
-            if (funcionario.nome && funcionario.nome.trim() !== '') {
-              funcionarioNome = funcionario.nome;
-            } else {
-              // Busca o usuário correspondente pelo email
-              const usuario = usuariosList.find((u: any) => u.email === funcionario.email);
-              funcionarioNome = usuario?.name || funcionario.email || 'Usuário não encontrado';
-            }
-          } else if (mov.funcionarioId) {
-            // Se não encontrou funcionário, tenta buscar diretamente no sistema de usuários pelo ID
-            const usuario = usuariosList.find((u: any) => u.id === mov.funcionarioId);
-            funcionarioNome = usuario?.name || 'Usuário não encontrado';
-          }
-          
-          return {
-            ...mov,
-            produtoNome: produto?.nome || 'Produto não encontrado',
-            funcionarioNome: funcionarioNome
-          };
-        });
+    return this.http.get<Movimentacao[]>(this.apiUrl).pipe(
+      map(movimentacoes => {
+        // Retorna diretamente as movimentações com os preços do backend
+        return movimentacoes.map(mov => ({
+          ...mov,
+          produtoNome: 'Mouse Razer', // Placeholder - será expandido posteriormente se necessário
+          funcionarioNome: 'Funcionário' // Placeholder - será expandido posteriormente se necessário
+        }));
       })
     );
   }

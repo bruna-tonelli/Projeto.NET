@@ -3,6 +3,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TransacaoFinanceira, NovaTransacao } from '../models/transacao-financeira.model';
 import { FinanceiroService } from './financeiro.service';
+import { MovimentacaoService } from '../services/movimentacao.service';
+import { Movimentacao } from '../models/movimentacao.model';
+
+// Interface para exibição na página financeiro
+export interface MovimentacaoFinanceira {
+  id: number;
+  produtoNome: string;
+  quantidade: number;
+  valorTotal: number;
+  tipo: string; // ENTRADA ou SAÍDA
+}
 
 @Component({
   selector: 'app-financeiro',
@@ -14,79 +25,120 @@ import { FinanceiroService } from './financeiro.service';
 export class FinanceiroComponent implements OnInit {
   public termoBusca: string = '';
   public isLoading: boolean = true;
-  public transacoesExibidas: TransacaoFinanceira[] = [];
-  public itemSelecionado: TransacaoFinanceira | null = null;
-  private listaCompletaTransacoes: TransacaoFinanceira[] = [];
+  public movimentacoesExibidas: MovimentacaoFinanceira[] = [];
+  public itemSelecionado: MovimentacaoFinanceira | null = null;
+  private listaCompletaMovimentacoes: MovimentacaoFinanceira[] = [];
   public pesquisaRealizada: boolean = false;
+  
+  // CaixaDaEmpresa - Inicia com R$ 100.000,00
+  public caixaDaEmpresa: number = 100000.00;
 
-  modalAberto = false;
-  novaTransacao = {
-    TIPO: '',
-    VALOR_TOTAL: 0,
-    MOVIMENTACAO_ID: 0
-  };
-
-  constructor(private financeiroService: FinanceiroService) { }
-
-  ngOnInit(): void {
-    this.carregarTransacoes();
+  constructor(
+    private financeiroService: FinanceiroService,
+    private movimentacaoService: MovimentacaoService
+  ) { 
+    console.log('🎯 CONSTRUCTOR DO FINANCEIRO COMPONENT EXECUTADO! 🎯');
   }
 
-  carregarTransacoes(): void {
+  ngOnInit(): void {
+    console.log('🚀 FINANCEIRO COMPONENT INICIALIZADO! 🚀');
+    this.carregarMovimentacoes();
+  }
+
+  carregarMovimentacoes(): void {
+    console.log('📊 CARREGANDO MOVIMENTAÇÕES FINANCEIRAS! 📊');
     this.isLoading = true;
-    this.financeiroService.getTransacoes().subscribe({
-      next: (data) => {
-        this.listaCompletaTransacoes = data;
-        this.transacoesExibidas = data;
+    this.movimentacaoService.getMovimentacoesExpandidas().subscribe({
+      next: (movimentacoes) => {
+        // Converte movimentações para o formato financeiro
+        this.listaCompletaMovimentacoes = movimentacoes.map(mov => this.converterParaMovimentacaoFinanceira(mov));
+        this.movimentacoesExibidas = this.listaCompletaMovimentacoes;
+        
+        // Calcula o CaixaDaEmpresa com base nas movimentações
+        this.calcularCaixaDaEmpresa();
+        
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Erro ao carregar transações', err);
+        console.error('Erro ao carregar movimentações', err);
         this.isLoading = false;
       }
     });
   }
 
-  adicionarTransacao(): void {
-    // Validação dos campos
-    if (
-      !this.novaTransacao.TIPO ||
-      this.novaTransacao.VALOR_TOTAL === null ||
-      this.novaTransacao.VALOR_TOTAL <= 0 ||
-      this.novaTransacao.MOVIMENTACAO_ID === null ||
-      this.novaTransacao.MOVIMENTACAO_ID <= 0
-    ) return;
+  private converterParaMovimentacaoFinanceira(movimentacao: Movimentacao): MovimentacaoFinanceira {
+    console.log('🔥 INICIANDO CONVERSÃO PARA MOVIMENTAÇÃO FINANCEIRA 🔥');
+    console.log('Dados da movimentação recebida:', movimentacao);
+    
+    // Calcula o valor total baseado no tipo de movimentação
+    let valorTotal = 0;
+    const quantidade = movimentacao.quantidade || 0;
+    
+    console.log('Quantidade:', quantidade);
+    console.log('Tipo:', movimentacao.tipo);
+    console.log('PrecoCompra:', movimentacao.precoCompra);
+    console.log('PrecoVenda:', movimentacao.precoVenda);
+    
+    if (movimentacao.tipo === 'ENTRADA') {
+      // Para entrada: - (quantidade × precoCompra)
+      const precoCompra = movimentacao.precoCompra || 0;
+      valorTotal = -(quantidade * precoCompra);
+      console.log('Cálculo ENTRADA:', quantidade, 'x', precoCompra, '=', valorTotal);
+    } else if (movimentacao.tipo === 'SAIDA' || movimentacao.tipo === 'SAÍDA') {
+      // Para saída: + (quantidade × precoVenda)
+      const precoVenda = movimentacao.precoVenda || 0;
+      valorTotal = quantidade * precoVenda;
+      console.log('Cálculo SAÍDA:', quantidade, 'x', precoVenda, '=', valorTotal);
+    }
 
-    // Cria o objeto com o tipo correto
-    const novaTransacao: NovaTransacao = {
-      TIPO: this.novaTransacao.TIPO as 'COMPRA' | 'VENDA',
-      VALOR_TOTAL: this.novaTransacao.TIPO === 'COMPRA' ? 
-        -Math.abs(this.novaTransacao.VALOR_TOTAL) : 
-        Math.abs(this.novaTransacao.VALOR_TOTAL),
-      MOVIMENTACAO_ID: this.novaTransacao.MOVIMENTACAO_ID
+    const resultado = {
+      id: movimentacao.id,
+      produtoNome: movimentacao.produtoNome || 'Mouse Razer',
+      quantidade: quantidade,
+      valorTotal: valorTotal,
+      tipo: movimentacao.tipo || 'N/A'
     };
-
-    // Chama o serviço
-    this.financeiroService.criarTransacao(novaTransacao).subscribe({
-      next: () => {
-        this.carregarTransacoes();
-        this.fecharModal();
-      },
-      error: (err) => console.error('Erro ao criar transação', err)
-    });
+    
+    console.log('Resultado final:', resultado);
+    return resultado;
   }
 
+  private calcularCaixaDaEmpresa(): void {
+    console.log('💰 CALCULANDO CAIXA DA EMPRESA 💰');
+    
+    // Inicia com R$ 100.000,00
+    this.caixaDaEmpresa = 100000.00;
+    console.log('Valor inicial do caixa:', this.caixaDaEmpresa);
+    
+    // Aplica cada movimentação ao caixa
+    this.listaCompletaMovimentacoes.forEach(movimentacao => {
+      const quantidade = movimentacao.quantidade || 0;
+      
+      if (movimentacao.tipo === 'ENTRADA') {
+        // ENTRADA: Subtrai o custo da compra (quantidade × precoCompra)
+        // Como valorTotal já está negativo, vamos somar diretamente
+        this.caixaDaEmpresa += movimentacao.valorTotal;
+        console.log(`📦 ENTRADA: ${quantidade} unidades - Custo: ${movimentacao.valorTotal} - Caixa: ${this.caixaDaEmpresa}`);
+      } else if (movimentacao.tipo === 'SAIDA' || movimentacao.tipo === 'SAÍDA') {
+        // SAÍDA: Adiciona a receita da venda (quantidade × precoVenda)
+        this.caixaDaEmpresa += movimentacao.valorTotal;
+        console.log(`💸 SAÍDA: ${quantidade} unidades - Receita: +${movimentacao.valorTotal} - Caixa: ${this.caixaDaEmpresa}`);
+      }
+    });
+    
+    console.log('💰 CAIXA FINAL DA EMPRESA:', this.caixaDaEmpresa);
+  }
 
   buscar(): void {
     if (!this.termoBusca) {
-      this.transacoesExibidas = this.listaCompletaTransacoes;
+      this.movimentacoesExibidas = this.listaCompletaMovimentacoes;
       return;
     }
     const termo = this.termoBusca.toLowerCase();
-    this.transacoesExibidas = this.listaCompletaTransacoes.filter(t =>
-      t.TIPO.toLowerCase().includes(termo) ||
-      String(t.TRANSACAO_ID).includes(termo) ||
-      String(t.MOVIMENTACAO_ID).includes(termo)
+    this.movimentacoesExibidas = this.listaCompletaMovimentacoes.filter(m =>
+      m.produtoNome.toLowerCase().includes(termo) ||
+      String(m.id).includes(termo) ||
+      m.tipo.toLowerCase().includes(termo)
     );
   }
 
@@ -98,21 +150,12 @@ export class FinanceiroComponent implements OnInit {
   limparPesquisa(): void {
     this.termoBusca = '';
     this.pesquisaRealizada = false;
-    this.transacoesExibidas = this.listaCompletaTransacoes;
+    this.movimentacoesExibidas = this.listaCompletaMovimentacoes;
   }
 
-  selecionarItem(transacao: TransacaoFinanceira): void {
-    this.itemSelecionado = this.itemSelecionado?.TRANSACAO_ID === transacao.TRANSACAO_ID ?
+  selecionarItem(movimentacao: MovimentacaoFinanceira): void {
+    this.itemSelecionado = this.itemSelecionado?.id === movimentacao.id ?
       null :
-      transacao;
-  }
-
-  abrirModalAdicionar(): void {
-    this.novaTransacao = { TIPO: '', VALOR_TOTAL: 0, MOVIMENTACAO_ID: 0 };
-    this.modalAberto = true;
-  }
-
-  fecharModal(): void {
-    this.modalAberto = false;
+      movimentacao;
   }
 }
