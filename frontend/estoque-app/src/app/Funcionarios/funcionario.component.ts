@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Funcionario } from '../models/funcionario.model';
-import { FuncionarioService } from '../services/funcionario.service';
+import { FuncionarioService, Usuario, UsuarioDetalhes } from '../services/funcionario.service';
 
 @Component({
   selector: 'app-funcionario',
@@ -12,88 +11,72 @@ import { FuncionarioService } from '../services/funcionario.service';
   styleUrls: ['./funcionario.component.scss']
 })
 export class FuncionarioComponent implements OnInit {
-  public termoBusca: string = '';
-  public isLoading: boolean = true;
-  public funcionariosExibidos: Funcionario[] = [];
-  public funcionarioSelecionado: Funcionario | null = null;
-  private listaCompletaFuncionarios: Funcionario[] = [];
-  public pesquisaRealizada: boolean = false;
-
-  modalAberto = false;
-  modalEditarAberto = false;
-
-  novoFuncionario: { nome: string; cargo: string; email: string; salario: number | null } = {
-    nome: '',
-    cargo: '',
-    email: '',
-    salario: null
-  };
-
-  funcionarioEditando: Funcionario | null = null;
+  usuarios: Usuario[] = [];
+  usuariosExibidos: Usuario[] = [];
+  usuarioSelecionado: Usuario | null = null;
+  usuarioDetalhes: UsuarioDetalhes | null = null;
+  usuarioParaExcluir: Usuario | null = null;
+  termoBusca: string = '';
+  pesquisaRealizada: boolean = false;
+  isLoading: boolean = false;
+  modalDetalhesAberto: boolean = false;
+  modalConfirmacaoAberto: boolean = false;
 
   constructor(private funcionarioService: FuncionarioService) {}
 
   ngOnInit(): void {
-    this.carregarFuncionarios();
+    this.carregarUsuarios();
   }
 
-  carregarFuncionarios(): void {
+  carregarUsuarios(): void {
     this.isLoading = true;
-    this.funcionarioService.getFuncionarios().subscribe(data => {
-      this.listaCompletaFuncionarios = data;
-      this.funcionariosExibidos = data;
-      this.isLoading = false;
-    });
-  }
-
-  private searchTimeout: any;
-
-  buscar(): void {
-    this.pesquisaRealizada = false;
-    if (this.searchTimeout) {
-      clearTimeout(this.searchTimeout);
-    }
-    this.searchTimeout = setTimeout(() => {
-      this.realizarPesquisa();
-    }, 300);
-  }
-
-  private realizarPesquisa(): void {
-    if (!this.termoBusca || this.termoBusca.trim() === '') {
-      this.funcionariosExibidos = this.listaCompletaFuncionarios;
-      return;
-    }
-
-    this.isLoading = true;
-    this.funcionarioService.pesquisarFuncionarios(this.termoBusca.trim()).subscribe({
-      next: (data) => {
-        this.funcionariosExibidos = data;
+    this.funcionarioService.getUsuarios().subscribe({
+      next: (usuarios) => {
+        this.usuarios = usuarios || [];
+        this.usuariosExibidos = this.usuarios;
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Erro na pesquisa:', error);
-        this.funcionariosExibidos = this.listaCompletaFuncionarios;
+        console.error('Erro ao carregar usuários:', error);
+        this.usuarios = [];
+        this.usuariosExibidos = [];
         this.isLoading = false;
       }
     });
   }
 
+  buscar(): void {
+    if (this.termoBusca.trim() === '') {
+      this.usuariosExibidos = this.usuarios;
+      this.pesquisaRealizada = false;
+    } else {
+      this.pesquisaRealizada = true;
+      this.usuariosExibidos = this.usuarios.filter(usuario => 
+        usuario.nome.toLowerCase().includes(this.termoBusca.toLowerCase()) ||
+        usuario.email.toLowerCase().includes(this.termoBusca.toLowerCase()) ||
+        usuario.cargo.toLowerCase().includes(this.termoBusca.toLowerCase()) ||
+        usuario.id.toString().includes(this.termoBusca)
+      );
+    }
+  }
+
   pesquisarPorBotao(): void {
-    this.pesquisaRealizada = true;
-    if (!this.termoBusca.trim()) {
-      this.funcionariosExibidos = this.listaCompletaFuncionarios;
+    if (this.termoBusca.trim() === '') {
+      this.usuariosExibidos = this.usuarios;
+      this.pesquisaRealizada = false;
       return;
     }
 
     this.isLoading = true;
-    this.funcionarioService.pesquisarFuncionarios(this.termoBusca.trim()).subscribe({
-      next: (data) => {
-        this.funcionariosExibidos = data;
+    this.funcionarioService.pesquisarUsuarios(this.termoBusca).subscribe({
+      next: (usuarios) => {
+        this.usuariosExibidos = usuarios || [];
+        this.pesquisaRealizada = true;
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Erro na pesquisa:', error);
-        this.funcionariosExibidos = this.listaCompletaFuncionarios;
+        console.error('Erro ao pesquisar usuários:', error);
+        this.buscar(); // Fallback para busca local
         this.isLoading = false;
       }
     });
@@ -101,102 +84,69 @@ export class FuncionarioComponent implements OnInit {
 
   limparPesquisa(): void {
     this.termoBusca = '';
+    this.usuariosExibidos = this.usuarios;
     this.pesquisaRealizada = false;
-    if (this.searchTimeout) {
-      clearTimeout(this.searchTimeout);
+  }
+
+  selecionarUsuario(usuario: Usuario): void {
+    this.usuarioSelecionado = usuario;
+  }
+
+  verDetalhes(usuario: Usuario): void {
+    this.usuarioDetalhes = usuario;
+    this.modalDetalhesAberto = true;
+  }
+
+  confirmarExclusao(usuario: Usuario): void {
+    this.usuarioParaExcluir = usuario;
+    this.modalConfirmacaoAberto = true;
+  }
+
+  cancelarExclusao(): void {
+    this.modalConfirmacaoAberto = false;
+    this.usuarioParaExcluir = null;
+  }
+
+  confirmarExclusaoFinal(): void {
+    if (this.usuarioParaExcluir) {
+      this.excluirUsuario(this.usuarioParaExcluir);
+      this.modalConfirmacaoAberto = false;
+      this.usuarioParaExcluir = null;
     }
-    this.funcionariosExibidos = this.listaCompletaFuncionarios;
   }
 
-  selecionarFuncionario(funcionario: Funcionario): void {
-    if (this.funcionarioSelecionado?.id === funcionario.id) {
-      this.funcionarioSelecionado = null;
-    } else {
-      this.funcionarioSelecionado = funcionario;
-    }
-  }
-
-  editarFuncionario(funcionario: Funcionario): void {
-    this.funcionarioEditando = { ...funcionario };
-    this.modalEditarAberto = true;
-  }
-
-  abrirModalAdicionar(): void {
-    this.novoFuncionario = { nome: '', cargo: '', email: '', salario: null };
-    this.modalAberto = true;
-  }
-
-  fecharModal(): void {
-    this.modalAberto = false;
-  }
-
-  fecharModalEditar(): void {
-    this.modalEditarAberto = false;
-    this.funcionarioEditando = null;
-  }
-
-  adicionarFuncionario(): void {
-    if (
-      !this.novoFuncionario.nome ||
-      !this.novoFuncionario.cargo ||
-      !this.novoFuncionario.email ||
-      this.novoFuncionario.salario === null ||
-      this.novoFuncionario.salario < 0
-    ) return;
-
-    const dataAtual = new Date().toISOString();
-
-    const funcionario: Funcionario = {
-  nome: this.novoFuncionario.nome,
-  cargo: this.novoFuncionario.cargo,
-  email: this.novoFuncionario.email,
-  salario: this.novoFuncionario.salario ?? 0, // valor default caso esteja null
-  dataCadastro: dataAtual,
-  dataAtualizacao: dataAtual,
-  ativo: true
-};
-
-    this.funcionarioService.adicionarFuncionario(funcionario).subscribe(() => {
-      this.fecharModal();
-      this.carregarFuncionarios();
-    });
-  }
-
-  removerFuncionario(id: string | number): void {
-    const numericId = typeof id === 'string' ? Number(id) : id;
-    if (isNaN(numericId)) {
-      alert('ID do funcionário inválido.');
-      return;
-    }
-
-    if (confirm('Tem certeza que deseja remover este funcionário?')) {
-      this.funcionarioService.removerFuncionario(numericId).subscribe(() => {
-        this.carregarFuncionarios();
-        if (this.funcionarioSelecionado?.id === id) {
-          this.funcionarioSelecionado = null;
+  excluirUsuario(usuario: Usuario): void {
+    this.isLoading = true;
+    this.funcionarioService.excluirUsuario(usuario.id).subscribe({
+      next: () => {
+        // Remove o usuário da lista local
+        this.usuarios = this.usuarios.filter(u => u.id !== usuario.id);
+        this.usuariosExibidos = this.usuariosExibidos.filter(u => u.id !== usuario.id);
+        
+        // Limpa a seleção se o usuário excluído estava selecionado
+        if (this.usuarioSelecionado?.id === usuario.id) {
+          this.usuarioSelecionado = null;
         }
-      });
-    }
+        
+        this.isLoading = false;
+        // Pode adicionar uma notificação de sucesso aqui
+      },
+      error: (error: any) => {
+        console.error('Erro ao excluir usuário:', error);
+        this.isLoading = false;
+        // Pode adicionar uma notificação de erro aqui
+      }
+    });
   }
 
-  salvarEdicaoFuncionario(): void {
-    if (
-      !this.funcionarioEditando ||
-      !this.funcionarioEditando.nome ||
-      !this.funcionarioEditando.cargo ||
-      !this.funcionarioEditando.email ||
-      this.funcionarioEditando.salario === null ||
-      this.funcionarioEditando.salario < 0
-    ) return;
+  fecharModalDetalhes(): void {
+    this.modalDetalhesAberto = false;
+    this.usuarioDetalhes = null;
+  }
 
-    this.funcionarioEditando.dataAtualizacao = new Date().toISOString();
-
-    this.funcionarioService.atualizarFuncionario(
-      Number(this.funcionarioEditando.id),
-      this.funcionarioEditando
-    ).subscribe(() => {
-      this.fecharModalEditar();
-      this.carregarFuncionarios();
-    });
+  formatarData(data: Date | string | undefined): string {
+    if (!data) return 'Nunca';
+    const dataObj = typeof data === 'string' ? new Date(data) : data;
+    return dataObj.toLocaleDateString('pt-BR') + ' às ' + dataObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   }
 }

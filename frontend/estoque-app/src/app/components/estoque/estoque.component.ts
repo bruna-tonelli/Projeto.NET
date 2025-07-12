@@ -22,13 +22,16 @@ export class EstoqueComponent implements OnInit {
   modalAberto = false;
   novoProduto: { nome: string; quantidade: number | null; precoUnitario: number | null; descricao: string } = {
     nome: '',
-    quantidade: null,
-    precoUnitario: null,
+    quantidade: 0,
+    precoUnitario: 0,
     descricao: ''
   };
 
   modalEditarAberto = false;
   produtoEditando: ProdutoEstoque | null = null;
+  
+  modalConfirmacaoAberto = false;
+  produtoParaRemover: ProdutoEstoque | null = null;
 
   constructor(private estoqueService: EstoqueService) {}
 
@@ -104,7 +107,7 @@ export class EstoqueComponent implements OnInit {
   }
 
   abrirModalAdicionar(): void {
-    this.novoProduto = { nome: '', quantidade: null, precoUnitario: null, descricao: '' };
+    this.novoProduto = { nome: '', quantidade: 0, precoUnitario: 0, descricao: '' };
     this.modalAberto = true;
   }
 
@@ -118,43 +121,84 @@ export class EstoqueComponent implements OnInit {
   }
 
   adicionarProduto(): void {
+    console.log('Tentando adicionar produto:', this.novoProduto);
+    
     if (
       !this.novoProduto.nome ||
       this.novoProduto.quantidade === null ||
+      this.novoProduto.quantidade === undefined ||
       this.novoProduto.quantidade < 0 ||
       this.novoProduto.precoUnitario === null ||
+      this.novoProduto.precoUnitario === undefined ||
       this.novoProduto.precoUnitario < 0
-    ) return;
+    ) {
+      console.log('Validação falhou:', {
+        nome: this.novoProduto.nome,
+        quantidade: this.novoProduto.quantidade,
+        precoUnitario: this.novoProduto.precoUnitario
+      });
+      return;
+    }
 
     const agora = new Date().toISOString();
 
-    this.estoqueService.adicionarProduto({
-      nome: this.novoProduto.nome,
-      quantidade: this.novoProduto.quantidade,
-      precoUnitario: this.novoProduto.precoUnitario,
-      descricao: this.novoProduto.descricao,
+    const produto = {
+      nome: this.novoProduto.nome.trim(),
+      quantidade: Number(this.novoProduto.quantidade),
+      precoUnitario: Number(this.novoProduto.precoUnitario),
+      descricao: this.novoProduto.descricao?.trim() || '',
       dataCadastro: agora,
       dataAtualizacao: agora,
       ativo: true
-    } as any).subscribe(() => {
-      this.fecharModal();
-      this.carregarEstoque();
+    };
+
+    console.log('Enviando produto para API:', produto);
+
+    this.estoqueService.adicionarProduto(produto as any).subscribe({
+      next: (response) => {
+        console.log('Produto adicionado com sucesso:', response);
+        this.fecharModal();
+        this.carregarEstoque();
+      },
+      error: (error) => {
+        console.error('Erro ao adicionar produto:', error);
+        alert('Erro ao adicionar produto. Verifique o console para mais detalhes.');
+      }
     });
   }
 
   removerProduto(id: string | number): void {
     const numericId = typeof id === 'string' ? Number(id) : id;
     if (isNaN(numericId)) {
-      alert('ID do produto inválido.');
       return;
     }
-    if (confirm('Tem certeza que deseja remover este produto?')) {
-      this.estoqueService.removerProduto(numericId).subscribe(() => {
-        this.carregarEstoque();
-        if (this.itemSelecionado?.id === id) {
-          this.itemSelecionado = null;
-        }
-      });
+    
+    // Encontra o produto para mostrar no modal de confirmação
+    this.produtoParaRemover = this.estoqueExibido.find(p => p.id === id) || null;
+    this.modalConfirmacaoAberto = true;
+  }
+
+  cancelarRemocao(): void {
+    this.modalConfirmacaoAberto = false;
+    this.produtoParaRemover = null;
+  }
+
+  confirmarRemocaoFinal(): void {
+    if (this.produtoParaRemover && this.produtoParaRemover.id !== undefined) {
+      const numericId = typeof this.produtoParaRemover.id === 'string' 
+        ? Number(this.produtoParaRemover.id) 
+        : this.produtoParaRemover.id;
+      
+      if (!isNaN(numericId)) {
+        this.estoqueService.removerProduto(numericId).subscribe(() => {
+          this.carregarEstoque();
+          if (this.itemSelecionado?.id === this.produtoParaRemover?.id) {
+            this.itemSelecionado = null;
+          }
+          this.modalConfirmacaoAberto = false;
+          this.produtoParaRemover = null;
+        });
+      }
     }
   }
 

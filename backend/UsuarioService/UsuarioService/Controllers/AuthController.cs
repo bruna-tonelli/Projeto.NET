@@ -101,4 +101,97 @@ public class AuthController : ControllerBase
             }
         });
     }
+
+    [HttpGet("users")]
+    public async Task<IActionResult> GetAllUsers()
+    {
+        var users = await _authService.GetAllUsersAsync();
+        
+        return Ok(new BaseResponse
+        {
+            Success = true,
+            Message = "Usuários encontrados",
+            Data = users.Select(u => new
+            {
+                Id = u.Id,
+                Nome = u.Name,
+                Email = u.Email,
+                Cargo = u.Position ?? "Usuário",
+                Departamento = u.Department ?? "Não informado",
+                Telefone = u.Phone ?? "Não informado",
+                DataCriacao = u.CreatedAt,
+                UltimoLogin = u.LastLoginAt,
+                Ativo = u.IsActive,
+                Role = u.Role,
+                EmailConfirmado = u.EmailConfirmed
+            }).ToList()
+        });
+    }
+
+    [HttpGet("users/{id}")]
+    public async Task<IActionResult> GetUserById(string id)
+    {
+        var user = await _authService.GetUserByIdAsync(id);
+        
+        if (user == null)
+        {
+            return NotFound(new BaseResponse
+            {
+                Success = false,
+                Message = "Usuário não encontrado"
+            });
+        }
+
+        return Ok(new BaseResponse
+        {
+            Success = true,
+            Message = "Usuário encontrado",
+            Data = new
+            {
+                Id = user.Id,
+                Nome = user.Name,
+                Email = user.Email,
+                Cargo = user.Position ?? "Usuário",
+                Departamento = user.Department ?? "Não informado",
+                Telefone = user.Phone ?? "Não informado",
+                DataCriacao = user.CreatedAt,
+                UltimoLogin = user.LastLoginAt,
+                Ativo = user.IsActive,
+                Role = user.Role,
+                EmailConfirmado = user.EmailConfirmed
+            }
+        });
+    }
+
+    [HttpDelete("users/{id}")]
+    public async Task<IActionResult> DeleteUser(string id)
+    {
+        var user = await _authService.GetUserByIdAsync(id);
+        
+        if (user == null)
+        {
+            return NotFound(new BaseResponse
+            {
+                Success = false,
+                Message = "Usuário não encontrado"
+            });
+        }
+
+        var result = await _authService.DeleteUserAsync(id);
+        
+        if (result)
+        {
+            return Ok(new BaseResponse
+            {
+                Success = true,
+                Message = "Usuário excluído com sucesso"
+            });
+        }
+
+        return BadRequest(new BaseResponse
+        {
+            Success = false,
+            Message = "Erro ao excluir usuário"
+        });
+    }
 }

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Movimentacao } from '../models/movimentacao.model';
 import { MovimentacaoService } from '../services/movimentacao.service';
+import { ProdutoEstoque } from '../models/produto-estoque.model';
+import { Funcionario } from '../models/funcionario.model';
 
 @Component({
   selector: 'app-movimentacao',
@@ -19,29 +21,49 @@ export class MovimentacaoComponent implements OnInit {
   private listaCompletaMovimentacoes: Movimentacao[] = [];
   public pesquisaRealizada: boolean = false; 
 
+  // Listas para seleção
+  public produtos: ProdutoEstoque[] = [];
+  public funcionarios: Funcionario[] = [];
 
   modalAberto = false;
-    novaMovimentacao: { tipo: string; quantidade: number; produto_id: number;} = {
-      tipo: '',
-      quantidade: 0,
-      produto_id: 0
-    };
-  
-    modalEditarAberto = false;
-      movimentacaoEditando: Movimentacao | null = null;
-  
+  novaMovimentacao: { 
+    tipo: string; 
+    quantidade: number; 
+    produtoId: number | null;
+    funcionarioId: number | null;
+    observacoes: string;
+  } = {
+    tipo: '',
+    quantidade: 0,
+    produtoId: null,
+    funcionarioId: null,
+    observacoes: ''
+  };
+
+  modalEditarAberto = false;
+  movimentacaoEditando: Movimentacao | null = null;
 
   constructor(private movimentacaoService: MovimentacaoService) {}
 
   ngOnInit(): void {
-    this.carregarMovimentacoes();
+    this.carregarDados();
   }
 
-  carregarMovimentacoes(): void {
+  carregarDados(): void {
     this.isLoading = true;
-    this.movimentacaoService.getMovimentacoes().subscribe(data => {
-      this.listaCompletaMovimentacoes = data;
-      this.movimentacoesExibidas = data;
+    // Carregar produtos, funcionários e movimentações
+    Promise.all([
+      this.movimentacaoService.getProdutos().toPromise(),
+      this.movimentacaoService.getFuncionarios().toPromise(),
+      this.movimentacaoService.getMovimentacoesExpandidas().toPromise()
+    ]).then(([produtos, funcionarios, movimentacoes]) => {
+      this.produtos = produtos || [];
+      this.funcionarios = funcionarios || [];
+      this.listaCompletaMovimentacoes = movimentacoes || [];
+      this.movimentacoesExibidas = movimentacoes || [];
+      this.isLoading = false;
+    }).catch(error => {
+      console.error('Erro ao carregar dados:', error);
       this.isLoading = false;
     });
   }
@@ -51,21 +73,44 @@ export class MovimentacaoComponent implements OnInit {
       this.movimentacoesExibidas = this.listaCompletaMovimentacoes;
       return;
     }
-    const termo = this.termoBusca.toLowerCase();
-    this.movimentacoesExibidas = this.listaCompletaMovimentacoes.filter(mov =>
-      mov.nomeProduto.toLowerCase().includes(termo) ||
-      String(mov.id).toLowerCase().includes(termo)
-    );
+    
+    this.movimentacaoService.pesquisarMovimentacoes(this.termoBusca).subscribe({
+      next: (data) => {
+        this.movimentacoesExibidas = data;
+        this.pesquisaRealizada = true;
+      },
+      error: (error) => {
+        console.error('Erro na pesquisa:', error);
+      }
+    });
   }
 
   adicionarMovimentacao(): void {
-    if (
-      !this.novaMovimentacao.tipo ||
-      this.novaMovimentacao.quantidade === null ||
-      this.novaMovimentacao.quantidade < 0 ||
-      this.novaMovimentacao.produto_id === null ||
-      this.novaMovimentacao.produto_id< 0
-    ) return;
+    if (!this.novaMovimentacao.tipo || this.novaMovimentacao.quantidade <= 0 || 
+        !this.novaMovimentacao.produtoId || !this.novaMovimentacao.funcionarioId) {
+      alert('Por favor, preencha todos os campos obrigatórios');
+      return;
+    }
+
+    const movimentacao: Movimentacao = {
+      id: 0, // Will be set by backend
+      tipo: this.novaMovimentacao.tipo,
+      quantidade: this.novaMovimentacao.quantidade,
+      produtoId: this.novaMovimentacao.produtoId,
+      funcionarioId: this.novaMovimentacao.funcionarioId,
+      observacoes: this.novaMovimentacao.observacoes,
+      dataMovimentacao: new Date().toISOString()
+    };
+
+    this.movimentacaoService.adicionarMovimentacao(movimentacao).subscribe({
+      next: (novaMovimentacao) => {
+        this.carregarDados();
+        this.fecharModal();
+      },
+      error: (error) => {
+        console.error('Erro ao adicionar movimentação:', error);
+      }
+    });
   }
 
   pesquisarPorBotao(): void {
@@ -75,10 +120,11 @@ export class MovimentacaoComponent implements OnInit {
   limparPesquisa(): void {
     this.termoBusca = '';
     this.movimentacoesExibidas = this.listaCompletaMovimentacoes;
+    this.pesquisaRealizada = false;
   }
 
   selecionarItem(movimentacao: Movimentacao): void {
-    if (this.itemSelecionado?.id === movimentacao.id && this.itemSelecionado?.tipo === movimentacao.tipo) {
+    if (this.itemSelecionado?.id === movimentacao.id) {
       this.itemSelecionado = null;
     } else {
       this.itemSelecionado = movimentacao;
@@ -86,7 +132,13 @@ export class MovimentacaoComponent implements OnInit {
   }
 
   abrirModalAdicionar(): void {
-    this.novaMovimentacao = { tipo: '', quantidade: 0, produto_id: 0};
+    this.novaMovimentacao = { 
+      tipo: '', 
+      quantidade: 0,
+      produtoId: null,
+      funcionarioId: null,
+      observacoes: ''
+    };
     this.modalAberto = true;
   }
 
@@ -94,10 +146,40 @@ export class MovimentacaoComponent implements OnInit {
     this.modalAberto = false;
   }
 
-  
-
   editarMovimentacao(movimentacao: Movimentacao): void {
-      this.movimentacaoEditando = { ...movimentacao };
-      this.modalEditarAberto = true;
+    this.movimentacaoEditando = { ...movimentacao };
+    this.modalEditarAberto = true;
+  }
+
+  salvarEdicao(): void {
+    if (!this.movimentacaoEditando) return;
+
+    this.movimentacaoService.atualizarMovimentacao(this.movimentacaoEditando.id, this.movimentacaoEditando).subscribe({
+      next: () => {
+        this.carregarDados();
+        this.fecharModalEdicao();
+      },
+      error: (error) => {
+        console.error('Erro ao atualizar movimentação:', error);
+      }
+    });
+  }
+
+  fecharModalEdicao(): void {
+    this.modalEditarAberto = false;
+    this.movimentacaoEditando = null;
+  }
+
+  excluirMovimentacao(id: number): void {
+    if (confirm('Tem certeza que deseja excluir esta movimentação?')) {
+      this.movimentacaoService.removerMovimentacao(id).subscribe({
+        next: () => {
+          this.carregarDados();
+        },
+        error: (error) => {
+          console.error('Erro ao excluir movimentação:', error);
+        }
+      });
     }
+  }
 }

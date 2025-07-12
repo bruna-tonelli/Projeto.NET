@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\FuncionarioService\\FuncionarioService.csproj": {}
+    "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\FuncionarioService\\FuncionarioService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\FuncionarioService\\FuncionarioService.csproj": {
+    "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\FuncionarioService\\FuncionarioService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\FuncionarioService\\FuncionarioService.csproj",
+        "projectUniqueName": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\FuncionarioService\\FuncionarioService.csproj",
         "projectName": "FuncionarioService",
-        "projectPath": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\FuncionarioService\\FuncionarioService.csproj",
+        "projectPath": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\FuncionarioService\\FuncionarioService.csproj",
         "packagesPath": "C:\\Users\\edval\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\FuncionarioService\\obj\\",
+        "outputPath": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\FuncionarioService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -53,21 +53,21 @@
           "dependencies": {
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[9.0.7, )"
+              "version": "[8.0.10, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[9.0.7, )"
+              "version": "[8.0.10, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.7, )"
+              "version": "[8.0.10, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[9.0.3, )"
+              "version": "[6.6.2, )"
             }
           },
           "imports": [

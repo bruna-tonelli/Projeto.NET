@@ -52,6 +52,18 @@
             <span class="card-label">QUANTIDADE</span>
             <span class="card-value">{{ movimentacao.quantidade | number }}</span>
           </div>
+          <div class="card-section product-section">
+            <span class="card-label">PRODUTO</span>
+            <span class="card-value">{{ movimentacao.produtoNome || 'Produto não informado' }}</span>
+          </div>
+          <div class="card-section user-section">
+            <span class="card-label">FUNCIONÁRIO</span>
+            <span class="card-value">{{ movimentacao.funcionarioNome || 'Funcionário não informado' }}</span>
+          </div>
+          <div class="card-section date-section" *ngIf="movimentacao.dataMovimentacao">
+            <span class="card-label">DATA</span>
+            <span class="card-value">{{ movimentacao.dataMovimentacao | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
           
         </div>
       </div>
@@ -63,14 +75,36 @@
     <div class="modal-produto">
       <h2>Nova Movimentação</h2>
       <form (ngSubmit)="adicionarMovimentacao()" #formMovimentacao="ngForm">
-        <label for="nome">Tipo</label>
-        <input id="nome" type="text" placeholder="Ex. SAÍDA" [(ngModel)]="novaMovimentacao.tipo" name="tipo" required>
+        <label for="tipo">Tipo de Movimentação</label>
+        <select id="tipo" [(ngModel)]="novaMovimentacao.tipo" name="tipo" required>
+          <option value="">Selecione o tipo</option>
+          <option value="ENTRADA">ENTRADA</option>
+          <option value="SAÍDA">SAÍDA</option>
+          <option value="AJUSTE">AJUSTE</option>
+          <option value="TRANSFERÊNCIA">TRANSFERÊNCIA</option>
+        </select>
+
+        <label for="produto">Produto</label>
+        <select id="produto" [(ngModel)]="novaMovimentacao.produtoId" name="produtoId" required>
+          <option value="">Selecione o produto</option>
+          <option *ngFor="let produto of produtos" [value]="produto.id">
+            {{ produto.nome }} (Qtd: {{ produto.quantidade }})
+          </option>
+        </select>
+
+        <label for="funcionario">Funcionário Responsável</label>
+        <select id="funcionario" [(ngModel)]="novaMovimentacao.funcionarioId" name="funcionarioId" required>
+          <option value="">Selecione o funcionário</option>
+          <option *ngFor="let funcionario of funcionarios" [value]="funcionario.id">
+            {{ funcionario.nome }} - {{ funcionario.cargo }}
+          </option>
+        </select>
 
         <label for="quantidade">Quantidade</label>
-        <input id="quantidade" type="number" placeholder="Ex. 10" [(ngModel)]="novaMovimentacao.quantidade" name="quantidade" required min="0">
+        <input id="quantidade" type="number" placeholder="Ex. 10" [(ngModel)]="novaMovimentacao.quantidade" name="quantidade" required min="1">
 
-        <label for="produto_id">Id do produto</label>
-        <input id="produto_id" type="number" placeholder="Ex. 1" [(ngModel)]="novaMovimentacao.produto_id" name="produto_id" required min="0" step="0.01">
+        <label for="observacoes">Observações (opcional)</label>
+        <textarea id="observacoes" placeholder="Observações sobre a movimentação..." [(ngModel)]="novaMovimentacao.observacoes" name="observacoes" rows="3"></textarea>
 
         <button class="btn btn-primary" type="submit" [disabled]="formMovimentacao.invalid">Salvar</button>
         <button class="btn btn-secondary" type="button" (click)="fecharModal()">Cancelar</button>

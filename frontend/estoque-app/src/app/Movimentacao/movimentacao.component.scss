@@ -1,4 +1,6 @@
 // Cores principais para esta página
+@use 'sass:color';
+
 $primary-color: #0353A4;
 $secondary-color: #6c757d;
 $light-gray: #f8f9fa;
@@ -128,7 +130,7 @@ $gray-text: #6c757d;
   align-self: center;
 
   &:hover {
-    color: darken($primary-color, 10%);
+    color: color.adjust($primary-color, $lightness: -10%);
   }
 }
 
@@ -149,7 +151,7 @@ $gray-text: #6c757d;
   margin-left: -8px; // Move um pouco para a esquerda
 
   &:hover {
-    background-color: darken($primary-color, 10%);
+    background-color: color.adjust($primary-color, $lightness: -10%);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
   }
@@ -321,8 +323,64 @@ $gray-text: #6c757d;
       }
     }
 
+    // Estilos para select
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      background-color: white;
+      cursor: pointer;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba(3,83,164,0.15);
+      }
+
+      option {
+        padding: 8px;
+      }
+    }
+
+    // Estilos para textarea
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 60px;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba(3,83,164,0.15);
+      }
+    }
+
     .btn {
       margin-top: 8px;
+    }
+  }
+}
+
+// Estilos específicos para as novas seções do card
+.card-section {
+  &.product-section, &.user-section, &.date-section {
+    .card-label {
+      font-size: 0.75rem;
+      color: $gray-text;
+      font-weight: 500;
+    }
+    
+    .card-value {
+      font-size: 0.9rem;
+      color: $dark-text;
+      font-weight: 500;
     }
   }
 }

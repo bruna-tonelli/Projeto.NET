@@ -1,16 +1,7 @@
-using Microsoft.EntityFrameworkCore;
-using FuncionarioServices.Data;
-using FuncionarioServices.Repositories;
-using FuncionarioServices.Services;
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuração dos Serviços (Injeção de Dependência)
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-
-builder.Services.AddScoped<IFuncionarioRepository, FuncionarioRepository>();
-builder.Services.AddScoped<IFuncionarioService, FuncionarioService>();
+// Adiciona HttpClient para comunicaÃ§Ã£o com outros serviÃ§os
+builder.Services.AddHttpClient();
 
 builder.Services.AddControllers();
 
@@ -29,7 +20,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configuração do Pipeline HTTP
+// ConfiguraÃ§Ã£o do Pipeline HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
