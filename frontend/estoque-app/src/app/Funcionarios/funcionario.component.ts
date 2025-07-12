@@ -149,4 +149,10 @@ export class FuncionarioComponent implements OnInit {
     const dataObj = typeof data === 'string' ? new Date(data) : data;
     return dataObj.toLocaleDateString('pt-BR') + ' às ' + dataObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   }
+
+  formatarDataCadastro(data: Date | string | undefined): string {
+    if (!data) return 'Não informado';
+    const dataObj = typeof data === 'string' ? new Date(data) : data;
+    return dataObj.toLocaleDateString('pt-BR');
+  }
 }
