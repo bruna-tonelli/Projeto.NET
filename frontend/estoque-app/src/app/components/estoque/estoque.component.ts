@@ -20,10 +20,11 @@ export class EstoqueComponent implements OnInit {
   private listaCompletaEstoque: ProdutoEstoque[] = [];
 
   modalAberto = false;
-  novoProduto: { nome: string; quantidade: number | null; precoUnitario: number | null; descricao: string } = {
+  novoProduto: { nome: string; quantidade: number; precoCompra: number | null; precoVenda: number | null; descricao: string } = {
     nome: '',
-    quantidade: null,
-    precoUnitario: null,
+    quantidade: 0, // Sempre 0 para novos produtos
+    precoCompra: null,
+    precoVenda: null,
     descricao: ''
   };
 
@@ -107,7 +108,7 @@ export class EstoqueComponent implements OnInit {
   }
 
   abrirModalAdicionar(): void {
-    this.novoProduto = { nome: '', quantidade: null, precoUnitario: null, descricao: '' };
+    this.novoProduto = { nome: '', quantidade: 0, precoCompra: null, precoVenda: null, descricao: '' };
     this.modalAberto = true;
   }
 
@@ -125,17 +126,17 @@ export class EstoqueComponent implements OnInit {
     
     if (
       !this.novoProduto.nome ||
-      this.novoProduto.quantidade === null ||
-      this.novoProduto.quantidade === undefined ||
-      this.novoProduto.quantidade < 0 ||
-      this.novoProduto.precoUnitario === null ||
-      this.novoProduto.precoUnitario === undefined ||
-      this.novoProduto.precoUnitario < 0
+      this.novoProduto.precoCompra === null ||
+      this.novoProduto.precoCompra === undefined ||
+      this.novoProduto.precoCompra < 0 ||
+      this.novoProduto.precoVenda === null ||
+      this.novoProduto.precoVenda === undefined ||
+      this.novoProduto.precoVenda < 0
     ) {
       console.log('Validação falhou:', {
         nome: this.novoProduto.nome,
-        quantidade: this.novoProduto.quantidade,
-        precoUnitario: this.novoProduto.precoUnitario
+        precoCompra: this.novoProduto.precoCompra,
+        precoVenda: this.novoProduto.precoVenda
       });
       return;
     }
@@ -144,8 +145,9 @@ export class EstoqueComponent implements OnInit {
 
     const produto = {
       nome: this.novoProduto.nome.trim(),
-      quantidade: Number(this.novoProduto.quantidade),
-      precoUnitario: Number(this.novoProduto.precoUnitario),
+      quantidade: 0, // Sempre 0 para novos produtos
+      precoCompra: Number(this.novoProduto.precoCompra),
+      precoVenda: Number(this.novoProduto.precoVenda),
       descricao: this.novoProduto.descricao?.trim() || '',
       dataCadastro: agora,
       dataAtualizacao: agora,
@@ -206,8 +208,10 @@ export class EstoqueComponent implements OnInit {
     if (
       !this.produtoEditando ||
       !this.produtoEditando.nome ||
-      this.produtoEditando.precoUnitario === null ||
-      this.produtoEditando.precoUnitario < 0
+      this.produtoEditando.precoCompra === null ||
+      this.produtoEditando.precoCompra < 0 ||
+      this.produtoEditando.precoVenda === null ||
+      this.produtoEditando.precoVenda < 0
     ) return;
 
     // Buscar o produto original para preservar a quantidade

@@ -89,7 +89,12 @@
   <!-- Modal de Adicionar Produto -->
   <div class="modal-backdrop" *ngIf="modalAberto">
     <div class="modal-produto">
-      <h2>Nova Movimentação</h2>
+      <div class="modal-header">
+        <h2>Nova Movimentação</h2>
+        <button class="modal-close" type="button" (click)="fecharModal()" title="Fechar">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
       <form (ngSubmit)="adicionarMovimentacao()" #formMovimentacao="ngForm">
         <label for="tipo">Tipo de Movimentação</label>
         <select id="tipo" [(ngModel)]="novaMovimentacao.tipo" name="tipo" required>
@@ -99,7 +104,7 @@
         </select>
 
         <label for="produto">Produto</label>
-        <select id="produto" [(ngModel)]="novaMovimentacao.produtoId" name="produtoId" required>
+        <select id="produto" [(ngModel)]="novaMovimentacao.produtoId" name="produtoId" required (change)="onProdutoChange()">
           <option value="">Selecione o produto</option>
           <option *ngFor="let produto of produtos" [value]="produto.id">
             {{ produto.nome }} (Qtd: {{ produto.quantidade }})
@@ -119,11 +124,16 @@
         <label for="quantidade">Quantidade</label>
         <input id="quantidade" type="number" placeholder="Ex. 10" [(ngModel)]="novaMovimentacao.quantidade" name="quantidade" required min="1">
 
+        <label for="precoCompra">Preço de Compra</label>
+        <input id="precoCompra" type="number" placeholder="Ex. R$10,00" [(ngModel)]="novaMovimentacao.precoCompra" name="precoCompra" min="0" step="0.01">
+
+        <label for="precoVenda">Preço de Venda</label>
+        <input id="precoVenda" type="number" placeholder="Ex. R$15,69" [(ngModel)]="novaMovimentacao.precoVenda" name="precoVenda" min="0" step="0.01">
+
         <label for="observacoes">Observações (opcional)</label>
         <textarea id="observacoes" placeholder="Observações sobre a movimentação..." [(ngModel)]="novaMovimentacao.observacoes" name="observacoes" rows="3"></textarea>
 
         <button class="btn btn-primary" type="submit" [disabled]="formMovimentacao.invalid">Salvar</button>
-        <button class="btn btn-secondary" type="button" (click)="fecharModal()">Cancelar</button>
       </form>
     </div>
   </div>
@@ -131,7 +141,12 @@
   <!-- Modal de Editar Movimentação -->
   <div class="modal-backdrop" *ngIf="modalEditarAberto">
     <div class="modal-produto">
-      <h2>Editar Movimentação</h2>
+      <div class="modal-header">
+        <h2>Editar Movimentação</h2>
+        <button class="modal-close" type="button" (click)="fecharModalEdicao()" title="Fechar">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
       <form (ngSubmit)="salvarEdicao()" #formEdicao="ngForm" *ngIf="movimentacaoEditando">
         <label for="tipoEdit">Tipo de Movimentação</label>
         <select id="tipoEdit" [(ngModel)]="movimentacaoEditando.tipo" name="tipo" required>
@@ -161,11 +176,16 @@
         <label for="quantidadeEdit">Quantidade</label>
         <input id="quantidadeEdit" type="number" placeholder="Ex. 10" [(ngModel)]="movimentacaoEditando.quantidade" name="quantidade" required min="1">
 
+        <label for="precoCompraEdit">Preço de Compra</label>
+        <input id="precoCompraEdit" type="number" placeholder="Ex. R$10,00" [(ngModel)]="movimentacaoEditando.precoCompra" name="precoCompraEdit" min="0" step="0.01">
+
+        <label for="precoVendaEdit">Preço de Venda</label>
+        <input id="precoVendaEdit" type="number" placeholder="Ex. R$15,69" [(ngModel)]="movimentacaoEditando.precoVenda" name="precoVendaEdit" min="0" step="0.01">
+
         <label for="observacoesEdit">Observações (opcional)</label>
         <textarea id="observacoesEdit" placeholder="Observações sobre a movimentação..." [(ngModel)]="movimentacaoEditando.observacoes" name="observacoes" rows="3"></textarea>
 
         <button class="btn btn-primary" type="submit" [disabled]="formEdicao.invalid">Salvar Alterações</button>
-        <button class="btn btn-secondary" type="button" (click)="fecharModalEdicao()">Cancelar</button>
       </form>
     </div>
   </div>

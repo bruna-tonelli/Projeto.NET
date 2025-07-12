@@ -57,7 +57,8 @@ namespace MovimentacaoService.Services {
                 nome = produto.Nome,
                 descricao = produto.Descricao,
                 quantidade = novaQuantidade,
-                precoUnitario = produto.PrecoUnitario,
+                precoCompra = produto.PrecoCompra,
+                precoVenda = produto.PrecoVenda,
                 ativo = produto.Ativo
             };
 
@@ -124,7 +125,8 @@ namespace MovimentacaoService.Services {
                 nome = produto.Nome,
                 descricao = produto.Descricao,
                 quantidade = novaQuantidade,
-                precoUnitario = produto.PrecoUnitario,
+                precoCompra = produto.PrecoCompra,
+                precoVenda = produto.PrecoVenda,
                 ativo = produto.Ativo
             };
 
@@ -179,7 +181,8 @@ namespace MovimentacaoService.Services {
                     nome = produto.Nome,
                     descricao = produto.Descricao,
                     quantidade = novaQuantidade,
-                    precoUnitario = produto.PrecoUnitario,
+                    precoCompra = produto.PrecoCompra,
+                    precoVenda = produto.PrecoVenda,
                     ativo = produto.Ativo
                 };
 

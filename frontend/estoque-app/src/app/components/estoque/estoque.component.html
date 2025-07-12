@@ -83,10 +83,23 @@
         <input id="nome" type="text" placeholder="Ex. Mouse Razer X" [(ngModel)]="novoProduto.nome" name="nome" required>
 
         <label for="quantidade">Quantidade</label>
-        <input id="quantidade" type="number" placeholder="Ex. 10" [(ngModel)]="novoProduto.quantidade" name="quantidade" required min="0">
+        <input 
+          id="quantidade" 
+          type="number" 
+          value="0" 
+          readonly 
+          class="input-readonly"
+          title="A quantidade inicial é sempre 0. Use movimentações para adicionar estoque">
+        <small class="info-text">
+          <i class="fas fa-info-circle"></i>
+          A quantidade inicial é sempre 0. Use movimentações para adicionar estoque
+        </small>
 
-        <label for="precoUnitario">Preço Unitário</label>
-        <input id="precoUnitario" type="number" placeholder="Ex. R$15,69" [(ngModel)]="novoProduto.precoUnitario" name="precoUnitario" required min="0" step="0.01">
+        <label for="precoCompra">Preço de Compra</label>
+        <input id="precoCompra" type="number" placeholder="Ex. R$10,00" [(ngModel)]="novoProduto.precoCompra" name="precoCompra" required min="0" step="0.01">
+
+        <label for="precoVenda">Preço de Venda</label>
+        <input id="precoVenda" type="number" placeholder="Ex. R$15,69" [(ngModel)]="novoProduto.precoVenda" name="precoVenda" required min="0" step="0.01">
 
         <label for="descricao">Descrição</label>
         <textarea id="descricao" placeholder="Ex. Mouse modelo XYZ" [(ngModel)]="novoProduto.descricao" name="descricao" rows="4" style="resize: vertical;"></textarea>
@@ -120,8 +133,11 @@
           A quantidade só pode ser alterada através das movimentações de estoque
         </small>
 
-        <label for="edit-precoUnitario">Preço Unitário</label>
-        <input id="edit-precoUnitario" type="number" [(ngModel)]="produtoEditando.precoUnitario" name="editPrecoUnitario" required min="0" step="0.01">
+        <label for="edit-precoCompra">Preço de Compra</label>
+        <input id="edit-precoCompra" type="number" [(ngModel)]="produtoEditando.precoCompra" name="editPrecoCompra" required min="0" step="0.01">
+
+        <label for="edit-precoVenda">Preço de Venda</label>
+        <input id="edit-precoVenda" type="number" [(ngModel)]="produtoEditando.precoVenda" name="editPrecoVenda" required min="0" step="0.01">
 
         <label for="edit-descricao">Descrição</label>
         <textarea id="edit-descricao" [(ngModel)]="produtoEditando.descricao" name="editDescricao" rows="4"></textarea>

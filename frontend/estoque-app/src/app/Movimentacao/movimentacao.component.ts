@@ -34,12 +34,16 @@ export class MovimentacaoComponent implements OnInit {
     produtoId: number | null;
     funcionarioId: string | null;
     observacoes: string;
+    precoCompra: number | null;
+    precoVenda: number | null;
   } = {
     tipo: '',
     quantidade: null,
     produtoId: null,
     funcionarioId: null,
-    observacoes: ''
+    observacoes: '',
+    precoCompra: null,
+    precoVenda: null
   };
 
   modalEditarAberto = false;
@@ -125,6 +129,8 @@ export class MovimentacaoComponent implements OnInit {
       produtoId: this.novaMovimentacao.produtoId,
       funcionarioId: this.novaMovimentacao.funcionarioId,
       observacoes: this.novaMovimentacao.observacoes,
+      precoCompra: this.novaMovimentacao.precoCompra,
+      precoVenda: this.novaMovimentacao.precoVenda,
       dataMovimentacao: new Date().toISOString()
     };
 
@@ -177,7 +183,9 @@ export class MovimentacaoComponent implements OnInit {
       quantidade: null,
       produtoId: null,
       funcionarioId: funcionarioId,
-      observacoes: ''
+      observacoes: '',
+      precoCompra: null,
+      precoVenda: null
     };
     console.log('Nova movimentação configurada:', this.novaMovimentacao);
     this.modalAberto = true;
@@ -185,6 +193,38 @@ export class MovimentacaoComponent implements OnInit {
 
   fecharModal(): void {
     this.modalAberto = false;
+  }
+
+  onProdutoChange(): void {
+    console.log('=== onProdutoChange chamado ===');
+    console.log('ProdutoId selecionado:', this.novaMovimentacao.produtoId);
+    console.log('Tipo do ProdutoId:', typeof this.novaMovimentacao.produtoId);
+    console.log('Lista de produtos:', this.produtos);
+    
+    if (this.novaMovimentacao.produtoId) {
+      // Converter para number se for string
+      const produtoIdNumero = typeof this.novaMovimentacao.produtoId === 'string' 
+        ? parseInt(this.novaMovimentacao.produtoId) 
+        : this.novaMovimentacao.produtoId;
+      
+      console.log('ProdutoId convertido para número:', produtoIdNumero);
+      
+      const produtoSelecionado = this.produtos.find(p => p.id === produtoIdNumero);
+      console.log('Produto encontrado:', produtoSelecionado);
+      
+      if (produtoSelecionado) {
+        console.log('Preços do produto - Compra:', produtoSelecionado.precoCompra, 'Venda:', produtoSelecionado.precoVenda);
+        this.novaMovimentacao.precoCompra = produtoSelecionado.precoCompra;
+        this.novaMovimentacao.precoVenda = produtoSelecionado.precoVenda;
+        console.log('Preços definidos na movimentação - Compra:', this.novaMovimentacao.precoCompra, 'Venda:', this.novaMovimentacao.precoVenda);
+      } else {
+        console.log('Produto não encontrado na lista!');
+      }
+    } else {
+      console.log('Nenhum produto selecionado, limpando preços');
+      this.novaMovimentacao.precoCompra = null;
+      this.novaMovimentacao.precoVenda = null;
+    }
   }
 
   editarMovimentacao(movimentacao: Movimentacao): void {

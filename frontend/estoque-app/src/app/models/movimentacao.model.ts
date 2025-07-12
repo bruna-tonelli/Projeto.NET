@@ -7,6 +7,8 @@ export interface Movimentacao {
   funcionarioId?: string; // GUID como string
   dataMovimentacao?: string;
   observacoes?: string;
+  precoCompra?: number | null;
+  precoVenda?: number | null;
   // Dados expandidos para exibição
   produtoNome?: string;
   funcionarioNome?: string;

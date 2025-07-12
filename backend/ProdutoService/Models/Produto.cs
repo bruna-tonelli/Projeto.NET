@@ -18,7 +18,11 @@ namespace ProdutoService.Models
         
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal PrecoUnitario { get; set; }
+        public decimal PrecoCompra { get; set; }
+        
+        [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal PrecoVenda { get; set; }
         
         public DateTime DataCadastro { get; set; } = DateTime.UtcNow;
         
