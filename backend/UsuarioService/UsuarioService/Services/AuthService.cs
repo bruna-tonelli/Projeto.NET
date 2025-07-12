@@ -103,7 +103,6 @@ public class AuthService : IAuthService
                 Role = "User", // Sempre criar como User
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
-                EmailConfirmed = false,
                 FailedLoginAttempts = 0
             };
 

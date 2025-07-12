@@ -116,14 +116,10 @@ public class AuthController : ControllerBase
                 Id = u.Id,
                 Nome = u.Name,
                 Email = u.Email,
-                Cargo = u.Position ?? "Usuário",
-                Departamento = u.Department ?? "Não informado",
                 Telefone = u.Phone ?? "Não informado",
                 DataCriacao = u.CreatedAt,
-                UltimoLogin = u.LastLoginAt,
                 Ativo = u.IsActive,
-                Role = u.Role,
-                EmailConfirmado = u.EmailConfirmed
+                Role = u.Role
             }).ToList()
         });
     }
@@ -151,14 +147,10 @@ public class AuthController : ControllerBase
                 Id = user.Id,
                 Nome = user.Name,
                 Email = user.Email,
-                Cargo = user.Position ?? "Usuário",
-                Departamento = user.Department ?? "Não informado",
                 Telefone = user.Phone ?? "Não informado",
                 DataCriacao = user.CreatedAt,
-                UltimoLogin = user.LastLoginAt,
                 Ativo = user.IsActive,
-                Role = user.Role,
-                EmailConfirmado = user.EmailConfirmed
+                Role = user.Role
             }
         });
     }
