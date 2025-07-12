@@ -98,6 +98,7 @@ public class AuthService : IAuthService
                 Id = Guid.NewGuid().ToString(),
                 Name = request.Name,
                 Email = request.Email,
+                Phone = request.Telefone,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
                 Role = "User", // Sempre criar como User
                 CreatedAt = DateTime.UtcNow,

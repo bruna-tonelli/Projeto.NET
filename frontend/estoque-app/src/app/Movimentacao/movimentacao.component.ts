@@ -5,6 +5,7 @@ import { Movimentacao } from '../models/movimentacao.model';
 import { MovimentacaoService } from '../services/movimentacao.service';
 import { ProdutoEstoque } from '../models/produto-estoque.model';
 import { Funcionario } from '../models/funcionario.model';
+import { AuthService, UserInfo } from '../services/auth.service';
 
 @Component({
   selector: 'app-movimentacao',
@@ -20,6 +21,7 @@ export class MovimentacaoComponent implements OnInit {
   public itemSelecionado: Movimentacao | null = null;
   private listaCompletaMovimentacoes: Movimentacao[] = [];
   public pesquisaRealizada: boolean = false; 
+  public usuarioLogado: UserInfo | null = null;
 
   // Listas para seleção
   public produtos: ProdutoEstoque[] = [];
@@ -28,13 +30,13 @@ export class MovimentacaoComponent implements OnInit {
   modalAberto = false;
   novaMovimentacao: { 
     tipo: string; 
-    quantidade: number; 
+    quantidade: number | null; 
     produtoId: number | null;
-    funcionarioId: number | null;
+    funcionarioId: string | null;
     observacoes: string;
   } = {
     tipo: '',
-    quantidade: 0,
+    quantidade: null,
     produtoId: null,
     funcionarioId: null,
     observacoes: ''
@@ -43,9 +45,18 @@ export class MovimentacaoComponent implements OnInit {
   modalEditarAberto = false;
   movimentacaoEditando: Movimentacao | null = null;
 
-  constructor(private movimentacaoService: MovimentacaoService) {}
+  modalConfirmacaoAberto = false;
+  movimentacaoParaRemover: Movimentacao | null = null;
+
+  constructor(
+    private movimentacaoService: MovimentacaoService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
+    // Obter o usuário logado
+    this.usuarioLogado = this.authService.getCurrentUserValue();
+    console.log('Usuário logado:', this.usuarioLogado);
     this.carregarDados();
   }
 
@@ -61,6 +72,20 @@ export class MovimentacaoComponent implements OnInit {
       this.funcionarios = funcionarios || [];
       this.listaCompletaMovimentacoes = movimentacoes || [];
       this.movimentacoesExibidas = movimentacoes || [];
+      
+      console.log('Produtos carregados:', this.produtos);
+      console.log('Funcionários carregados:', this.funcionarios);
+      
+      // Encontrar o funcionário correspondente ao usuário logado
+      if (this.usuarioLogado && this.funcionarios.length > 0) {
+        const funcionarioCorrespondente = this.funcionarios.find(f => f.email === this.usuarioLogado?.email);
+        console.log('Funcionário correspondente:', funcionarioCorrespondente);
+        if (funcionarioCorrespondente && funcionarioCorrespondente.id) {
+          this.novaMovimentacao.funcionarioId = funcionarioCorrespondente.id;
+          console.log('FuncionarioId definido:', this.novaMovimentacao.funcionarioId);
+        }
+      }
+      
       this.isLoading = false;
     }).catch(error => {
       console.error('Erro ao carregar dados:', error);
@@ -86,9 +111,10 @@ export class MovimentacaoComponent implements OnInit {
   }
 
   adicionarMovimentacao(): void {
-    if (!this.novaMovimentacao.tipo || this.novaMovimentacao.quantidade <= 0 || 
+    if (!this.novaMovimentacao.tipo || !this.novaMovimentacao.quantidade || this.novaMovimentacao.quantidade <= 0 || 
         !this.novaMovimentacao.produtoId || !this.novaMovimentacao.funcionarioId) {
       alert('Por favor, preencha todos os campos obrigatórios');
+      console.log('Dados da movimentação:', this.novaMovimentacao);
       return;
     }
 
@@ -102,8 +128,11 @@ export class MovimentacaoComponent implements OnInit {
       dataMovimentacao: new Date().toISOString()
     };
 
+    console.log('Enviando movimentação:', movimentacao);
+
     this.movimentacaoService.adicionarMovimentacao(movimentacao).subscribe({
       next: (novaMovimentacao) => {
+        console.log('Movimentação criada:', novaMovimentacao);
         this.carregarDados();
         this.fecharModal();
       },
@@ -132,13 +161,25 @@ export class MovimentacaoComponent implements OnInit {
   }
 
   abrirModalAdicionar(): void {
+    console.log('=== ABRINDO MODAL ===');
+    console.log('Usuario logado:', this.usuarioLogado);
+    console.log('Funcionarios disponíveis:', this.funcionarios);
+    
+    // Usar diretamente o ID do usuário logado ao invés de buscar no sistema de funcionários
+    let funcionarioId = null;
+    if (this.usuarioLogado) {
+      funcionarioId = this.usuarioLogado.id;
+      console.log('Usando ID do usuário logado:', funcionarioId);
+    }
+    
     this.novaMovimentacao = { 
       tipo: '', 
-      quantidade: 0,
+      quantidade: null,
       produtoId: null,
-      funcionarioId: null,
+      funcionarioId: funcionarioId,
       observacoes: ''
     };
+    console.log('Nova movimentação configurada:', this.novaMovimentacao);
     this.modalAberto = true;
   }
 
@@ -171,15 +212,41 @@ export class MovimentacaoComponent implements OnInit {
   }
 
   excluirMovimentacao(id: number): void {
-    if (confirm('Tem certeza que deseja excluir esta movimentação?')) {
-      this.movimentacaoService.removerMovimentacao(id).subscribe({
+    const movimentacao = this.movimentacoesExibidas.find(m => m.id === id);
+    if (movimentacao) {
+      this.movimentacaoParaRemover = movimentacao;
+      this.modalConfirmacaoAberto = true;
+    }
+  }
+
+  cancelarRemocao(): void {
+    this.modalConfirmacaoAberto = false;
+    this.movimentacaoParaRemover = null;
+  }
+
+  confirmarRemocaoFinal(): void {
+    if (this.movimentacaoParaRemover) {
+      this.movimentacaoService.removerMovimentacao(this.movimentacaoParaRemover.id).subscribe({
         next: () => {
           this.carregarDados();
+          this.modalConfirmacaoAberto = false;
+          this.movimentacaoParaRemover = null;
         },
         error: (error) => {
           console.error('Erro ao excluir movimentação:', error);
+          this.modalConfirmacaoAberto = false;
+          this.movimentacaoParaRemover = null;
         }
       });
     }
+  }
+
+  getFuncionarioLogadoNome(): string {
+    if (!this.usuarioLogado) {
+      return 'Usuário não identificado';
+    }
+    
+    // Sempre usar o nome do usuário logado, que é mais confiável
+    return this.usuarioLogado.name || 'Usuário sem nome';
   }
 }

@@ -29,17 +29,37 @@ export class MovimentacaoService {
     return forkJoin({
       movimentacoes: this.http.get<Movimentacao[]>(this.apiUrl),
       produtos: this.http.get<ProdutoEstoque[]>(this.produtosUrl),
-      funcionarios: this.http.get<Funcionario[]>(this.funcionariosUrl)
+      funcionarios: this.http.get<Funcionario[]>(this.funcionariosUrl),
+      usuarios: this.http.get<any>('http://localhost:5000/api/auth/users')
     }).pipe(
-      map(({ movimentacoes, produtos, funcionarios }) => {
+      map(({ movimentacoes, produtos, funcionarios, usuarios }) => {
+        const usuariosList = usuarios.data || [];
+        
         return movimentacoes.map(mov => {
           const produto = produtos.find(p => p.id === mov.produtoId);
           const funcionario = funcionarios.find(f => f.id === mov.funcionarioId);
           
+          let funcionarioNome = 'Funcionário não encontrado';
+          
+          if (funcionario) {
+            // Se encontrou o funcionário, mas o nome está vazio, busca no sistema de usuários
+            if (funcionario.nome && funcionario.nome.trim() !== '') {
+              funcionarioNome = funcionario.nome;
+            } else {
+              // Busca o usuário correspondente pelo email
+              const usuario = usuariosList.find((u: any) => u.email === funcionario.email);
+              funcionarioNome = usuario?.name || funcionario.email || 'Usuário não encontrado';
+            }
+          } else if (mov.funcionarioId) {
+            // Se não encontrou funcionário, tenta buscar diretamente no sistema de usuários pelo ID
+            const usuario = usuariosList.find((u: any) => u.id === mov.funcionarioId);
+            funcionarioNome = usuario?.name || 'Usuário não encontrado';
+          }
+          
           return {
             ...mov,
             produtoNome: produto?.nome || 'Produto não encontrado',
-            funcionarioNome: funcionario?.nome || 'Funcionário não encontrado'
+            funcionarioNome: funcionarioNome
           };
         });
       })

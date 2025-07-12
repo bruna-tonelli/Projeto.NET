@@ -4,7 +4,7 @@ export interface Movimentacao {
   quantidade: number;
   tipo: string; // Entrada, Saida, etc.
   produtoId?: number;
-  funcionarioId?: number;
+  funcionarioId?: string; // GUID como string
   dataMovimentacao?: string;
   observacoes?: string;
   // Dados expandidos para exibição

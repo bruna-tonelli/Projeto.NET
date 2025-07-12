@@ -64,6 +64,22 @@
             <span class="card-label">DATA</span>
             <span class="card-value">{{ movimentacao.dataMovimentacao | date:'dd/MM/yyyy HH:mm' }}</span>
           </div>
+          <div class="card-actions">
+            <button 
+              class="btn btn-edit" 
+              type="button"
+              (click)="editarMovimentacao(movimentacao); $event.stopPropagation()"
+              title="Editar movimentação">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button 
+              class="btn btn-delete" 
+              type="button"
+              (click)="excluirMovimentacao(movimentacao.id); $event.stopPropagation()"
+              title="Excluir movimentação">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
           
         </div>
       </div>
@@ -80,8 +96,6 @@
           <option value="">Selecione o tipo</option>
           <option value="ENTRADA">ENTRADA</option>
           <option value="SAÍDA">SAÍDA</option>
-          <option value="AJUSTE">AJUSTE</option>
-          <option value="TRANSFERÊNCIA">TRANSFERÊNCIA</option>
         </select>
 
         <label for="produto">Produto</label>
@@ -93,12 +107,14 @@
         </select>
 
         <label for="funcionario">Funcionário Responsável</label>
-        <select id="funcionario" [(ngModel)]="novaMovimentacao.funcionarioId" name="funcionarioId" required>
-          <option value="">Selecione o funcionário</option>
-          <option *ngFor="let funcionario of funcionarios" [value]="funcionario.id">
-            {{ funcionario.nome }} - {{ funcionario.cargo }}
-          </option>
-        </select>
+        <input 
+          id="funcionario" 
+          type="text" 
+          [value]="getFuncionarioLogadoNome()" 
+          readonly 
+          class="input-readonly"
+          title="Este campo é preenchido automaticamente com o usuário logado">
+        <input type="hidden" [(ngModel)]="novaMovimentacao.funcionarioId" name="funcionarioId">
 
         <label for="quantidade">Quantidade</label>
         <input id="quantidade" type="number" placeholder="Ex. 10" [(ngModel)]="novaMovimentacao.quantidade" name="quantidade" required min="1">
@@ -109,6 +125,74 @@
         <button class="btn btn-primary" type="submit" [disabled]="formMovimentacao.invalid">Salvar</button>
         <button class="btn btn-secondary" type="button" (click)="fecharModal()">Cancelar</button>
       </form>
+    </div>
+  </div>
+
+  <!-- Modal de Editar Movimentação -->
+  <div class="modal-backdrop" *ngIf="modalEditarAberto">
+    <div class="modal-produto">
+      <h2>Editar Movimentação</h2>
+      <form (ngSubmit)="salvarEdicao()" #formEdicao="ngForm" *ngIf="movimentacaoEditando">
+        <label for="tipoEdit">Tipo de Movimentação</label>
+        <select id="tipoEdit" [(ngModel)]="movimentacaoEditando.tipo" name="tipo" required>
+          <option value="">Selecione o tipo</option>
+          <option value="ENTRADA">ENTRADA</option>
+          <option value="SAÍDA">SAÍDA</option>
+        </select>
+
+        <label for="produtoEdit">Produto</label>
+        <select id="produtoEdit" [(ngModel)]="movimentacaoEditando.produtoId" name="produtoId" required>
+          <option value="">Selecione o produto</option>
+          <option *ngFor="let produto of produtos" [value]="produto.id">
+            {{ produto.nome }} (Qtd: {{ produto.quantidade }})
+          </option>
+        </select>
+
+        <label for="funcionarioEdit">Funcionário Responsável</label>
+        <input 
+          id="funcionarioEdit" 
+          type="text" 
+          [value]="getFuncionarioLogadoNome()" 
+          readonly 
+          class="input-readonly"
+          title="Este campo não pode ser editado">
+        <input type="hidden" [(ngModel)]="movimentacaoEditando.funcionarioId" name="funcionarioId">
+
+        <label for="quantidadeEdit">Quantidade</label>
+        <input id="quantidadeEdit" type="number" placeholder="Ex. 10" [(ngModel)]="movimentacaoEditando.quantidade" name="quantidade" required min="1">
+
+        <label for="observacoesEdit">Observações (opcional)</label>
+        <textarea id="observacoesEdit" placeholder="Observações sobre a movimentação..." [(ngModel)]="movimentacaoEditando.observacoes" name="observacoes" rows="3"></textarea>
+
+        <button class="btn btn-primary" type="submit" [disabled]="formEdicao.invalid">Salvar Alterações</button>
+        <button class="btn btn-secondary" type="button" (click)="fecharModalEdicao()">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmação de Exclusão -->
+  <div class="modal-backdrop" *ngIf="modalConfirmacaoAberto">
+    <div class="modal-confirmacao">
+      <div class="modal-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3>Confirmar Exclusão</h3>
+      <p>
+        Tem certeza que deseja remover a movimentação 
+        <strong>{{ movimentacaoParaRemover?.tipo }}</strong> do produto
+        <strong>{{ movimentacaoParaRemover?.produtoNome }}</strong>?
+      </p>
+      <p class="warning-text">Esta ação não pode ser desfeita.</p>
+      
+      <div class="modal-actions">
+        <button class="btn btn-secondary" type="button" (click)="cancelarRemocao()">
+          Cancelar
+        </button>
+        <button class="btn btn-danger" type="button" (click)="confirmarRemocaoFinal()">
+          <i class="fas fa-trash"></i>
+          Remover
+        </button>
+      </div>
     </div>
   </div>
 
