@@ -22,8 +22,8 @@ export class EstoqueComponent implements OnInit {
   modalAberto = false;
   novoProduto: { nome: string; quantidade: number | null; precoUnitario: number | null; descricao: string } = {
     nome: '',
-    quantidade: 0,
-    precoUnitario: 0,
+    quantidade: null,
+    precoUnitario: null,
     descricao: ''
   };
 
@@ -107,7 +107,7 @@ export class EstoqueComponent implements OnInit {
   }
 
   abrirModalAdicionar(): void {
-    this.novoProduto = { nome: '', quantidade: 0, precoUnitario: 0, descricao: '' };
+    this.novoProduto = { nome: '', quantidade: null, precoUnitario: null, descricao: '' };
     this.modalAberto = true;
   }
 
