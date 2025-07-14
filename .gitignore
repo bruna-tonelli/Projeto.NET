@@ -30,5 +30,11 @@ MovimentacaoService/obj/
 FinanceiroService/bin/
 FinanceiroService/obj/
 
+backend/FinanceiroService/bin/
+backend/FinanceiroService/obj/
+
 FuncionarioService/obj/
 FuncionarioService/bin/
+
+backend/Shared/obj/
+backend/Shared/bin/
