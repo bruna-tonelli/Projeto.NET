@@ -67,6 +67,10 @@
             <span class="card-value">{{ movimentacao.produtoNome }}</span>
           </div>
           <div class="card-section">
+            <span class="card-label">DATA</span>
+            <span class="card-value">{{ movimentacao.dataMovimentacao | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          <div class="card-section">
             <span class="card-label">QUANTIDADE</span>
             <span class="card-value">{{ movimentacao.quantidade }}</span>
           </div>

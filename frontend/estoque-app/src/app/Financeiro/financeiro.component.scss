@@ -184,7 +184,7 @@ $dark: #343a40;
   padding: 20px;
   transition: all 0.2s;
   display: grid;
-  grid-template-columns: 80px 2fr 120px 150px; // ID, Produto, Quantidade, Valor Total
+  grid-template-columns: 1fr 2fr 1fr 1fr 1fr; // ID, Produto, Data, Quantidade, Valor Total
   gap: 20px;
   align-items: center;
   cursor: pointer;
@@ -203,6 +203,8 @@ $dark: #343a40;
     display: flex;
     flex-direction: column;
     gap: 4px;
+    text-align: center;
+    align-items: center;
 
     .card-label {
       font: 600 0.75rem inherit;

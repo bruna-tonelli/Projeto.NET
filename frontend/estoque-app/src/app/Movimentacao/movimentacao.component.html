@@ -56,10 +56,6 @@
             <span class="card-label">PRODUTO</span>
             <span class="card-value">{{ movimentacao.produtoNome || 'Produto não informado' }}</span>
           </div>
-          <div class="card-section user-section">
-            <span class="card-label">FUNCIONÁRIO</span>
-            <span class="card-value">{{ movimentacao.funcionarioNome || 'Funcionário não informado' }}</span>
-          </div>
           <div class="card-section date-section" *ngIf="movimentacao.dataMovimentacao">
             <span class="card-label">DATA</span>
             <span class="card-value">{{ movimentacao.dataMovimentacao | date:'dd/MM/yyyy HH:mm' }}</span>

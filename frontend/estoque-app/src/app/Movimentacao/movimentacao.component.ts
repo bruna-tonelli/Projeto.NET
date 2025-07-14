@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { firstValueFrom, forkJoin } from 'rxjs';
 import { Movimentacao } from '../models/movimentacao.model';
 import { MovimentacaoService } from '../services/movimentacao.service';
 import { ProdutoEstoque } from '../models/produto-estoque.model';
@@ -66,34 +67,51 @@ export class MovimentacaoComponent implements OnInit {
 
   carregarDados(): void {
     this.isLoading = true;
-    // Carregar produtos, funcionários e movimentações
-    Promise.all([
-      this.movimentacaoService.getProdutos().toPromise(),
-      this.movimentacaoService.getFuncionarios().toPromise(),
-      this.movimentacaoService.getMovimentacoesExpandidas().toPromise()
-    ]).then(([produtos, funcionarios, movimentacoes]) => {
-      this.produtos = produtos || [];
-      this.funcionarios = funcionarios || [];
-      this.listaCompletaMovimentacoes = movimentacoes || [];
-      this.movimentacoesExibidas = movimentacoes || [];
-      
-      console.log('Produtos carregados:', this.produtos);
-      console.log('Funcionários carregados:', this.funcionarios);
-      
-      // Encontrar o funcionário correspondente ao usuário logado
-      if (this.usuarioLogado && this.funcionarios.length > 0) {
-        const funcionarioCorrespondente = this.funcionarios.find(f => f.email === this.usuarioLogado?.email);
-        console.log('Funcionário correspondente:', funcionarioCorrespondente);
-        if (funcionarioCorrespondente && funcionarioCorrespondente.id) {
-          this.novaMovimentacao.funcionarioId = funcionarioCorrespondente.id;
-          console.log('FuncionarioId definido:', this.novaMovimentacao.funcionarioId);
-        }
+    console.log('🚀 Iniciando carregamento dos dados...');
+    
+    // Carregar produtos e funcionários primeiro
+    forkJoin({
+      produtos: this.movimentacaoService.getProdutos(),
+      funcionarios: this.movimentacaoService.getFuncionarios()
+    }).subscribe({
+      next: ({ produtos, funcionarios }) => {
+        this.produtos = produtos || [];
+        this.funcionarios = funcionarios || [];
+        
+        console.log('✅ Produtos carregados:', this.produtos.length);
+        console.log('✅ Funcionários carregados:', this.funcionarios.length);
+        
+        // Agora carregar movimentações expandidas
+        this.movimentacaoService.getMovimentacoesExpandidas().subscribe({
+          next: (movimentacoesExpandidas) => {
+            console.log('✅ Movimentações expandidas:', movimentacoesExpandidas?.length || 0);
+            
+            this.listaCompletaMovimentacoes = movimentacoesExpandidas;
+            this.movimentacoesExibidas = [...movimentacoesExpandidas];
+            console.log('🎯 MOVIMENTAÇÕES FINAIS:', this.movimentacoesExibidas.length);
+            console.log('🎯 PRIMEIRA MOVIMENTAÇÃO:', this.movimentacoesExibidas[0]);
+            
+            // Configurar funcionário logado
+            if (this.usuarioLogado && this.funcionarios.length > 0) {
+              const funcionarioCorrespondente = this.funcionarios.find(f => f.email === this.usuarioLogado?.email);
+              if (funcionarioCorrespondente && funcionarioCorrespondente.id) {
+                this.novaMovimentacao.funcionarioId = funcionarioCorrespondente.id;
+              }
+            }
+            
+            this.isLoading = false;
+            console.log('🏁 Carregamento finalizado. Loading:', this.isLoading);
+          },
+          error: (error) => {
+            console.error('❌ Erro ao carregar movimentações:', error);
+            this.isLoading = false;
+          }
+        });
+      },
+      error: (error) => {
+        console.error('❌ Erro ao carregar produtos/funcionários:', error);
+        this.isLoading = false;
       }
-      
-      this.isLoading = false;
-    }).catch(error => {
-      console.error('Erro ao carregar dados:', error);
-      this.isLoading = false;
     });
   }
 

@@ -13,6 +13,7 @@ export interface MovimentacaoFinanceira {
   quantidade: number;
   valorTotal: number;
   tipo: string; // ENTRADA ou SAÍDA
+  dataMovimentacao?: string;
 }
 
 @Component({
@@ -93,10 +94,11 @@ export class FinanceiroComponent implements OnInit {
 
     const resultado = {
       id: movimentacao.id,
-      produtoNome: movimentacao.produtoNome || 'Mouse Razer',
+      produtoNome: movimentacao.produtoNome || 'Produto não identificado',
       quantidade: quantidade,
       valorTotal: valorTotal,
-      tipo: movimentacao.tipo || 'N/A'
+      tipo: movimentacao.tipo || 'N/A',
+      dataMovimentacao: movimentacao.dataMovimentacao
     };
     
     console.log('Resultado final:', resultado);
