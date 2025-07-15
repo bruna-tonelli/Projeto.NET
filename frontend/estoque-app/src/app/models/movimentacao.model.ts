@@ -1,7 +1,15 @@
 // Local: src/app/models/movimentacao.model.ts
 export interface Movimentacao {
-  id: string;
-  nomeProduto: string;
+  id: number;
   quantidade: number;
-  tipo: 'COMPRA' | 'VENDA'; // Define que o tipo só pode ser 'COMPRA' ou 'VENDA'
+  tipo: string; // Entrada, Saida, etc.
+  produtoId?: number;
+  funcionarioId?: string; // GUID como string
+  dataMovimentacao?: string;
+  observacoes?: string;
+  precoCompra?: number | null;
+  precoVenda?: number | null;
+  // Dados expandidos para exibição
+  produtoNome?: string;
+  funcionarioNome?: string;
 }
