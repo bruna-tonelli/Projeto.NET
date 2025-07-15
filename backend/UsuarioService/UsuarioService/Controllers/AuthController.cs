@@ -101,4 +101,89 @@ public class AuthController : ControllerBase
             }
         });
     }
+
+    [HttpGet("users")]
+    public async Task<IActionResult> GetAllUsers()
+    {
+        var users = await _authService.GetAllUsersAsync();
+        
+        return Ok(new BaseResponse
+        {
+            Success = true,
+            Message = "Usuários encontrados",
+            Data = users.Select(u => new
+            {
+                Id = u.Id,
+                Nome = u.Name,
+                Email = u.Email,
+                Telefone = u.Phone ?? "Não informado",
+                DataCriacao = u.CreatedAt,
+                Ativo = u.IsActive,
+                Role = u.Role
+            }).ToList()
+        });
+    }
+
+    [HttpGet("users/{id}")]
+    public async Task<IActionResult> GetUserById(string id)
+    {
+        var user = await _authService.GetUserByIdAsync(id);
+        
+        if (user == null)
+        {
+            return NotFound(new BaseResponse
+            {
+                Success = false,
+                Message = "Usuário não encontrado"
+            });
+        }
+
+        return Ok(new BaseResponse
+        {
+            Success = true,
+            Message = "Usuário encontrado",
+            Data = new
+            {
+                Id = user.Id,
+                Nome = user.Name,
+                Email = user.Email,
+                Telefone = user.Phone ?? "Não informado",
+                DataCriacao = user.CreatedAt,
+                Ativo = user.IsActive,
+                Role = user.Role
+            }
+        });
+    }
+
+    [HttpDelete("users/{id}")]
+    public async Task<IActionResult> DeleteUser(string id)
+    {
+        var user = await _authService.GetUserByIdAsync(id);
+        
+        if (user == null)
+        {
+            return NotFound(new BaseResponse
+            {
+                Success = false,
+                Message = "Usuário não encontrado"
+            });
+        }
+
+        var result = await _authService.DeleteUserAsync(id);
+        
+        if (result)
+        {
+            return Ok(new BaseResponse
+            {
+                Success = true,
+                Message = "Usuário excluído com sucesso"
+            });
+        }
+
+        return BadRequest(new BaseResponse
+        {
+            Success = false,
+            Message = "Erro ao excluir usuário"
+        });
+    }
 }

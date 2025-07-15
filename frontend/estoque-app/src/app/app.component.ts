@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 // Importa todas as ferramentas de roteamento necessárias
 import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +22,7 @@ export class AppComponent implements OnInit {
   sidebarColapsada = false;
   showSidebar = true; // Nova propriedade para controlar a visibilidade da sidebar
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   toggleSidebar() {
     this.sidebarColapsada = !this.sidebarColapsada;
@@ -56,5 +57,10 @@ export class AppComponent implements OnInit {
     const currentUrl = this.router.url;
     const authRoutes = ['/login', '/register'];
     this.showSidebar = !authRoutes.includes(currentUrl);
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

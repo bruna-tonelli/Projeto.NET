@@ -36,6 +36,22 @@
       </div>
 
       <div class="form-group">
+        <label for="telefone">Telefone:</label>
+        <input 
+          id="telefone" 
+          type="tel" 
+          formControlName="telefone" 
+          class="form-control"
+          [class.is-invalid]="telefone?.invalid && telefone?.touched"
+          placeholder="Digite seu telefone (ex: (11) 99999-9999)"
+        >
+        <div class="invalid-feedback" *ngIf="telefone?.invalid && telefone?.touched">
+          <span *ngIf="telefone?.errors?.['required']">Telefone é obrigatório</span>
+          <span *ngIf="telefone?.errors?.['pattern']">Formato de telefone inválido</span>
+        </div>
+      </div>
+
+      <div class="form-group">
         <label for="password">Senha:</label>
         <input 
           id="password" 

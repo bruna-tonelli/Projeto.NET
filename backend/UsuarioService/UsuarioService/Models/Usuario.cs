@@ -26,18 +26,10 @@ public class Usuario
     [MaxLength(20)]
     public string? Phone { get; set; }
     
-    [MaxLength(100)]
-    public string? Department { get; set; }
-    
-    [MaxLength(100)]
-    public string? Position { get; set; }
-    
     // Auditoria e controle
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
-    public DateTime? LastLoginAt { get; set; }
     public bool IsActive { get; set; } = true;
-    public bool EmailConfirmed { get; set; } = false;
     public int FailedLoginAttempts { get; set; } = 0;
     public DateTime? LockoutEnd { get; set; }
     
