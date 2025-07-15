@@ -4476,23 +4476,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\edval\\.nuget\\packages\\": {},
+    "C:\\Users\\Arthur\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\FuncionarioService\\FuncionarioService.csproj",
+      "projectUniqueName": "C:\\Users\\Arthur\\Documents\\GitHub\\Projeto.NET\\backend\\FuncionarioService\\FuncionarioService.csproj",
       "projectName": "FuncionarioService",
-      "projectPath": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\FuncionarioService\\FuncionarioService.csproj",
-      "packagesPath": "C:\\Users\\edval\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\FuncionarioService\\obj\\",
+      "projectPath": "C:\\Users\\Arthur\\Documents\\GitHub\\Projeto.NET\\backend\\FuncionarioService\\FuncionarioService.csproj",
+      "packagesPath": "C:\\Users\\Arthur\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Arthur\\Documents\\GitHub\\Projeto.NET\\backend\\FuncionarioService\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\edval\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Arthur\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
