@@ -1,5 +1,6 @@
 ﻿using FinanceiroService.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks; // Para usar Task
 
 namespace FinanceiroService.Controllers
 {
@@ -25,7 +26,17 @@ namespace FinanceiroService.Controllers
         [HttpGet("saldo")]
         public async Task<ActionResult<decimal>> GetSaldo()
             => Ok(await _financeiroService.CalcularSaldoAsync());
+
+        // --- ENDPOINT ADICIONADO ---
+        [HttpGet("resumo-mensal")] // Rota: GET /api/financeiro/resumo-mensal
+        public async Task<IActionResult> GetResumoMensal()
+        {
+            var resumo = await _financeiroService.GetResumoMensalAsync();
+            return Ok(resumo);
+        }
     }
+
+    // A classe TransacaoRequest continua a mesma
     public class TransacaoRequest
     {
         public int MOVIMENTACAO_ID { get; set; }
