@@ -1,6 +1,7 @@
 export interface Inventario {
-    id?: number;
+    produtoId?: number;
     nome: string;
     quantidade: number;
     valorTotal: number;
+    produtoNome?: string;
 }
