@@ -44,3 +44,6 @@ FuncionarioService/bin/
 
 backend/Shared/obj/
 backend/Shared/bin/
+
+InventarioService/obj/
+Inventarioservice/bin/
