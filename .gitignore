@@ -27,5 +27,20 @@ SistemaEstoque/ProductsService/obj/
 MovimentacaoService/bin/
 MovimentacaoService/obj/
 
+backend/FinanceiroService/obj/
+backend/FinanceiroService/bin/
+
+backend/Shared/obj/
+backend/Shared/bin/
+
 FinanceiroService/bin/
 FinanceiroService/obj/
+
+backend/FinanceiroService/bin/
+backend/FinanceiroService/obj/
+
+FuncionarioService/obj/
+FuncionarioService/bin/
+
+backend/Shared/obj/
+backend/Shared/bin/

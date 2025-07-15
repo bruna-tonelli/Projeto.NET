@@ -5,7 +5,7 @@
         <i class="fas fa-search search-icon"></i>
         <input 
           type="text" 
-          placeholder="Pesquise por nome ou por Id"
+          placeholder="Pesquise por nome, email ou ID"
           [(ngModel)]="termoBusca"
           (input)="buscar()"
           (keyup.enter)="pesquisarPorBotao()">
@@ -18,106 +18,123 @@
       </button>
     </div>
     <div class="actions">
-      <button class="btn btn-primary" (click)="abrirModalAdicionar()">
-        <i class="fas fa-plus"></i> ADICIONAR FUNCIONÁRIO
-      </button>
+      <h1 class="page-title">Lista de Funcionários</h1>
     </div>
   </header>
 
   <section class="page-content">
     <div *ngIf="isLoading" class="status-message">Carregando...</div>
     <ng-container *ngIf="!isLoading">
-      <div *ngIf="pesquisaRealizada && termoBusca && funcionariosExibidos.length > 0" class="search-result-message">
-        Resultados da pesquisa por "{{ termoBusca }}": {{ funcionariosExibidos.length }} funcionário(s) encontrado(s)
+      <div *ngIf="pesquisaRealizada && termoBusca && usuariosExibidos.length > 0" class="search-result-message">
+        Resultados da pesquisa por "{{ termoBusca }}": {{ usuariosExibidos.length }} usuário(s) encontrado(s)
       </div>
-      <div *ngIf="pesquisaRealizada && termoBusca && funcionariosExibidos.length === 0" class="search-result-message no-results">
-        Nenhum funcionário encontrado para "{{ termoBusca }}"
+      <div *ngIf="pesquisaRealizada && termoBusca && usuariosExibidos.length === 0" class="search-result-message no-results">
+        Nenhum usuário encontrado para "{{ termoBusca }}"
       </div>
-      <div *ngIf="funcionariosExibidos.length === 0 && !pesquisaRealizada" class="status-message">Nenhum funcionário encontrado.</div>
+      <div *ngIf="usuariosExibidos.length === 0 && !pesquisaRealizada" class="status-message">Nenhum usuário registrado encontrado.</div>
       <div class="item-list">
         <div 
           class="item-card" 
-          *ngFor="let funcionario of funcionariosExibidos"
-          (click)="selecionarFuncionario(funcionario)"
-          [ngClass]="{'item-selecionado': funcionario.id === funcionarioSelecionado?.id}">
+          *ngFor="let usuario of usuariosExibidos; let i = index"
+          (click)="selecionarUsuario(usuario)"
+          [ngClass]="{'item-selecionado': usuario.id === usuarioSelecionado?.id}">
           <div class="card-section id-section">
             <span class="card-label">ID</span>
-            <span class="card-value">{{ funcionario.id }}</span>
+            <span class="card-value">{{ i + 1 }}</span>
           </div>
           <div class="card-section name-section">
             <span class="card-label">NOME</span>
-            <span class="card-value">{{ funcionario.nome }}</span>
+            <span class="card-value">{{ usuario.nome }}</span>
           </div>
-          <div class="card-section cargo-section">
-            <span class="card-label">CARGO</span>
-            <span class="card-value">{{ funcionario.cargo }}</span>
+          <div class="card-section data-cadastro-section">
+            <span class="card-label">DATA DE CADASTRO</span>
+            <span class="card-value">{{ formatarDataCadastro(usuario.dataCriacao) }}</span>
           </div>
           <div class="card-section email-section">
             <span class="card-label">EMAIL</span>
-            <span class="card-value">{{ funcionario.email }}</span>
+            <span class="card-value">{{ usuario.email }}</span>
           </div>
-          <button 
-            class="btn btn-edit" 
-            type="button"
-            (click)="editarFuncionario(funcionario); $event.stopPropagation()"
-            title="Editar funcionário">
-            <i class="fas fa-edit"></i>
-          </button>
-          <button 
-            class="btn btn-delete" 
-            type="button"
-            (click)="removerFuncionario(funcionario.id!); $event.stopPropagation()"
-            title="Remover funcionário">
-            <i class="fas fa-trash"></i>
-          </button>
+          <div class="card-actions">
+            <button 
+              class="btn btn-edit" 
+              type="button"
+              (click)="verDetalhes(usuario); $event.stopPropagation()"
+              title="Ver detalhes do usuário">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button 
+              class="btn btn-delete" 
+              type="button"
+              (click)="confirmarExclusao(usuario); $event.stopPropagation()"
+              title="Excluir usuário">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
         </div>
       </div>
     </ng-container>
   </section>
 
-  <!-- Modal de Adicionar Funcionário -->
-  <div class="modal-backdrop" *ngIf="modalAberto">
-    <div class="modal-funcionario">
-      <h2>Novo Funcionário</h2>
-      <form (ngSubmit)="adicionarFuncionario()" #formFuncionario="ngForm">
-        <label for="nome">Nome</label>
-        <input id="nome" type="text" placeholder="Ex. João Silva" [(ngModel)]="novoFuncionario.nome" name="nome" required>
-
-        <label for="cargo">Cargo</label>
-        <input id="cargo" type="text" placeholder="Ex. Analista" [(ngModel)]="novoFuncionario.cargo" name="cargo" required>
-
-        <label for="email">Email</label>
-        <input id="email" type="email" placeholder="Ex. joao@email.com" [(ngModel)]="novoFuncionario.email" name="email" required>
-
-        <label for="salario">Salário</label>
-        <input id="salario" type="number" placeholder="Ex. 3500.00" [(ngModel)]="novoFuncionario.salario" name="salario" required min="0" step="0.01">
-
-        <button class="btn btn-primary" type="submit" [disabled]="formFuncionario.invalid">Salvar</button>
-        <button class="btn btn-secondary" type="button" (click)="fecharModal()">Cancelar</button>
-      </form>
+  <!-- Modal de Detalhes do Usuário -->
+  <div class="modal-backdrop" *ngIf="modalDetalhesAberto">
+    <div class="modal-funcionario" *ngIf="usuarioDetalhes">
+      <button class="modal-close-btn" type="button" (click)="fecharModalDetalhes()" title="Fechar">
+        <i class="fas fa-times"></i>
+      </button>
+      <h2>Detalhes do Usuário</h2>
+      <div class="user-details">
+        <div class="detail-group">
+          <label>Nome Completo:</label>
+          <span>{{ usuarioDetalhes.nome }}</span>
+        </div>
+        
+        <div class="detail-group">
+          <label>Email:</label>
+          <span>{{ usuarioDetalhes.email }}</span>
+        </div>
+        
+        <div class="detail-group">
+          <label>Telefone:</label>
+          <span>{{ usuarioDetalhes.telefone }}</span>
+        </div>
+        
+        <div class="detail-group">
+          <label>Status:</label>
+          <span [ngClass]="{'status-ativo': usuarioDetalhes.ativo, 'status-inativo': !usuarioDetalhes.ativo}">
+            {{ usuarioDetalhes.ativo ? 'Ativo' : 'Inativo' }}
+          </span>
+        </div>
+        
+        <div class="detail-group">
+          <label>Data de Registro:</label>
+          <span>{{ formatarData(usuarioDetalhes.dataCriacao) }}</span>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Modal de Editar Funcionário -->
-  <div class="modal-backdrop" *ngIf="modalEditarAberto">
-    <div class="modal-produto" *ngIf="funcionarioEditando">
-      <h2>Editar Funcionário</h2>
-      <form (ngSubmit)="salvarEdicaoFuncionario()" #formEditar="ngForm">
-        <label for="edit-nome">Nome</label>
-        <input id="edit-nome" type="text" [(ngModel)]="funcionarioEditando.nome" name="editNome" required>
-
-        <label for="edit-cargo">Cargo</label>
-        <input id="edit-cargo" type="text" [(ngModel)]="funcionarioEditando.cargo" name="editCargo" required>
-
-        <label for="edit-email">Email</label>
-        <input id="edit-email" type="email" [(ngModel)]="funcionarioEditando.email" name="editEmail" required>
-
-        <label for="edit-salario">Salário</label>
-        <input id="edit-salario" type="number" [(ngModel)]="funcionarioEditando.salario" name="editSalario" required min="0" step="0.01">
-
-        <button class="btn btn-primary" type="submit" [disabled]="formEditar.invalid">Salvar</button>
-        <button class="btn btn-secondary" type="button" (click)="fecharModalEditar()">Cancelar</button>
-      </form>
+  <!-- Modal de Confirmação de Exclusão -->
+  <div class="modal-backdrop" *ngIf="modalConfirmacaoAberto">
+    <div class="modal-confirmacao">
+      <div class="modal-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3>Confirmar Exclusão</h3>
+      <p>
+        Tem certeza que deseja excluir o usuário 
+        <strong>{{ usuarioParaExcluir?.nome }}</strong>?
+      </p>
+      <p class="warning-text">Esta ação não pode ser desfeita.</p>
+      
+      <div class="modal-actions">
+        <button class="btn btn-secondary" type="button" (click)="cancelarExclusao()">
+          Cancelar
+        </button>
+        <button class="btn btn-danger" type="button" (click)="confirmarExclusaoFinal()">
+          <i class="fas fa-trash"></i>
+          Excluir
+        </button>
+      </div>
     </div>
   </div>
 </div>

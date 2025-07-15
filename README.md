@@ -1,6 +1,8 @@
 # 📦 Sistema de Gerenciamento de Estoque
 
-Projeto para controle e gerenciamento de estoque, com funcionalidades como entrada/saída de produtos, histórico, dashboard e mais.
+Projeto para controle e gerenciamento de estoque,
+com funcionalidades como entrada/saída de produtos,
+registro de movimentações, registro de funcionários, dados financeiros.
 
 ---
 
@@ -8,12 +10,14 @@ Projeto para controle e gerenciamento de estoque, com funcionalidades como entra
 
 - 🧩 [Trello – Kanban do Projeto](https://trello.com/b/u22kLYGl/meu-quadro-do-trello)
 - 🎨 [Figma – Protótipo Visual](https://www.figma.com/design/LUe781qrDJP0nCmjKLB51Q/GerenciamentoDeEstoque?node-id=0-1&p=f&t=jpgCRgwgkaM3EsyL-0)
+- 📊 [Canva - Slides da aprasentação](https://www.canva.com/design/DAGsyUxdhpU/BoUusNGJk848c1U_3NjmbQ/edit?utm_content=DAGsyUxdhpU&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)  
 
 ---
 
 ## 🧠 Diagrama Entidade-Relacionamento (DER)
 
-![DER do Projeto](https://github.com/user-attachments/assets/192c93a0-ea1c-478a-b8d2-fcfaae5f4498)
+![DER: Modelo Lógico](https://github.com/bruna-tonelli/Projeto.NET/blob/main/Captura%20de%20tela%202025-07-11%20095941.png)
+![DER: Modelo Coneitual](https://github.com/bruna-tonelli/Projeto.NET/blob/main/Captura%20de%20tela%202025-07-11%20095848.png)
 
 ---
 
@@ -31,3 +35,11 @@ npm install
 
 # Inicie o projeto
 npm start
+
+# Baixar angular
+cd frontend/estoque-app
+npm install @angular/cli
+npm install zone.js
+
+# Iniciar projeto angular
+ng serve

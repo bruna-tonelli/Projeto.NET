@@ -14,7 +14,22 @@ namespace ProdutoService.Controllers
         public ProdutoController(Services.ProdutoService service) => _service = service;
 
         [HttpGet]
-        public async Task<IActionResult> Get() => Ok(await _service.GetAllAsync());
+        public async Task<IActionResult> Get() 
+        {
+            try
+            {
+                Console.WriteLine("Iniciando busca de produtos...");
+                var produtos = await _service.GetAllAsync();
+                Console.WriteLine($"Produtos encontrados: {produtos.Count()}");
+                return Ok(produtos);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao buscar produtos: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                return StatusCode(500, new { message = ex.Message, stackTrace = ex.StackTrace });
+            }
+        }
 
         [HttpGet("pesquisar")]
         public async Task<IActionResult> Pesquisar([FromQuery] string termo)

@@ -1,5 +1,5 @@
-<div class="app-container" [class.sidebar-collapsed]="sidebarColapsada">
-  <aside class="sidebar">
+<div class="app-container" [class.sidebar-collapsed]="sidebarColapsada" [class.no-sidebar]="!showSidebar">
+  <aside class="sidebar" *ngIf="showSidebar">
     <button class="sidebar-toggle" (click)="toggleSidebar()" aria-label="Abrir/Fechar menu">
       <i class="fas fa-bars"></i>
     </button>
@@ -19,7 +19,7 @@
         <i class="fas fa-exchange-alt"></i>
         <span>Movimentação</span>
       </a>
-      <a class="menu-item">
+      <a class="menu-item" routerLink="/financeiro" routerLinkActive="active">
         <i class="fas fa-chart-line"></i>
         <span>Financeiro</span>
       </a>
@@ -28,7 +28,7 @@
         <span>Funcionários</span>
       </a>
     </nav>
-    <a class="logout-item">
+    <a class="logout-item" (click)="logout()" style="cursor: pointer;">
       <i class="fas fa-sign-out-alt"></i>
       <span>Sair</span>
     </a>
