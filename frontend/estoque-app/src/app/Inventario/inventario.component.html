@@ -1,0 +1,44 @@
+<div class="page-container">
+    <header class="page-header">
+    <h1 class="tittle">Inventário</h1>
+    <div class="actions">
+      <button class="btn btn-primary" (click)="abrirModalRegistrar()">
+        <i class="fas fa-plus"></i> REGISTRAR PRODUTO
+      </button>
+    </div>
+  </header>
+  <div class="container-lista">
+    <header>
+        <span>ID</span>
+        <span>NOME</span>
+        <span>QUANTIDADE</span>
+        <span>VALOR TOTAL</span>
+    </header>
+
+  </div>
+</div>
+
+<!-- Modal de Registrar Produto -->
+  <div class="modal-backdrop-inventario" *ngIf="modalAberto">
+    <div class="modal-inventario">
+      <h2>Registrar Produto</h2>
+      <form (ngSubmit)="RegistrarProduto()" #formRegistrar="ngForm">
+        <label for="nome">Nome</label>
+        <select id="nome" type="text" placeholder="Ex. Mouse RX" [(ngModel)]="registrarProduto.nome" name="nome" required>
+            <option value="">Mouse</option>
+            <option value="">Teclado</option>
+            <option value="">Monitor</option>
+            <option value="">Gabinete</option>
+        </select>
+
+        <label for="quantidade">Quantidade</label>
+        <input id="quantidade" type="number" placeholder="Ex. 10" [(ngModel)]="registrarProduto.quantidade" name="quantidade" required min="0">
+
+        <label for="produto_id">Valor Total</label>
+        <input id="produto_id" type="number" placeholder="Ex. 500,00" [(ngModel)]="registrarProduto.valorTotal" name="valorTotal" required min="0" step="0.01">
+
+        <button class="btn btn-primary" type="submit" [disabled]="formRegistrar.invalid">Salvar</button>
+        <button class="btn btn-secondary" type="button" (click)="fecharModal()">Cancelar</button>
+      </form>
+    </div>
+  </div>
