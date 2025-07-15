@@ -20,15 +20,19 @@ export class EstoqueComponent implements OnInit {
   private listaCompletaEstoque: ProdutoEstoque[] = [];
 
   modalAberto = false;
-  novoProduto: { nome: string; quantidade: number | null; precoUnitario: number | null; descricao: string } = {
+  novoProduto: { nome: string; quantidade: number; precoCompra: number | null; precoVenda: number | null; descricao: string } = {
     nome: '',
-    quantidade: null,
-    precoUnitario: null,
+    quantidade: 0, // Sempre 0 para novos produtos
+    precoCompra: null,
+    precoVenda: null,
     descricao: ''
   };
 
   modalEditarAberto = false;
   produtoEditando: ProdutoEstoque | null = null;
+  
+  modalConfirmacaoAberto = false;
+  produtoParaRemover: ProdutoEstoque | null = null;
 
   constructor(private estoqueService: EstoqueService) {}
 
@@ -104,7 +108,7 @@ export class EstoqueComponent implements OnInit {
   }
 
   abrirModalAdicionar(): void {
-    this.novoProduto = { nome: '', quantidade: null, precoUnitario: null, descricao: '' };
+    this.novoProduto = { nome: '', quantidade: 0, precoCompra: null, precoVenda: null, descricao: '' };
     this.modalAberto = true;
   }
 
@@ -118,43 +122,85 @@ export class EstoqueComponent implements OnInit {
   }
 
   adicionarProduto(): void {
+    console.log('Tentando adicionar produto:', this.novoProduto);
+    
     if (
       !this.novoProduto.nome ||
-      this.novoProduto.quantidade === null ||
-      this.novoProduto.quantidade < 0 ||
-      this.novoProduto.precoUnitario === null ||
-      this.novoProduto.precoUnitario < 0
-    ) return;
+      this.novoProduto.precoCompra === null ||
+      this.novoProduto.precoCompra === undefined ||
+      this.novoProduto.precoCompra < 0 ||
+      this.novoProduto.precoVenda === null ||
+      this.novoProduto.precoVenda === undefined ||
+      this.novoProduto.precoVenda < 0
+    ) {
+      console.log('Validação falhou:', {
+        nome: this.novoProduto.nome,
+        precoCompra: this.novoProduto.precoCompra,
+        precoVenda: this.novoProduto.precoVenda
+      });
+      return;
+    }
 
     const agora = new Date().toISOString();
 
-    this.estoqueService.adicionarProduto({
-      nome: this.novoProduto.nome,
-      quantidade: this.novoProduto.quantidade,
-      precoUnitario: this.novoProduto.precoUnitario,
-      descricao: this.novoProduto.descricao,
+    const produto = {
+      nome: this.novoProduto.nome.trim(),
+      quantidade: 0, // Sempre 0 para novos produtos
+      precoCompra: Number(this.novoProduto.precoCompra),
+      precoVenda: Number(this.novoProduto.precoVenda),
+      descricao: this.novoProduto.descricao?.trim() || '',
       dataCadastro: agora,
       dataAtualizacao: agora,
       ativo: true
-    } as any).subscribe(() => {
-      this.fecharModal();
-      this.carregarEstoque();
+    };
+
+    console.log('Enviando produto para API:', produto);
+
+    this.estoqueService.adicionarProduto(produto as any).subscribe({
+      next: (response) => {
+        console.log('Produto adicionado com sucesso:', response);
+        this.fecharModal();
+        this.carregarEstoque();
+      },
+      error: (error) => {
+        console.error('Erro ao adicionar produto:', error);
+        alert('Erro ao adicionar produto. Verifique o console para mais detalhes.');
+      }
     });
   }
 
   removerProduto(id: string | number): void {
     const numericId = typeof id === 'string' ? Number(id) : id;
     if (isNaN(numericId)) {
-      alert('ID do produto inválido.');
       return;
     }
-    if (confirm('Tem certeza que deseja remover este produto?')) {
-      this.estoqueService.removerProduto(numericId).subscribe(() => {
-        this.carregarEstoque();
-        if (this.itemSelecionado?.id === id) {
-          this.itemSelecionado = null;
-        }
-      });
+    
+    // Encontra o produto para mostrar no modal de confirmação
+    this.produtoParaRemover = this.estoqueExibido.find(p => p.id === id) || null;
+    this.modalConfirmacaoAberto = true;
+  }
+
+  cancelarRemocao(): void {
+    this.modalConfirmacaoAberto = false;
+    this.produtoParaRemover = null;
+  }
+
+  confirmarRemocaoFinal(): void {
+    if (this.produtoParaRemover && this.produtoParaRemover.id !== undefined) {
+      const numericId = typeof this.produtoParaRemover.id === 'string' 
+        ? Number(this.produtoParaRemover.id) 
+        : this.produtoParaRemover.id;
+      
+      if (!isNaN(numericId)) {
+        this.estoqueService.removerProduto(numericId).subscribe(() => {
+          this.carregarEstoque();
+          if (this.itemSelecionado?.id === this.produtoParaRemover?.id) {
+            this.itemSelecionado = null;
+          }
+          this.modalConfirmacaoAberto = false;
+          this.produtoParaRemover = null;
+        });
+      }
     }
   }
 
@@ -162,18 +208,29 @@ export class EstoqueComponent implements OnInit {
     if (
       !this.produtoEditando ||
       !this.produtoEditando.nome ||
-      this.produtoEditando.quantidade === null ||
-      this.produtoEditando.quantidade < 0 ||
-      this.produtoEditando.precoUnitario === null ||
-      this.produtoEditando.precoUnitario < 0
+      this.produtoEditando.precoCompra === null ||
+      this.produtoEditando.precoCompra < 0 ||
+      this.produtoEditando.precoVenda === null ||
+      this.produtoEditando.precoVenda < 0
     ) return;
 
-    // Atualiza dataAtualizacao
-    this.produtoEditando.dataAtualizacao = new Date().toISOString();
+    // Buscar o produto original para preservar a quantidade
+    const produtoOriginal = this.listaCompletaEstoque.find(p => p.id === this.produtoEditando!.id);
+    if (!produtoOriginal) {
+      alert('Erro: produto original não encontrado');
+      return;
+    }
+
+    // Criar o objeto para atualização preservando a quantidade original
+    const produtoParaAtualizar = {
+      ...this.produtoEditando,
+      quantidade: produtoOriginal.quantidade, // Preservar a quantidade original
+      dataAtualizacao: new Date().toISOString()
+    };
 
     this.estoqueService.atualizarProduto(
       Number(this.produtoEditando.id),
-      this.produtoEditando
+      produtoParaAtualizar
     ).subscribe(() => {
       this.fecharModalEditar();
       this.carregarEstoque();

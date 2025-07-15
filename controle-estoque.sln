@@ -10,11 +10,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "backend\ApiGa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsuarioService", "backend\UsuarioService\UsuarioService\UsuarioService.csproj", "{C3D4E5F6-7A8B-9C0D-1E2F-3A4B5C6D7E8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovimentacaoService", "MovimentacaoService\MovimentacaoService.csproj", "{90831E0B-BD98-4EDB-A077-2D1ACD9AA2AE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovimentacaoService", "backend\MovimentacaoService\MovimentacaoService.csproj", "{90831E0B-BD98-4EDB-A077-2D1ACD9AA2AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceiroService", "FinanceiroService\FinanceiroService.csproj", "{08826765-A2EF-495A-9A98-121247E5C8F0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceiroService", "backend\FinanceiroService\FinanceiroService.csproj", "{08826765-A2EF-495A-9A98-121247E5C8F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuncionarioService", "FuncionarioService\FuncionarioService.csproj", "{C0DD4AA9-EB6E-4450-8DA2-0513252C64D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuncionarioService", "backend\FuncionarioService\FuncionarioService.csproj", "{C0DD4AA9-EB6E-4450-8DA2-0513252C64D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

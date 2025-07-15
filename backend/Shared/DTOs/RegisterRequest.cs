@@ -12,6 +12,9 @@ public class RegisterRequest
     [EmailAddress(ErrorMessage = "Email deve ter um formato válido")]
     public string Email { get; set; } = string.Empty;
 
+    [Required(ErrorMessage = "Telefone é obrigatório")]
+    public string Telefone { get; set; } = string.Empty;
+
     [Required(ErrorMessage = "Senha é obrigatória")]
     [MinLength(6, ErrorMessage = "Senha deve ter no mínimo 6 caracteres")]
     public string Password { get; set; } = string.Empty;

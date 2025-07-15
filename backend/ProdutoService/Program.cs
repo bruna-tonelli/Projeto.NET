@@ -32,7 +32,17 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    context.Database.EnsureCreated();
+    try
+    {
+        // Verifica se pode conectar ao banco
+        await context.Database.CanConnectAsync();
+        Console.WriteLine("Conexão com banco estabelecida com sucesso");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Erro na conexão com banco: {ex.Message}");
+        throw;
+    }
 }
 
 // Configuração do pipeline HTTP

@@ -11,6 +11,8 @@ public interface IAuthService
     Task<LoginResponse> LoginAsync(LoginRequest request);
     Task<BaseResponse> RegisterAsync(RegisterRequest request);
     Task<Usuario?> GetUserByIdAsync(string userId);
+    Task<List<Usuario>> GetAllUsersAsync();
+    Task<bool> DeleteUserAsync(string userId);
 }
 
 public class AuthService : IAuthService
@@ -96,11 +98,11 @@ public class AuthService : IAuthService
                 Id = Guid.NewGuid().ToString(),
                 Name = request.Name,
                 Email = request.Email,
+                Phone = request.Telefone,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
                 Role = "User", // Sempre criar como User
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
-                EmailConfirmed = false,
                 FailedLoginAttempts = 0
             };
 
@@ -126,5 +128,29 @@ public class AuthService : IAuthService
     public async Task<Usuario?> GetUserByIdAsync(string userId)
     {
         return await _usuarioRepository.GetByIdAsync(userId);
+    }
+
+    public async Task<List<Usuario>> GetAllUsersAsync()
+    {
+        return await _usuarioRepository.GetAllAsync();
+    }
+
+    public async Task<bool> DeleteUserAsync(string userId)
+    {
+        try
+        {
+            var user = await _usuarioRepository.GetByIdAsync(userId);
+            if (user == null)
+            {
+                return false;
+            }
+
+            await _usuarioRepository.DeleteAsync(userId);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }

@@ -11,6 +11,9 @@ services:
     depends_on:
       - produto-service
       - usuario-service
+      - financeiro-service
+      - funcionario-service
+      - movimentacao-service
     networks:
       - microservices-network
 
@@ -48,6 +51,57 @@ services:
     networks:
       - microservices-network
 
+  # Financeiro Service
+  financeiro-service:
+    build:
+      context: ./backend/FinanceiroService
+      dockerfile: Dockerfile
+    ports:
+      - "5003:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=EstoqueDB;User Id=sa;Password=StrongPassword123!;TrustServerCertificate=true;
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
+  # Funcionario Service
+  funcionario-service:
+    build:
+      context: ./backend/FuncionarioService
+      dockerfile: Dockerfile
+    ports:
+      - "5004:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=EstoqueDB;User Id=sa;Password=StrongPassword123!;TrustServerCertificate=true;
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
+  # Movimentacao Service
+  movimentacao-service:
+    build:
+      context: ./backend/MovimentacaoService
+      dockerfile: Dockerfile
+    ports:
+      - "5005:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=EstoqueDB;User Id=sa;Password=StrongPassword123!;TrustServerCertificate=true;
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
   # Frontend Angular
   frontend:
     build:
@@ -70,12 +124,27 @@ services:
       - "1433:1433"
     volumes:
       - sqlserver_data:/var/opt/mssql
+      - ./scripts:/scripts
     healthcheck:
       test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P StrongPassword123! -C -Q 'SELECT 1' || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 5
       start_period: 30s
+    networks:
+      - microservices-network
+
+  # Database Setup Service (executa uma vez para criar as tabelas)
+  db-setup:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - SA_PASSWORD=StrongPassword123!
+    volumes:
+      - ./scripts:/scripts
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    command: ["/bin/bash", "/scripts/setup-database.sh"]
     networks:
       - microservices-network
 

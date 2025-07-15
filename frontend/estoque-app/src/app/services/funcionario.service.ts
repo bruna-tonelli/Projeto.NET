@@ -1,38 +1,61 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Funcionario } from '../models/funcionario.model';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
+
+export interface Usuario {
+  id: string;
+  nome: string;
+  email: string;
+  cargo: string;
+  departamento: string;
+  telefone: string;
+  dataCriacao: Date;
+  ultimoLogin?: Date;
+  ativo: boolean;
+  role: string;
+  emailConfirmado: boolean;
+}
+
+export interface UsuarioDetalhes extends Usuario {
+  role: string;
+  emailConfirmado: boolean;
+}
+
+export interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class FuncionarioService {
-  private baseUrl = 'http://localhost:4200/funcionarios'; // Ajuste conforme seu backend
+  private baseUrl = 'http://localhost:5000/api/auth'; // URL do API Gateway para UsuarioService
 
   constructor(private http: HttpClient) {}
 
-  // Buscar todos os funcionários
-  getFuncionarios(): Observable<Funcionario[]> {
-    return this.http.get<Funcionario[]>(this.baseUrl);
+  // Buscar todos os usuários registrados
+  getUsuarios(): Observable<Usuario[]> {
+    return this.http.get<ApiResponse<Usuario[]>>(`${this.baseUrl}/users`)
+      .pipe(map(response => response.data || []));
   }
 
-  // Pesquisar funcionários por nome ou id (assumindo que a API suporta ?q=)
-  pesquisarFuncionarios(termo: string): Observable<Funcionario[]> {
-    return this.http.get<Funcionario[]>(`${this.baseUrl}?q=${encodeURIComponent(termo)}`);
+  // Buscar usuário por ID para ver detalhes
+  getUsuarioById(id: string): Observable<UsuarioDetalhes> {
+    return this.http.get<ApiResponse<UsuarioDetalhes>>(`${this.baseUrl}/users/${id}`)
+      .pipe(map(response => response.data));
   }
 
-  // Adicionar novo funcionário
-  adicionarFuncionario(funcionario: Funcionario): Observable<Funcionario> {
-    return this.http.post<Funcionario>(this.baseUrl, funcionario);
+  // Pesquisar usuários (implementaremos se necessário)
+  pesquisarUsuarios(termo: string): Observable<Usuario[]> {
+    return this.http.get<ApiResponse<Usuario[]>>(`${this.baseUrl}/users?search=${termo}`)
+      .pipe(map(response => response.data || []));
   }
 
-  // Atualizar funcionário existente
-  atualizarFuncionario(id: number, funcionario: Funcionario): Observable<Funcionario> {
-    return this.http.put<Funcionario>(`${this.baseUrl}/${id}`, funcionario);
-  }
-
-  // Remover funcionário
-  removerFuncionario(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  // Excluir usuário
+  excluirUsuario(id: string): Observable<any> {
+    return this.http.delete<ApiResponse<any>>(`${this.baseUrl}/users/${id}`)
+      .pipe(map(response => response.data));
   }
 }
