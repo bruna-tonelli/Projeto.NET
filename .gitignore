@@ -46,4 +46,5 @@ backend/Shared/obj/
 backend/Shared/bin/
 
 InventarioService/obj/
-InventarioService/bin/
+Inventarioservice/bin/
+
