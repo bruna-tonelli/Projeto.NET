@@ -1,13 +1,15 @@
+
 using InventarioService.Data;
 using InventarioService.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Corrigido: Verifique se o namespace e o nome da classe estão corretos
+// Corrigido: Verifique se o namespace e o nome da classe estï¿½o corretos
 builder.Services.AddScoped<InventarioService.Services.InventarioService>();
 
 builder.Services.AddControllers();

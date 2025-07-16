@@ -1,4 +1,20 @@
 services:
+  # Inventario Service
+  inventario-service:
+    build:
+      context: ./backend/InventarioService
+      dockerfile: Dockerfile
+    ports:
+      - "5006:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=EstoqueDB;User Id=sa;Password=StrongPassword123!;TrustServerCertificate=true;
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - microservices-network
   # API Gateway
   api-gateway:
     build:
