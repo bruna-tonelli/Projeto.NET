@@ -1,5 +1,40 @@
-// Cores principais
 @use 'sass:color';
+
+@media (max-width: 900px) {
+  .item-list {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+  .item-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 16px 10px !important;
+    grid-template-columns: none !important;
+    width: 100%;
+    max-width: 400px;
+  }
+  .card-section {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 2px !important;
+    margin-bottom: 0 !important;
+    width: 100%;
+  }
+  .card-actions {
+    justify-content: center !important;
+    align-items: center !important;
+    margin-top: 8px !important;
+    margin-bottom: 0 !important;
+    align-self: center !important;
+    width: 100%;
+  }
+}
+// Cores principais
 
 $primary: #0353A4;
 $gray: #6c757d;
@@ -177,11 +212,18 @@ $dark: #343a40;
   }
 }
 
+
 .item-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: 100%;
 }
+
+
+
+
+
 
 .item-card {
   background: white;
@@ -190,20 +232,34 @@ $dark: #343a40;
   padding: 20px;
   transition: all 0.2s;
   display: grid;
-  grid-template-columns: 80px 1fr 200px auto auto;
+  grid-template-columns: 80px 1fr 120px 1fr 120px auto;
   gap: 20px;
   align-items: center;
   cursor: pointer;
+  max-width: 950px;
+  width: 100%;
+}
 
-  &:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    border-color: $primary;
-  }
+.card-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  justify-content: flex-end;
+  align-items: center;
+  grid-column: 4 / span 2;
+}
 
-  &.item-selecionado {
-    border-color: $primary;
-    box-shadow: 0 0 0 2px rgba(3,83,164,0.1);
-  }
+
+.item-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-color: $primary;
+}
+
+
+.item-card.item-selecionado {
+  border-color: $primary;
+  box-shadow: 0 0 0 2px rgba(3,83,164,0.1);
+}
 
   .card-section {
     display: flex;
@@ -228,7 +284,6 @@ $dark: #343a40;
     display: flex;
     gap: 8px;
   }
-}
 
 .modal-backdrop {
   position: fixed;

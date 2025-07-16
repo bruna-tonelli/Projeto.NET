@@ -39,6 +39,9 @@ FinanceiroService/obj/
 backend/FinanceiroService/bin/
 backend/FinanceiroService/obj/
 
+backend/FinanceiroService/obj/Debug/net8.0/FinanceiroService.AssemblyInfo.cs
+backend/FinanceiroService/obj/Debug/net8.0/FinanceiroService.AssemblyInfoInputs.cache
+
 FuncionarioService/obj/
 FuncionarioService/bin/
 
