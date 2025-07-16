@@ -1,0 +1,89 @@
+<div class="page-container">
+  <header class="page-header">
+    <h1 class="tittle">Inventário</h1>
+    <div class="actions">
+      <button class="btn btn-primary" (click)="abrirModalRegistrar()">
+        <i class="fas fa-plus"></i> REGISTRAR PRODUTO
+      </button>
+    </div>
+  </header>
+
+  <div class="container-lista">
+    <header>
+      <span>ID</span>
+      <span>NOME</span>
+      <span>QUANTIDADE</span>
+      <span>VALOR TOTAL</span>
+    </header>
+
+    <div class="item-list">
+      <div class="item-card" *ngFor="let item of inventarioExibido">
+        <div class="card-section">
+          <span class="card-label">ID</span>
+          <span class="card-value">{{ item.produtoId }}</span>
+        </div>
+        <div class="card-section">
+          <span class="card-label">Nome</span>
+          <span class="card-value">{{ item.nome }}</span>
+        </div>
+        <div class="card-section">
+          <span class="card-label">Quantidade</span>
+          <span class="card-value">{{ item.quantidade }}</span>
+        </div>
+        <div class="card-section">
+          <span class="card-label">Valor Total</span>
+          <span class="card-value">R$ {{ item.valorTotal | number:'1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Registrar Produto -->
+<div class="modal-backdrop-inventario" *ngIf="modalAberto">
+  <div class="modal-inventario">
+    <div class="modal-header">
+      <h2>Registrar Produto</h2>
+      <button class="modal-close" type="button" (click)="fecharModal()" title="Fechar">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <form (ngSubmit)="RegistrarProduto()" #formRegistrar="ngForm">
+      <label for="nome">Nome</label>
+      <select
+        id="nome"
+        [(ngModel)]="registrarProduto.nome"
+        name="nome"
+        required
+        (change)="onProdutoSelecionado()">
+        <option value="">Selecione um produto</option>
+        <option *ngFor="let produto of produtos" [value]="produto.nome">
+          {{ produto.nome }}
+        </option>
+      </select>
+
+      <label for="quantidade">Quantidade</label>
+      <input
+        id="quantidade"
+        type="number"
+        [(ngModel)]="registrarProduto.quantidade"
+        name="quantidade"
+        readonly
+      />
+
+      <label for="valorTotal">Valor Total</label>
+      <input
+        id="valorTotal"
+        type="number"
+        [(ngModel)]="registrarProduto.valorTotal"
+        name="valorTotal"
+        readonly
+      />
+
+      <button class="btn btn-primary" type="submit" [disabled]="formRegistrar.invalid">
+        Salvar
+      </button>
+    </form>
+  </div>
+</div>
