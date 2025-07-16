@@ -63,7 +63,7 @@ export class InventarioComponent implements OnInit {
   abrirModalRegistrar(): void {
     this.registrarProduto = {
       nome: '',
-      quantidade: null,
+      quantidade: 0,
       valorTotal: 0,
     };
     this.modalAberto = true;
