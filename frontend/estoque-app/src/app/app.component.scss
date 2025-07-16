@@ -10,39 +10,44 @@
   box-sizing: border-box; // Adicione esta linha
 
   &.sidebar-collapsed {
-    .sidebar {
-      width: 64px !important;
-      min-width: 64px;
-      max-width: 64px;
-      overflow-x: hidden;
+  .sidebar {
+    width: 64px !important;
+    min-width: 64px;
+    max-width: 64px;
+    overflow-x: hidden;
 
-      .logo-container {
-        padding: 20px 10px;
-        
-        .logo-image {
-          max-width: 44px;
-          max-height: 44px;
-        }
+    .logo-container {
+      padding: 20px 10px;
+
+      .logo-image {
+        max-width: 44px;
+        max-height: 44px;
       }
-      
-      .menu-item span,
-      .logout-item span {
+    }
+
+    .menu-item,
+    .logout-item {
+      justify-content: center;
+      padding: 18px 0;
+
+      span {
         display: none;
       }
-      .menu-item i,
-      .logout-item i {
-        margin-right: 0;
-        font-size: 1.5rem;
-        text-align: center;
+
+      i {
+        font-size: 1.6rem;
+        margin: 0;
         width: 100%;
+        text-align: center;
       }
     }
-
-    .main-view {
-      margin-left: 64px;
-      transition: margin-left 0.3s;
-    }
   }
+
+  .main-view {
+    margin-left: 64px;
+    transition: margin-left 0.3s;
+  }
+}
 
   &.no-sidebar {
     .main-view {
@@ -86,6 +91,7 @@
 
   .menu {
     flex-grow: 1; // Ocupa o espaço vertical disponível
+    margin-top: 20px;
   }
 
   .menu-item, .logout-item {
@@ -132,7 +138,7 @@
   border: none;
   color: #fff;
   font-size: 2rem;
-  margin: 16px 0 0 16px;
+  margin: 16px 16px 0px 12px;
   cursor: pointer;
   outline: none;
   display: block;
