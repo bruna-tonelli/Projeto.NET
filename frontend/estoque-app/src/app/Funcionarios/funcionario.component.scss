@@ -1,5 +1,31 @@
-// Cores principais
 @use 'sass:color';
+
+@media (max-width: 900px) {
+  .item-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 16px 10px !important;
+    grid-template-columns: none !important;
+  }
+  .card-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2px;
+    margin-bottom: 0;
+  }
+  .card-actions {
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 8px;
+    margin-bottom: 0;
+    align-self: flex-end;
+  }
+}
+// Cores principais
 
 $primary: #0353A4;
 $gray: #6c757d;

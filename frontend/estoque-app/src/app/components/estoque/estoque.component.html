@@ -52,20 +52,22 @@
             <span class="card-label">QUANTIDADE</span>
             <span class="card-value">{{ produto.quantidade | number }}</span>
           </div>
-          <button 
-            class="btn btn-edit" 
-            type="button"
-            (click)="editarProduto(produto); $event.stopPropagation()"
-            title="Editar produto">
-            <i class="fas fa-edit"></i>
-          </button>
-          <button 
-            class="btn btn-delete" 
-            type="button"
-            (click)="removerProduto(produto.id!); $event.stopPropagation()"
-            title="Remover produto">
-            <i class="fas fa-trash"></i>
-          </button>
+          <div class="card-actions">
+            <button 
+              class="btn btn-edit" 
+              type="button"
+              (click)="editarProduto(produto); $event.stopPropagation()"
+              title="Editar produto">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button 
+              class="btn btn-delete" 
+              type="button"
+              (click)="removerProduto(produto.id!); $event.stopPropagation()"
+              title="Remover produto">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
         </div>
       </div>
     </ng-container>
