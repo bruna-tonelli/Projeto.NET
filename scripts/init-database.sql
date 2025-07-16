@@ -18,7 +18,6 @@ BEGIN
         Id INT IDENTITY(1,1) PRIMARY KEY,
         Nome NVARCHAR(255) NOT NULL,
         Descricao NVARCHAR(MAX),
-        Preco DECIMAL(18,2) NOT NULL, -- Mantido como Preco para compatibilidade com o log anterior
         Estoque INT NOT NULL DEFAULT 0, -- Mantido como Estoque para compatibilidade com o log anterior
         Ativo BIT NOT NULL DEFAULT 1, -- Adicionado
         DataAtualizacao DATETIME, -- Adicionado
