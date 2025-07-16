@@ -83,20 +83,20 @@
       ],
       "UpstreamPathTemplate": "/api/financeiro/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/inventario/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "inventario-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/inventario/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
     }
   ],
-  {
-    "DownstreamPathTemplate": "/api/inventario/{everything}",
-    "DownstreamScheme": "http",
-    "DownstreamHostAndPorts": [
-      {
-        "Host": "inventario-service",
-        "Port": 8080
-      }
-    ],
-    "UpstreamPathTemplate": "/api/inventario/{everything}",
-    "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
-  },
   "GlobalConfiguration": {
     "BaseUrl": "http://localhost:5000"
   }

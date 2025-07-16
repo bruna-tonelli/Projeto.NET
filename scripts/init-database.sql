@@ -11,6 +11,19 @@ GO
 USE EstoqueDB;
 GO
 
+-- Criar tabela Produtos 
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Produtos' AND xtype='U')
+BEGIN
+    CREATE TABLE Produtos (
+        Id INT IDENTITY(1,1) PRIMARY KEY,
+        Nome NVARCHAR(255) NOT NULL,
+        Descricao NVARCHAR(MAX),
+        Preco DECIMAL(18,2) NOT NULL,
+        Estoque INT NOT NULL DEFAULT 0
+    );
+END
+GO
+
 -- Criar tabela Transacoes (FinanceiroService)
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Transacoes' AND xtype='U')
 BEGIN
