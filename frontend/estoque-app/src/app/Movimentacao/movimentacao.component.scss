@@ -93,7 +93,7 @@ $dark: #343a40;
     width: 100%;
     padding: 12px 50px 12px 45px;
     border: 2px solid #e0e6ed;
-    border-radius: 25px;
+    border-radius: 15px;
     font-size: 1rem;
     transition: all 0.3s;
     background: white;
@@ -142,7 +142,8 @@ $dark: #343a40;
     color: white;
 
     &:hover {
-      background: color.adjust($primary, $lightness: -10%);
+      background: color.adjust($primary, $lightness: 7%);
+      transform: scale(1.05);
     }
   }
 
