@@ -38,27 +38,25 @@
       <div class="item-list">
         <div 
           class="item-card" 
-          *ngFor="let movimentacao of movimentacoesExibidas"
-          (click)="selecionarItem(movimentacao)"
-          [ngClass]="{'item-selecionado': movimentacao.id === itemSelecionado?.id}">
+          *ngFor="let movimentacao of movimentacoesExibidas">
           <div class="card-section id-section">
             <span class="card-label">ID</span>
             <span class="card-value">{{ movimentacao.id }}</span>
           </div>
           <div class="card-section name-section">
-            <span class="card-label">TIPO</span>
+            <span class="card-label">Tipo</span>
             <span class="card-value">{{ movimentacao.tipo }}</span>
           </div>
           <div class="card-section quantity-section">
-            <span class="card-label">QUANTIDADE</span>
+            <span class="card-label">Quantidade</span>
             <span class="card-value">{{ movimentacao.quantidade | number }}</span>
           </div>
           <div class="card-section product-section">
-            <span class="card-label">PRODUTO</span>
+            <span class="card-label">Produto</span>
             <span class="card-value">{{ movimentacao.produtoNome || 'Produto não informado' }}</span>
           </div>
           <div class="card-section date-section" *ngIf="movimentacao.dataMovimentacao">
-            <span class="card-label">DATA</span>
+            <span class="card-label">Data</span>
             <span class="card-value">{{ movimentacao.dataMovimentacao | date:'dd/MM/yyyy HH:mm' }}</span>
           </div>
           <div class="card-actions">
@@ -69,13 +67,7 @@
               title="Editar movimentação">
               <i class="fas fa-edit"></i>
             </button>
-            <button 
-              class="btn btn-delete" 
-              type="button"
-              (click)="excluirMovimentacao(movimentacao.id); $event.stopPropagation()"
-              title="Excluir movimentação">
-              <i class="fas fa-trash"></i>
-            </button>
+            
           </div>
           
         </div>
