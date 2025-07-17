@@ -245,9 +245,9 @@ $dark: #343a40;
 
     .card-label {
       font: 600 0.75rem inherit;
+      font-weight: 600;
       color: $gray;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.1px;
     }
 
     .card-value {

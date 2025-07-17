@@ -84,14 +84,7 @@ export class EstoqueComponent implements OnInit {
     this.estoqueExibido = this.listaCompletaEstoque;
   }
 
-  // Seleciona um item ao clicar
-  selecionarItem(produto: ProdutoEstoque): void {
-    if (this.itemSelecionado?.id === produto.id) {
-      this.itemSelecionado = null; // Clicar de novo no mesmo item deseleciona
-    } else {
-      this.itemSelecionado = produto;
-    }
-  }
+  
 
   // Edita apenas o item selecionado
   editar(): void {
