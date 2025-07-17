@@ -148,6 +148,35 @@
     </div>
   </div>
 
+  <!-- Modal de filtro -->
+  <div class="modal-backdrop" *ngIf="modalAberto">
+    <div class="modal-produto">
+      <button class="modal-close-btn" type="button" (click)="fecharModalFiltrar()" title="Fechar">
+        <i class="fas fa-times"></i>
+      </button>
+      <h2>Filtros</h2>
+      <form (ngSubmit)="filtrarProduto()" #formProduto="ngForm">
+        <select
+        id="nome"
+        [(ngModel)]="registrarProduto.tipo"
+        name="nome"
+        required
+        (change)="filtrarProduto()">
+        <option value="">Selecione um produto</option>
+        <option *ngFor="let produto of produtos" [value]="produto.tipo">
+          {{ produto.tipo }}
+        </option>
+      </select>
+      <label class="checkbox-label">
+      <input type="checkbox" id="meuCheckbox">
+        Valor
+      </label>
+
+        <button class="btn btn-primary" type="submit" [disabled]="formProduto.invalid">Aplicar</button>
+      </form>
+    </div>
+  </div>
+
   <!-- Modal de Confirmação de Exclusão -->
   <div class="modal-backdrop" *ngIf="modalConfirmacaoAberto">
     <div class="modal-confirmacao">

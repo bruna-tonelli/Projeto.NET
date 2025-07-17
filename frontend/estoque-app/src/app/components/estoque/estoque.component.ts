@@ -162,6 +162,19 @@ export class EstoqueComponent implements OnInit {
     });
   }
 
+  filtrarProduto(): void{
+
+  }
+
+  abrirModalFiltrar(): void {
+    this.novoProduto = { nome: '', quantidade: 0, precoCompra: null, precoVenda: null, descricao: '' };
+    this.modalAberto = true;
+  }
+
+  fecharModalFiltrar(): void {
+    this.modalAberto = false;
+  }
+
   removerProduto(id: string | number): void {
     const numericId = typeof id === 'string' ? Number(id) : id;
     if (isNaN(numericId)) {
