@@ -207,14 +207,10 @@ $dark: #343a40;
   cursor: pointer;
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    border-color: $primary;
+  transform: scale(1.01);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   }
 
-  &.item-selecionado {
-    border-color: $primary;
-    box-shadow: 0 0 0 2px rgba(3,83,164,0.1);
-  }
 
   .card-section {
     display: flex;
