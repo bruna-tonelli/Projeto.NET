@@ -145,7 +145,5 @@ export class FinanceiroComponent implements OnInit {
     this.movimentacoesExibidas = [...this.listaCompletaMovimentacoes];
   }
 
-  selecionarItem(movimentacao: MovimentacaoFinanceira): void {
-    this.itemSelecionado = this.itemSelecionado?.id === movimentacao.id ? null : movimentacao;
-  }
+  
 }

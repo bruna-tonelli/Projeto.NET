@@ -57,9 +57,9 @@
         Nenhuma movimentação registrada.
       </div>
       <div class="item-list">
-        <div class="item-card" *ngFor="let movimentacao of movimentacoesExibidas" (click)="selecionarItem(movimentacao)" [ngClass]="{'item-selecionado': movimentacao.id === itemSelecionado?.id}">
+        <div class="item-card" *ngFor="let movimentacao of movimentacoesExibidas">
           <div class="card-section">
-            <span class="card-label">Id</span>
+            <span class="card-label">ID</span>
             <span class="card-value">{{ movimentacao.id }}</span>
           </div>
           <div class="card-section">
