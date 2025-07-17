@@ -64,7 +64,7 @@
   min-width: 260px;
   max-width: 260px;
   flex-shrink: 0; // Impede que a sidebar encolha
-  background: linear-gradient(145deg, #11478E, #0353A4);
+  background: linear-gradient(145deg, #11478E 3%, #0d6ba5 50%, #2E86C1 80%);
   color: #FFFFFF;
   display: flex;
   flex-direction: column;
@@ -72,6 +72,7 @@
   transition: width 0.3s;
 
   .logo-container {
+    margin-top: 20px;
     padding: 30px 20px;
     text-align: center;
     color: #FFFFFF;
@@ -80,8 +81,8 @@
     align-items: center;
     
     .logo-image {
-      max-width: 150px;
-      max-height: 75px;
+      max-width: 200px;
+      max-height: 100px;
       width: auto;
       height: auto;
       object-fit: contain;
@@ -91,7 +92,7 @@
 
   .menu {
     flex-grow: 1; // Ocupa o espaço vertical disponível
-    margin-top: 20px;
+    margin-top: 10px;
   }
 
   .menu-item, .logout-item {
@@ -138,8 +139,10 @@
   border: none;
   color: #fff;
   font-size: 2rem;
-  margin: 16px 16px 0px 12px;
+  margin-top: 20px;
+  margin-left: 12px;
   cursor: pointer;
   outline: none;
-  display: block;
+  display: flex;
+  justify-content: flex-start;
 }
