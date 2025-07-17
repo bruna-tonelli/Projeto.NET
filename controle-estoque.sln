@@ -16,7 +16,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceiroService", "backen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuncionarioService", "backend\FuncionarioService\FuncionarioService.csproj", "{C0DD4AA9-EB6E-4450-8DA2-0513252C64D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventarioService", "InventarioService\InventarioService.csproj", "{092C2F47-C60C-4819-8DFF-DEE7319D38E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventarioService", "backend\InventarioService\InventarioService.csproj", "{092C2F47-C60C-4819-8DFF-DEE7319D38E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

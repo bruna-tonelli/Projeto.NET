@@ -1,9 +1,12 @@
+@use 'sass:color';
+
 .register-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(145deg, #11478E 3%, #0d6ba5 50%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
   padding: 20px;
 }
 
@@ -17,9 +20,9 @@
 }
 
 .register-title {
-  color: #333;
+  color: #11478E ;
   font-size: 2rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 30px;
   text-align: center;
 }
@@ -51,7 +54,7 @@ label {
 
 .form-control:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #11478E;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
@@ -98,7 +101,7 @@ label {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #11478E;
   color: white;
 }
 
@@ -120,7 +123,7 @@ label {
 }
 
 .login-link a {
-  color: #667eea;
+  color: #477fc9;
   text-decoration: none;
   font-weight: 500;
 }
