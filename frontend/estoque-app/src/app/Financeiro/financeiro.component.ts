@@ -1,25 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TransacaoFinanceira, NovaTransacao } from '../models/transacao-financeira.model';
-import { FinanceiroService } from './financeiro.service';
-import { MovimentacaoService } from '../services/movimentacao.service';
 import { Movimentacao } from '../models/movimentacao.model';
+import { MovimentacaoService } from '../services/movimentacao.service';
+import { BaseChartDirective } from 'ng2-charts';
+import { ChartConfiguration, ChartType } from 'chart.js';
+import { FinanceiroService, ResumoMensal } from './financeiro.service';
 
-// Interface para exibição na página financeiro
 export interface MovimentacaoFinanceira {
   id: number;
   produtoNome: string;
   quantidade: number;
   valorTotal: number;
-  tipo: string; // ENTRADA ou SAÍDA
+  tipo: string;
   dataMovimentacao?: string;
 }
 
 @Component({
   selector: 'app-financeiro',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+ imports: [
+  CommonModule, 
+  FormsModule,
+  BaseChartDirective // <-- Linha nova e correta
+],
   templateUrl: './financeiro.component.html',
   styleUrls: ['./financeiro.component.scss']
 })
@@ -30,110 +34,96 @@ export class FinanceiroComponent implements OnInit {
   public itemSelecionado: MovimentacaoFinanceira | null = null;
   private listaCompletaMovimentacoes: MovimentacaoFinanceira[] = [];
   public pesquisaRealizada: boolean = false;
-  
-  // CaixaDaEmpresa - Inicia com R$ 100.000,00
-  public caixaDaEmpresa: number = 100000.00;
+  public caixaDaEmpresa: number = 0; // O saldo agora virá da API
+
+  // --- Configurações do Gráfico ---
+  public barChartType: ChartType = 'bar';
+  public barChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: value => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(value)) } },
+      x: { ticks: { autoSkip: false, maxRotation: 45, minRotation: 45 } }
+    },
+    plugins: {
+      legend: { display: true, position: 'top' },
+      tooltip: {
+        callbacks: {
+          label: context => ` ${context.dataset.label}: ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y)}`
+        }
+      }
+    }
+  };
+  public barChartData: ChartConfiguration['data'] = {
+    labels: [],
+    datasets: [
+      { data: [], label: 'Entradas (Vendas)', backgroundColor: '#28a745', borderRadius: 4 },
+      { data: [], label: 'Saídas (Compras)', backgroundColor: '#dc3545', borderRadius: 4 }
+    ]
+  };
 
   constructor(
     private financeiroService: FinanceiroService,
     private movimentacaoService: MovimentacaoService
-  ) { 
-    console.log('🎯 CONSTRUCTOR DO FINANCEIRO COMPONENT EXECUTADO! 🎯');
-  }
+  ) {}
 
   ngOnInit(): void {
-    console.log('🚀 FINANCEIRO COMPONENT INICIALIZADO! 🚀');
+    this.isLoading = true;
     this.carregarMovimentacoes();
+    this.carregarDadosFinanceiros();
   }
 
   carregarMovimentacoes(): void {
-    console.log('📊 CARREGANDO MOVIMENTAÇÕES FINANCEIRAS! 📊');
-    this.isLoading = true;
     this.movimentacaoService.getMovimentacoesExpandidas().subscribe({
       next: (movimentacoes) => {
-        // Converte movimentações para o formato financeiro
         this.listaCompletaMovimentacoes = movimentacoes.map(mov => this.converterParaMovimentacaoFinanceira(mov));
-        this.movimentacoesExibidas = this.listaCompletaMovimentacoes;
-        
-        // Calcula o CaixaDaEmpresa com base nas movimentações
-        this.calcularCaixaDaEmpresa();
-        
-        this.isLoading = false;
+        this.movimentacoesExibidas = [...this.listaCompletaMovimentacoes]; // Cria uma nova referência para o array
       },
-      error: (err) => {
-        console.error('Erro ao carregar movimentações', err);
-        this.isLoading = false;
+      error: (err) => console.error('Erro ao carregar movimentações', err),
+      complete: () => {
+        this.isLoading = false; // Finaliza o loading após todas as chamadas
+      }
+    });
+  }
+
+  carregarDadosFinanceiros(): void {
+    // Busca o saldo da API
+    this.financeiroService.getSaldo().subscribe(saldo => {
+      this.caixaDaEmpresa = saldo;
+    });
+
+    // Busca os dados para o gráfico
+    this.financeiroService.getResumoMensal().subscribe(resumos => {
+      if (resumos && resumos.length > 0) {
+        this.barChartData.labels = resumos.map(r => r.nomeMes);
+        this.barChartData.datasets[0].data = resumos.map(r => r.totalEntradas);
+        this.barChartData.datasets[1].data = resumos.map(r => r.totalSaidas);
       }
     });
   }
 
   private converterParaMovimentacaoFinanceira(movimentacao: Movimentacao): MovimentacaoFinanceira {
-    console.log('🔥 INICIANDO CONVERSÃO PARA MOVIMENTAÇÃO FINANCEIRA 🔥');
-    console.log('Dados da movimentação recebida:', movimentacao);
-    
-    // Calcula o valor total baseado no tipo de movimentação
     let valorTotal = 0;
     const quantidade = movimentacao.quantidade || 0;
-    
-    console.log('Quantidade:', quantidade);
-    console.log('Tipo:', movimentacao.tipo);
-    console.log('PrecoCompra:', movimentacao.precoCompra);
-    console.log('PrecoVenda:', movimentacao.precoVenda);
-    
-    if (movimentacao.tipo === 'ENTRADA') {
-      // Para entrada: - (quantidade × precoCompra)
-      const precoCompra = movimentacao.precoCompra || 0;
-      valorTotal = -(quantidade * precoCompra);
-      console.log('Cálculo ENTRADA:', quantidade, 'x', precoCompra, '=', valorTotal);
-    } else if (movimentacao.tipo === 'SAIDA' || movimentacao.tipo === 'SAÍDA') {
-      // Para saída: + (quantidade × precoVenda)
-      const precoVenda = movimentacao.precoVenda || 0;
-      valorTotal = quantidade * precoVenda;
-      console.log('Cálculo SAÍDA:', quantidade, 'x', precoVenda, '=', valorTotal);
-    }
 
-    const resultado = {
+    if (movimentacao.tipo === 'ENTRADA') {
+      valorTotal = -(quantidade * (movimentacao.precoCompra || 0));
+    } else if (movimentacao.tipo === 'SAIDA' || movimentacao.tipo === 'SAÍDA') {
+      valorTotal = quantidade * (movimentacao.precoVenda || 0);
+    }
+    return {
       id: movimentacao.id,
-      produtoNome: movimentacao.produtoNome || 'Produto não identificado',
+      produtoNome: movimentacao.produtoNome || 'N/A',
       quantidade: quantidade,
       valorTotal: valorTotal,
       tipo: movimentacao.tipo || 'N/A',
       dataMovimentacao: movimentacao.dataMovimentacao
     };
-    
-    console.log('Resultado final:', resultado);
-    return resultado;
-  }
-
-  private calcularCaixaDaEmpresa(): void {
-    console.log('💰 CALCULANDO CAIXA DA EMPRESA 💰');
-    
-    // Inicia com R$ 100.000,00
-    this.caixaDaEmpresa = 100000.00;
-    console.log('Valor inicial do caixa:', this.caixaDaEmpresa);
-    
-    // Aplica cada movimentação ao caixa
-    this.listaCompletaMovimentacoes.forEach(movimentacao => {
-      const quantidade = movimentacao.quantidade || 0;
-      
-      if (movimentacao.tipo === 'ENTRADA') {
-        // ENTRADA: Subtrai o custo da compra (quantidade × precoCompra)
-        // Como valorTotal já está negativo, vamos somar diretamente
-        this.caixaDaEmpresa += movimentacao.valorTotal;
-        console.log(`📦 ENTRADA: ${quantidade} unidades - Custo: ${movimentacao.valorTotal} - Caixa: ${this.caixaDaEmpresa}`);
-      } else if (movimentacao.tipo === 'SAIDA' || movimentacao.tipo === 'SAÍDA') {
-        // SAÍDA: Adiciona a receita da venda (quantidade × precoVenda)
-        this.caixaDaEmpresa += movimentacao.valorTotal;
-        console.log(`💸 SAÍDA: ${quantidade} unidades - Receita: +${movimentacao.valorTotal} - Caixa: ${this.caixaDaEmpresa}`);
-      }
-    });
-    
-    console.log('💰 CAIXA FINAL DA EMPRESA:', this.caixaDaEmpresa);
   }
 
   buscar(): void {
     if (!this.termoBusca) {
-      this.movimentacoesExibidas = this.listaCompletaMovimentacoes;
+      this.movimentacoesExibidas = [...this.listaCompletaMovimentacoes];
       return;
     }
     const termo = this.termoBusca.toLowerCase();
@@ -152,12 +142,10 @@ export class FinanceiroComponent implements OnInit {
   limparPesquisa(): void {
     this.termoBusca = '';
     this.pesquisaRealizada = false;
-    this.movimentacoesExibidas = this.listaCompletaMovimentacoes;
+    this.movimentacoesExibidas = [...this.listaCompletaMovimentacoes];
   }
 
   selecionarItem(movimentacao: MovimentacaoFinanceira): void {
-    this.itemSelecionado = this.itemSelecionado?.id === movimentacao.id ?
-      null :
-      movimentacao;
+    this.itemSelecionado = this.itemSelecionado?.id === movimentacao.id ? null : movimentacao;
   }
 }

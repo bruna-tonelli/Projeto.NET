@@ -519,3 +519,31 @@ input[type="number"]::-webkit-outer-spin-button {
     color: #721c24;
   }
 }
+// ... todo o seu SCSS existente vai aqui ...
+
+// Cole o seu SCSS anterior aqui e adicione este novo bloco no final.
+
+// Estilos para o Gráfico
+.grafico-container {
+  background: #ffffff;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 0 32px 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.grafico-titulo {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 24px;
+  color: #0353A4; // Usando sua cor primária
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.grafico-canvas-wrapper {
+  position: relative;
+  height: 350px; // Altura do gráfico
+  width: 100%;
+}

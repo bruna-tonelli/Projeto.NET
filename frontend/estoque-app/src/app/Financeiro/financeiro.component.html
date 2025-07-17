@@ -5,10 +5,8 @@
     <div class="search-container">
       <div class="search-box">
         <i class="fas fa-search search-icon"></i>
-        <input type="text" placeholder="Pesquise por ID, produto ou tipo" [(ngModel)]="termoBusca" (input)="buscar()"
-          (keyup.enter)="pesquisarPorBotao()">
-        <button *ngIf="pesquisaRealizada || termoBusca" class="btn-clear-inline" (click)="limparPesquisa()"
-          title="Limpar pesquisa">
+        <input type="text" placeholder="Pesquise por ID, produto ou tipo" [(ngModel)]="termoBusca" (input)="buscar()" (keyup.enter)="pesquisarPorBotao()">
+        <button *ngIf="pesquisaRealizada || termoBusca" class="btn-clear-inline" (click)="limparPesquisa()" title="Limpar pesquisa">
           <i class="fas fa-times"></i>
         </button>
       </div>
@@ -19,10 +17,9 @@
   </header>
 
   <section class="page-content">
-    <div *ngIf="isLoading" class="status-message">Carregando...</div>
+    <div *ngIf="isLoading" class="status-message">Carregando dados financeiros...</div>
+
     <ng-container *ngIf="!isLoading">
-      
-      <!-- Saldo Empresarial -->
       <div class="saldo-empresarial-container">
         <div class="saldo-card">
           <div class="saldo-header">
@@ -31,34 +28,36 @@
               <i class="fas fa-chart-line"></i>
             </div>
           </div>
-          <div class="saldo-valor" 
-               [class.valor-positivo]="caixaDaEmpresa >= 0"
-               [class.valor-negativo]="caixaDaEmpresa < 0">
+          <div class="saldo-valor" [class.valor-positivo]="caixaDaEmpresa >= 0" [class.valor-negativo]="caixaDaEmpresa < 0">
             {{ caixaDaEmpresa | currency:'BRL':'symbol':'1.2-2' }}
           </div>
           <div class="saldo-info">
             <span class="saldo-descricao">Fluxo de caixa consolidado</span>
-            <span class="saldo-status" 
-                  [class.status-positivo]="caixaDaEmpresa >= 0"
-                  [class.status-negativo]="caixaDaEmpresa < 0">
+            <span class="saldo-status" [class.status-positivo]="caixaDaEmpresa >= 0" [class.status-negativo]="caixaDaEmpresa < 0">
               {{ caixaDaEmpresa >= 0 ? 'Positivo' : 'Negativo' }}
             </span>
           </div>
         </div>
       </div>
-      
+
+      <div class="grafico-container">
+        <h3 class="grafico-titulo">Resumo de Entradas e Saídas por Mês</h3>
+        <div class="grafico-canvas-wrapper">
+          <canvas baseChart [data]="barChartData" [options]="barChartOptions" [type]="barChartType"></canvas>
+        </div>
+      </div>
+
       <div *ngIf="pesquisaRealizada && termoBusca && movimentacoesExibidas.length > 0" class="search-result-message">
         Resultados da pesquisa por "{{ termoBusca }}": {{ movimentacoesExibidas.length }} movimentação(ões) encontrada(s)
       </div>
-      <div *ngIf="pesquisaRealizada && termoBusca && movimentacoesExibidas.length === 0"
-        class="search-result-message no-results">
+      <div *ngIf="pesquisaRealizada && termoBusca && movimentacoesExibidas.length === 0" class="search-result-message no-results">
         Nenhuma movimentação encontrada para "{{ termoBusca }}"
       </div>
-      <div *ngIf="movimentacoesExibidas.length === 0 && !pesquisaRealizada" class="status-message">Nenhuma movimentação
-        registrada.</div>
+      <div *ngIf="movimentacoesExibidas.length === 0 && !pesquisaRealizada" class="status-message">
+        Nenhuma movimentação registrada.
+      </div>
       <div class="item-list">
-        <div class="item-card" *ngFor="let movimentacao of movimentacoesExibidas" (click)="selecionarItem(movimentacao)"
-          [ngClass]="{'item-selecionado': movimentacao.id === itemSelecionado?.id}">
+        <div class="item-card" *ngFor="let movimentacao of movimentacoesExibidas" (click)="selecionarItem(movimentacao)" [ngClass]="{'item-selecionado': movimentacao.id === itemSelecionado?.id}">
           <div class="card-section">
             <span class="card-label">Id</span>
             <span class="card-value">{{ movimentacao.id }}</span>
@@ -76,10 +75,12 @@
             <span class="card-value">{{ movimentacao.quantidade }}</span>
           </div>
           <div class="card-section">
+
             <span class="card-label">Valor Total</span>
             <span class="card-value" 
                   [class.amount-entrada]="movimentacao.valorTotal < 0"
                   [class.amount-saida]="movimentacao.valorTotal > 0">
+
               <ng-container *ngIf="movimentacao.valorTotal > 0">+</ng-container>{{ movimentacao.valorTotal | currency:'BRL':'symbol':'1.2-2' }}
             </span>
           </div>
