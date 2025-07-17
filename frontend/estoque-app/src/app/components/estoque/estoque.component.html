@@ -38,19 +38,17 @@
       <div class="item-list">
         <div 
           class="item-card" 
-          *ngFor="let produto of estoqueExibido"
-          (click)="selecionarItem(produto)"
-          [ngClass]="{'item-selecionado': produto.id === itemSelecionado?.id}">
+          *ngFor="let produto of estoqueExibido">
           <div class="card-section id-section">
             <span class="card-label">ID</span>
             <span class="card-value">{{ produto.id }}</span>
           </div>
           <div class="card-section name-section">
-            <span class="card-label">NOME</span>
+            <span class="card-label">Nome</span>
             <span class="card-value">{{ produto.nome }}</span>
           </div>
           <div class="card-section quantity-section">
-            <span class="card-label">QUANTIDADE</span>
+            <span class="card-label">Quantidade</span>
             <span class="card-value">{{ produto.quantidade | number }}</span>
           </div>
           <div class="card-actions">

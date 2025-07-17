@@ -176,14 +176,7 @@ export class MovimentacaoComponent implements OnInit {
     this.pesquisaRealizada = false;
   }
 
-  selecionarItem(movimentacao: Movimentacao): void {
-    if (this.itemSelecionado?.id === movimentacao.id) {
-      this.itemSelecionado = null;
-    } else {
-      this.itemSelecionado = movimentacao;
-    }
-  }
-
+  
   abrirModalAdicionar(): void {
     console.log('=== ABRINDO MODAL ===');
     console.log('Usuario logado:', this.usuarioLogado);

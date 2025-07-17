@@ -222,9 +222,11 @@ $dark: #343a40;
 }
 
 
-
-
-
+.item-card:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: inherit;
+}
 
 .item-card {
   background: white;
@@ -237,8 +239,9 @@ $dark: #343a40;
   gap: 20px;
   align-items: center;
   cursor: pointer;
-  max-width: 950px;
-  width: 100%;
+  width: 98%;
+  position: relative;
+  overflow: visible;
 }
 
 .card-actions {
@@ -252,26 +255,24 @@ $dark: #343a40;
 
 
 .item-card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  border-color: $primary;
+  transform: scale(1.01);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 
-.item-card.item-selecionado {
-  border-color: $primary;
-  box-shadow: 0 0 0 2px rgba(3,83,164,0.1);
-}
 
   .card-section {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    text-align: center;
+    align-items: center;
 
     .card-label {
       font: 600 0.75rem inherit;
+      font-weight: 600;
       color: $gray;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.1px;
     }
 
     .card-value {
@@ -367,11 +368,7 @@ $dark: #343a40;
       box-sizing: border-box;
       transition: all 0.2s;
 
-      &:focus {
-        border-color: $primary;
-        outline: none;
-        box-shadow: 0 0 0 2px rgba(3,83,164,0.1);
-      }
+      
     }
 
     textarea {
