@@ -36,9 +36,7 @@
       <div class="item-list">
         <div 
           class="item-card" 
-          *ngFor="let usuario of usuariosExibidos; let i = index"
-          (click)="selecionarUsuario(usuario)"
-          [ngClass]="{'item-selecionado': usuario.id === usuarioSelecionado?.id}">
+          *ngFor="let usuario of usuariosExibidos; let i = index">
           <div class="card-section id-section">
             <span class="card-label">ID</span>
             <span class="card-value">{{ i + 1 }}</span>

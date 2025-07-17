@@ -88,9 +88,7 @@ export class FuncionarioComponent implements OnInit {
     this.pesquisaRealizada = false;
   }
 
-  selecionarUsuario(usuario: Usuario): void {
-    this.usuarioSelecionado = usuario;
-  }
+ 
 
   verDetalhes(usuario: Usuario): void {
     this.usuarioDetalhes = usuario;
