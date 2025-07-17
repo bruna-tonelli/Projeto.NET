@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 .register-container {
   display: flex;
   justify-content: center;
@@ -52,7 +54,7 @@ label {
 
 .form-control:focus {
   outline: none;
-  ber-color: #11478E ;ord
+  border-color: #11478E;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
