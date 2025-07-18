@@ -7,6 +7,7 @@ import { MovimentacaoService } from '../services/movimentacao.service';
 import { ProdutoEstoque } from '../models/produto-estoque.model';
 import { Funcionario } from '../models/funcionario.model';
 import { AuthService, UserInfo } from '../services/auth.service';
+import { DarkModeService } from '../services/dark-mode.service';
 
 @Component({
   selector: 'app-movimentacao',
@@ -23,6 +24,7 @@ export class MovimentacaoComponent implements OnInit {
   private listaCompletaMovimentacoes: Movimentacao[] = [];
   public pesquisaRealizada: boolean = false; 
   public usuarioLogado: UserInfo | null = null;
+  public modoEscuroAtivo: boolean = false;
 
   // Listas para seleção
   public produtos: ProdutoEstoque[] = [];
@@ -66,14 +68,19 @@ export class MovimentacaoComponent implements OnInit {
 
   constructor(
     private movimentacaoService: MovimentacaoService,
-    private authService: AuthService
+    private authService: AuthService,
+    private darkModeService: DarkModeService
   ) {}
 
   ngOnInit(): void {
+    this.darkModeService.darkMode$.subscribe(isDark => {
+      this.modoEscuroAtivo = isDark;
+    });
     // Obter o usuário logado
     this.usuarioLogado = this.authService.getCurrentUserValue();
     console.log('Usuário logado:', this.usuarioLogado);
     this.carregarDados();
+    
   }
 
   carregarDados(): void {

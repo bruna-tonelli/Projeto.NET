@@ -151,12 +151,13 @@
 
 
 .app-container.dark-mode {
-  background-color: rgb(64,68,75);
+  background-color: #141414;
   color: #f0f0f0;
 
   .sidebar {
 
     background:linear-gradient(145deg, #2f0b61, #2b166a, #282781);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.5);
 
 
     .menu-item,

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FuncionarioService, Usuario, UsuarioDetalhes } from '../services/funcionario.service';
+import { DarkModeService } from '../services/dark-mode.service';
 
 @Component({
   selector: 'app-funcionario',
@@ -21,10 +22,16 @@ export class FuncionarioComponent implements OnInit {
   isLoading: boolean = false;
   modalDetalhesAberto: boolean = false;
   modalConfirmacaoAberto: boolean = false;
+  public modoEscuroAtivo: boolean = false;
 
-  constructor(private funcionarioService: FuncionarioService) {}
+  constructor(private funcionarioService: FuncionarioService,
+    private darkModeService: DarkModeService
+  ) {}
 
   ngOnInit(): void {
+    this.darkModeService.darkMode$.subscribe(isDark => {
+      this.modoEscuroAtivo = isDark;
+    });
     this.carregarUsuarios();
   }
 
