@@ -59,8 +59,6 @@ export class MovimentacaoComponent implements OnInit {
 
   filtros = {
     tipo: '',
-    valorMin: null as number | null,
-    valorMax: null as number | null,
     dataInicial: null,
     dataFinal: null,
     dataMovimentacao: '' as string,
@@ -193,18 +191,13 @@ export class MovimentacaoComponent implements OnInit {
   this.movimentacoesExibidas = this.listaCompletaMovimentacoes.filter(mov => {
     const tipoOk = !this.filtros.tipo || mov.tipo.toLowerCase() === this.filtros.tipo.toLowerCase();
 
-    const valorMin = this.filtros.valorMin ?? -Infinity;
-    const valorMax = this.filtros.valorMax ?? Infinity;
-    const precoBase = mov.precoVenda ?? mov.precoCompra ?? 0;
-    const valorMinOk = !this.filtroPorValorAtivado || precoBase >= valorMin;
-    const valorMaxOk = !this.filtroPorValorAtivado || precoBase <= valorMax;
 
     // Data segura
     const dataMov = mov.dataMovimentacao ? new Date(mov.dataMovimentacao) : null;
     const dataInicialOk = !this.filtros.dataInicial || (dataMov && dataMov >= new Date(this.filtros.dataInicial));
     const dataFinalOk = !this.filtros.dataFinal || (dataMov && dataMov <= new Date(this.filtros.dataFinal));
 
-    return tipoOk && valorMinOk && valorMaxOk && dataInicialOk && dataFinalOk;
+    return tipoOk && dataInicialOk && dataFinalOk;
   });
 
   this.fecharModalFiltrar();

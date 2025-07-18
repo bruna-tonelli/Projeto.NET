@@ -545,37 +545,7 @@ input[type="number"]::-webkit-outer-spin-button {
         font-family: inherit;
       }
 
-      .valor-toggle {
-        display: flex;
-        align-items: center;
-        margin-top: 16px;
-        gap: 8px;
-
-        input[type="checkbox"] {
-          margin: 0;
-        }
-
-        label {
-          margin: 0;
-          font-weight: 450;
-          font-family: inherit;
-        }
-      }
-
-      .valor-range {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        font-family: inherit;
-
-        label {
-          grid-column: span 2;
-        }
-
-        input {
-          grid-column: span 1;
-        }
-      }
+      
     }
 
     .aplicar-btn {
