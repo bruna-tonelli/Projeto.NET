@@ -28,6 +28,7 @@ export class EstoqueComponent implements OnInit {
     descricao: ''
   };
 
+
   modalEditarAberto = false;
   produtoEditando: ProdutoEstoque | null = null;
   
@@ -185,11 +186,11 @@ export class EstoqueComponent implements OnInit {
 }
 
   abrirModalFiltrar(): void {
-    this.modalAberto = true;
+    this.modalFiltroAberto = true;
   }
 
   fecharModalFiltrar(): void {
-    this.modalAberto = false;
+    this.modalFiltroAberto = false;
   }
 
   removerProduto(id: string | number): void {
