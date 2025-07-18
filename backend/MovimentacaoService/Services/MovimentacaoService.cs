@@ -17,10 +17,17 @@ namespace MovimentacaoService.Services {
         }
 
         public async Task<IEnumerable<Movimentacao>> GetByTipoAsync(string tipo) {
-            return await _context.movimentacao
-                                 .Where(m => m.Tipo.ToUpper() == tipo.ToUpper())
-                                 .ToListAsync();
-        }
+    // Normalizar o tipo para tratar variações de acentuação
+    var tipoNormalizado = tipo.ToUpper()
+        .Replace("SAIDA", "SAÍDA")
+        .Replace("SAÍDA", "SAÍDA"); // Garante que fica padronizado
+        
+        return await _context.movimentacao
+                            .Where(m => m.Tipo.ToUpper() == tipoNormalizado || 
+                                    (tipoNormalizado == "SAÍDA" && (m.Tipo.ToUpper() == "SAIDA" || m.Tipo.ToUpper() == "SAÍDA")) ||
+                                    (tipoNormalizado == "ENTRADA" && m.Tipo.ToUpper() == "ENTRADA"))
+                            .ToListAsync();
+     }
 
         public async Task<IEnumerable<Movimentacao>> FiltrarMovimentacoesAsync(string? tipo, DateTime? dataInicial, DateTime? dataFinal)
         {
@@ -28,7 +35,14 @@ namespace MovimentacaoService.Services {
 
             if (!string.IsNullOrEmpty(tipo))
             {
-                query = query.Where(m => m.Tipo.ToUpper() == tipo.ToUpper());
+                // Normalizar o tipo para tratar variações de acentuação
+                var tipoNormalizado = tipo.ToUpper()
+                    .Replace("SAIDA", "SAÍDA")
+                    .Replace("SAÍDA", "SAÍDA"); // Garante que fica padronizado
+                    
+                query = query.Where(m => m.Tipo.ToUpper() == tipoNormalizado || 
+                                    (tipoNormalizado == "SAÍDA" && (m.Tipo.ToUpper() == "SAIDA" || m.Tipo.ToUpper() == "SAÍDA")) ||
+                                    (tipoNormalizado == "ENTRADA" && m.Tipo.ToUpper() == "ENTRADA"));
             }
 
             if (dataInicial.HasValue)
