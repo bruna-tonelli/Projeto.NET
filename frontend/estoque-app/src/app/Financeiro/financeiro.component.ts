@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Movimentacao } from '../models/movimentacao.model';
 import { MovimentacaoService } from '../services/movimentacao.service';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartConfiguration, ChartType } from 'chart.js';
+import { ChartConfiguration, ChartType, ChartOptions } from 'chart.js';
 import { FinanceiroService, ResumoMensal } from './financeiro.service';
 
 export interface MovimentacaoFinanceira {
@@ -19,46 +19,55 @@ export interface MovimentacaoFinanceira {
 @Component({
   selector: 'app-financeiro',
   standalone: true,
- imports: [
-  CommonModule, 
-  FormsModule,
-  BaseChartDirective // <-- Linha nova e correta
-],
+  imports: [
+    CommonModule, 
+    FormsModule,
+    BaseChartDirective
+  ],
   templateUrl: './financeiro.component.html',
   styleUrls: ['./financeiro.component.scss']
 })
 export class FinanceiroComponent implements OnInit {
+  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
+  
   public termoBusca: string = '';
   public isLoading: boolean = true;
   public movimentacoesExibidas: MovimentacaoFinanceira[] = [];
   public itemSelecionado: MovimentacaoFinanceira | null = null;
-  private listaCompletaMovimentacoes: MovimentacaoFinanceira[] = [];
+  public  listaCompletaMovimentacoes: MovimentacaoFinanceira[] = [];
   public pesquisaRealizada: boolean = false;
-  public caixaDaEmpresa: number = 0; // O saldo agora virá da API
+  public caixaDaEmpresa: number = 0;
+  public dadosGrafico: boolean = false;
+  
+  // Controle de visibilidade do gráfico
+  public mostrarGrafico: boolean = false;
 
-  // --- Configurações do Gráfico ---
+  // Configurações do Gráfico simplificadas
   public barChartType: ChartType = 'bar';
-  public barChartOptions: ChartConfiguration['options'] = {
+  public barChartOptions: ChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
-    scales: {
-      y: { beginAtZero: true, ticks: { callback: value => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(value)) } },
-      x: { ticks: { autoSkip: false, maxRotation: 45, minRotation: 45 } }
-    },
     plugins: {
-      legend: { display: true, position: 'top' },
-      tooltip: {
-        callbacks: {
-          label: context => ` ${context.dataset.label}: ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y)}`
-        }
+      legend: {
+        display: true,
+        position: 'top'
       }
     }
   };
+  
   public barChartData: ChartConfiguration['data'] = {
     labels: [],
     datasets: [
-      { data: [], label: 'Entradas (Vendas)', backgroundColor: '#28a745', borderRadius: 4 },
-      { data: [], label: 'Saídas (Compras)', backgroundColor: '#dc3545', borderRadius: 4 }
+      { 
+        data: [], 
+        label: 'Entradas', 
+        backgroundColor: '#dc3545'
+      },
+      { 
+        data: [], 
+        label: 'Saídas', 
+        backgroundColor: '#28a745'
+      }
     ]
   };
 
@@ -68,38 +77,127 @@ export class FinanceiroComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('🏁 FinanceiroComponent iniciado');
     this.isLoading = true;
     this.carregarMovimentacoes();
     this.carregarDadosFinanceiros();
   }
 
+  // Método para alternar visibilidade do gráfico
+  toggleGrafico(): void {
+    this.mostrarGrafico = !this.mostrarGrafico;
+    console.log('Gráfico visível:', this.mostrarGrafico);
+  }
+
   carregarMovimentacoes(): void {
+    console.log('📦 Carregando movimentações para financeiro...');
+    
     this.movimentacaoService.getMovimentacoesExpandidas().subscribe({
       next: (movimentacoes) => {
+        console.log('📦 Movimentações recebidas:', movimentacoes?.length || 0);
+        
         this.listaCompletaMovimentacoes = movimentacoes.map(mov => this.converterParaMovimentacaoFinanceira(mov));
-        this.movimentacoesExibidas = [...this.listaCompletaMovimentacoes]; // Cria uma nova referência para o array
+        this.movimentacoesExibidas = [...this.listaCompletaMovimentacoes];
+        
+        console.log('💰 Movimentações convertidas:', this.listaCompletaMovimentacoes.length);
       },
-      error: (err) => console.error('Erro ao carregar movimentações', err),
+      error: (err) => {
+        console.error('❌ Erro ao carregar movimentações:', err);
+      },
       complete: () => {
-        this.isLoading = false; // Finaliza o loading após todas as chamadas
+        console.log('✅ Carregamento de movimentações concluído');
+        this.isLoading = false;
       }
     });
   }
 
   carregarDadosFinanceiros(): void {
-    // Busca o saldo da API
-    this.financeiroService.getSaldo().subscribe(saldo => {
-      this.caixaDaEmpresa = saldo;
+    console.log('💰 Carregando dados financeiros...');
+    
+    // Busca o saldo operacional
+    this.financeiroService.getSaldoOperacional().subscribe({
+      next: (saldo) => {
+        console.log('💰 Saldo operacional calculado:', saldo);
+        this.caixaDaEmpresa = saldo;
+      },
+      error: (err) => {
+        console.error('❌ Erro ao carregar saldo:', err);
+      }
     });
 
     // Busca os dados para o gráfico
-    this.financeiroService.getResumoMensal().subscribe(resumos => {
-      if (resumos && resumos.length > 0) {
-        this.barChartData.labels = resumos.map(r => r.nomeMes);
-        this.barChartData.datasets[0].data = resumos.map(r => r.totalEntradas);
-        this.barChartData.datasets[1].data = resumos.map(r => r.totalSaidas);
+    this.movimentacaoService.getMovimentacoesExpandidas().subscribe({
+      next: (movimentacoes) => {
+        console.log('📊 Dados para gráfico:', movimentacoes?.length || 0);
+        
+        const resumoMensal = this.calcularResumoMensal(movimentacoes);
+        console.log('📊 Resumo calculado:', resumoMensal);
+        
+        if (resumoMensal && resumoMensal.length > 0) {
+          this.barChartData = {
+            labels: resumoMensal.map(r => r.nomeMes),
+            datasets: [
+              { 
+                data: resumoMensal.map(r => r.totalEntradas), 
+                label: 'Entradas', 
+                backgroundColor: '#dc3545'
+              },
+              { 
+                data: resumoMensal.map(r => r.totalSaidas), 
+                label: 'Saídas', 
+                backgroundColor: '#28a745'
+              }
+            ]
+          };
+          
+          this.dadosGrafico = true;
+          console.log('📊 Gráfico configurado com sucesso');
+        } else {
+          console.log('⚠️ Nenhum dado para o gráfico');
+          this.dadosGrafico = false;
+        }
+      },
+      error: (err) => {
+        console.error('❌ Erro ao carregar dados do gráfico:', err);
+        this.dadosGrafico = false;
       }
     });
+  }
+
+  private calcularResumoMensal(movimentacoes: Movimentacao[]): ResumoMensal[] {
+    const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    const resumoPorMes = new Map<string, { entradas: number, saidas: number }>();
+
+    movimentacoes.forEach((mov) => {
+      if (mov.dataMovimentacao && mov.precoVenda && mov.quantidade) {
+        const data = new Date(mov.dataMovimentacao);
+        const chave = `${data.getFullYear()}-${data.getMonth()}`;
+        
+        if (!resumoPorMes.has(chave)) {
+          resumoPorMes.set(chave, { entradas: 0, saidas: 0 });
+        }
+        
+        const resumo = resumoPorMes.get(chave)!;
+        const valor = mov.precoVenda * mov.quantidade;
+        
+        if (mov.tipo === 'ENTRADA') {
+          resumo.entradas += valor;
+        } else if (mov.tipo === 'SAÍDA' || mov.tipo === 'SAIDA') {
+          resumo.saidas += valor;
+        }
+      }
+    });
+
+    return Array.from(resumoPorMes.entries()).map(([chave, dados]) => {
+      const [ano, mes] = chave.split('-').map(Number);
+      return {
+        ano,
+        mes,
+        nomeMes: `${meses[mes]}/${ano}`,
+        totalEntradas: dados.entradas,
+        totalSaidas: dados.saidas
+      };
+    }).sort((a, b) => a.ano - b.ano || a.mes - b.mes);
   }
 
   private converterParaMovimentacaoFinanceira(movimentacao: Movimentacao): MovimentacaoFinanceira {
@@ -107,10 +205,11 @@ export class FinanceiroComponent implements OnInit {
     const quantidade = movimentacao.quantidade || 0;
 
     if (movimentacao.tipo === 'ENTRADA') {
-      valorTotal = -(quantidade * (movimentacao.precoCompra || 0));
+      valorTotal = quantidade * (movimentacao.precoVenda || 0);
     } else if (movimentacao.tipo === 'SAIDA' || movimentacao.tipo === 'SAÍDA') {
       valorTotal = quantidade * (movimentacao.precoVenda || 0);
     }
+    
     return {
       id: movimentacao.id,
       produtoNome: movimentacao.produtoNome || 'N/A',
@@ -144,6 +243,4 @@ export class FinanceiroComponent implements OnInit {
     this.pesquisaRealizada = false;
     this.movimentacoesExibidas = [...this.listaCompletaMovimentacoes];
   }
-
-  
 }

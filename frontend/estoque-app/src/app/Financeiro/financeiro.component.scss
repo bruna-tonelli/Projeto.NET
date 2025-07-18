@@ -221,7 +221,7 @@ $dark: #343a40;
   padding: 20px;
   transition: all 0.2s;
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr 1fr 1fr; // ID, Produto, Data, Quantidade, Valor Total
+  grid-template-columns: 0.8fr 2fr 1.2fr 0.8fr 0.8fr 1.4fr; // ID, Produto, Data, Quantidade, Tipo, Valor Total
   gap: 20px;
   align-items: center;
   cursor: pointer;
@@ -516,9 +516,6 @@ input[type="number"]::-webkit-outer-spin-button {
     color: #721c24;
   }
 }
-// ... todo o seu SCSS existente vai aqui ...
-
-// Cole o seu SCSS anterior aqui e adicione este novo bloco no final.
 
 // Estilos para o Gráfico
 .grafico-container {
@@ -543,4 +540,19 @@ input[type="number"]::-webkit-outer-spin-button {
   position: relative;
   height: 350px; // Altura do gráfico
   width: 100%;
+}
+
+.saldo-icon {
+  color: #6c757d;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    color: #0353A4;
+    transform: scale(1.1);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
 }

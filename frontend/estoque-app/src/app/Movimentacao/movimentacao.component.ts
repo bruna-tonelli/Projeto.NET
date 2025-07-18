@@ -149,7 +149,8 @@ export class MovimentacaoComponent implements OnInit {
       observacoes: this.novaMovimentacao.observacoes,
       precoCompra: this.novaMovimentacao.precoCompra,
       precoVenda: this.novaMovimentacao.precoVenda,
-      dataMovimentacao: new Date().toISOString()
+      dataMovimentacao: new Date().toISOString(),
+      valorTotal: this.calcularValorTotal() // ADICIONADO
     };
 
     console.log('Enviando movimentação:', movimentacao);
@@ -299,5 +300,20 @@ export class MovimentacaoComponent implements OnInit {
     
     // Sempre usar o nome do usuário logado, que é mais confiável
     return this.usuarioLogado.name || 'Usuário sem nome';
+  }
+
+  private calcularValorTotal(): number {
+  if (!this.novaMovimentacao.quantidade) {
+    return 0;
+  }
+
+  let preco = 0;
+  if (this.novaMovimentacao.tipo === 'ENTRADA' && this.novaMovimentacao.precoCompra) {
+    preco = this.novaMovimentacao.precoCompra;
+  } else if (this.novaMovimentacao.tipo === 'SAIDA' && this.novaMovimentacao.precoVenda) {
+    preco = this.novaMovimentacao.precoVenda;
+  }
+
+  return preco * this.novaMovimentacao.quantidade;
   }
 }
