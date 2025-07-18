@@ -149,33 +149,44 @@
   </div>
 
   <!-- Modal de filtro -->
-  <div class="modal-backdrop" *ngIf="modalAberto">
-    <div class="modal-produto">
-      <button class="modal-close-btn" type="button" (click)="fecharModalFiltrar()" title="Fechar">
+<div class="modal-filtro" *ngIf="modalFiltroAberto">
+  <div class="filtro-container">
+    <div class="filtro-header">
+      <h2>Filtros</h2>
+      <button class="close-btn" (click)="fecharModalFiltrar()">
         <i class="fas fa-times"></i>
       </button>
-      <h2>Filtros</h2>
-      <form (ngSubmit)="filtrarProduto()" #formProduto="ngForm">
-        <select
-        id="nome"
-        [(ngModel)]="registrarProduto.tipo"
-        name="nome"
-        required
-        (change)="filtrarProduto()">
-        <option value="">Selecione um produto</option>
-        <option *ngFor="let produto of produtos" [value]="produto.tipo">
-          {{ produto.tipo }}
-        </option>
-      </select>
-      <label class="checkbox-label">
-      <input type="checkbox" id="meuCheckbox">
-        Valor
-      </label>
-
-        <button class="btn btn-primary" type="submit" [disabled]="formProduto.invalid">Aplicar</button>
-      </form>
     </div>
+
+    <div class="filtro-body">
+      <!-- Filtro Tipo -->
+      <label>Tipo</label>
+      <select [(ngModel)]="filtros.tipo">
+        <option value="">Todos</option>
+        <option value="entrada">Entrada</option>
+        <option value="saida">Saída</option>
+      </select>
+
+      <!-- Checkbox para ativar filtro de valor -->
+      <div class="valor-toggle">
+        <input type="checkbox" [(ngModel)]="filtroPorValorAtivado" id="valorToggle" />
+        <label for="valorToggle">Valor</label>
+      </div>
+
+      <!-- Filtro de Valor (aparece só se ativado) -->
+      <div class="valor-range" *ngIf="filtroPorValorAtivado">
+        <label>Mínimo</label>
+        <input type="number" [(ngModel)]="filtros.valorMin" placeholder="R$ 0,00" />
+
+        <label>Máximo</label>
+        <input type="number" [(ngModel)]="filtros.valorMax" placeholder="R$ 100,00" />
+      </div>
+    </div>
+
+    <button class="aplicar-btn" (click)="aplicarFiltro()">Aplicar</button>
   </div>
+</div>
+
 
   <!-- Modal de Confirmação de Exclusão -->
   <div class="modal-backdrop" *ngIf="modalConfirmacaoAberto">
