@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovimentacaoService.Data;
 using MovimentacaoService.Models;
-using MovimentacaoService.Repositories;
 using System.Text;
 using System.Text.Json;
 
@@ -10,18 +9,42 @@ namespace MovimentacaoService.Services {
 
         private readonly AppDbContext _context;
         private readonly HttpClient _httpClient;
-        private readonly MovimentacaoRepository _repository;
         private readonly string _produtoServiceUrl = "http://produto-service:8080/api/produtos";
 
-        public MovimentacaoService(AppDbContext context, HttpClient httpClient, MovimentacaoRepository repository) {
+        public MovimentacaoService(AppDbContext context, HttpClient httpClient) {
             _context = context;
             _httpClient = httpClient;
-            _repository = repository;
         }
 
-        public async Task<IEnumerable<Movimentacao>> GetByTipoAsync(string tipo) =>
-            await _repository.GetByTipoAsync(tipo); // Usar o repositório
-        
+        public async Task<IEnumerable<Movimentacao>> GetByTipoAsync(string tipo) {
+            return await _context.movimentacao
+                                 .Where(m => m.Tipo.ToUpper() == tipo.ToUpper())
+                                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Movimentacao>> FiltrarMovimentacoesAsync(string? tipo, DateTime? dataInicial, DateTime? dataFinal)
+        {
+            var query = _context.movimentacao.AsQueryable();
+
+            if (!string.IsNullOrEmpty(tipo))
+            {
+                query = query.Where(m => m.Tipo.ToUpper() == tipo.ToUpper());
+            }
+
+            if (dataInicial.HasValue)
+            {
+                query = query.Where(m => m.DataMovimentacao >= dataInicial.Value);
+            }
+
+            if (dataFinal.HasValue)
+            {
+                // Adicionar 23:59:59 à data final para incluir todo o dia
+                var dataFinalCompleta = dataFinal.Value.Date.AddDays(1).AddTicks(-1);
+                query = query.Where(m => m.DataMovimentacao <= dataFinalCompleta);
+            }
+
+            return await query.OrderByDescending(m => m.DataMovimentacao).ToListAsync();
+        }
 
         public async Task<IEnumerable<Movimentacao>> GetAllAsync() =>
             await _context.movimentacao.ToListAsync();
@@ -223,6 +246,17 @@ namespace MovimentacaoService.Services {
             // Se não for um número válido, retorna vazio
             return new List<Movimentacao>();
         }
+    }
 
+    // DTO para deserializar o produto
+    public class ProdutoDto
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; } = string.Empty;
+        public string Descricao { get; set; } = string.Empty;
+        public int Quantidade { get; set; }
+        public decimal PrecoCompra { get; set; }
+        public decimal PrecoVenda { get; set; }
+        public bool Ativo { get; set; }
     }
 }

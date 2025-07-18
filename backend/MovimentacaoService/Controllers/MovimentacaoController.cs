@@ -22,6 +22,16 @@ namespace MovimentacaoService.Controllers {
             return Ok(movimentacoes);
         }
 
+        [HttpGet("filtrar")]
+        public async Task<IActionResult> FiltrarMovimentacoes(
+            [FromQuery] string? tipo,
+            [FromQuery] DateTime? dataInicial,
+            [FromQuery] DateTime? dataFinal)
+        {
+            var movimentacoes = await _service.FiltrarMovimentacoesAsync(tipo, dataInicial, dataFinal);
+            return Ok(movimentacoes);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Get() => Ok(await _service.GetAllAsync());
 

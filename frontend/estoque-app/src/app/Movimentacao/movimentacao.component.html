@@ -38,7 +38,7 @@
       <div *ngIf="pesquisaRealizada && termoBusca && movimentacoesExibidas.length === 0" class="search-result-message no-results">
         Nenhuma movimentação encontrada para "{{ termoBusca }}"
       </div>
-      <div *ngIf="movimentacoesExibidas.length === 0 && !pesquisaRealizada" class="status-message">Nenhum produto encontrado.</div>
+      <div *ngIf="movimentacoesExibidas.length === 0 && !pesquisaRealizada" class="status-message">Nenhuma movimentação encontrada.</div>
       <div class="item-list">
         <div 
           class="item-card" 
@@ -146,8 +146,8 @@
       <label>Tipo</label>
       <select [(ngModel)]="filtros.tipo">
         <option value="">Todos</option>
-        <option value="entrada">Entrada</option>
-        <option value="saida">Saída</option>
+        <option value="ENTRADA">Entrada</option>
+        <option value="SAIDA">Saída</option>
       </select>
 
       <!-- Filtro por Data -->
@@ -158,9 +158,12 @@
         <label>Data Final</label>
         <input type="date" [(ngModel)]="filtros.dataFinal" />
       </div>
+    </div>
 
-
-    <button class="aplicar-btn" (click)="aplicarFiltro()">Aplicar</button>
+    <div class="filtro-footer">
+      <button class="limpar-btn" (click)="limparFiltros()">Limpar Filtros</button>
+      <button class="aplicar-btn" (click)="aplicarFiltro()">Aplicar</button>
+    </div>
   </div>
 </div>
 

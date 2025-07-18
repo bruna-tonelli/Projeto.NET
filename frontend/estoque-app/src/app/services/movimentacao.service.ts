@@ -16,15 +16,18 @@ export class MovimentacaoService {
 
   constructor(private http: HttpClient) { }
 
+  // Método básico para buscar movimentações sem expansão
   getMovimentacoes(): Observable<Movimentacao[]> {
+    console.log('🔍 Buscando movimentações básicas...');
     return this.http.get<Movimentacao[]>(this.apiUrl).pipe(
-      map(movimentacoes => {
-        // Para cada movimentação, buscar informações do produto e funcionário
-        return movimentacoes.map(mov => this.expandirDadosMovimentacao(mov));
+      catchError(error => {
+        console.error('❌ Erro ao buscar movimentações:', error);
+        return of([]);
       })
     );
   }
 
+  // Método principal para buscar movimentações com dados expandidos
   getMovimentacoesExpandidas(): Observable<Movimentacao[]> {
     console.log('🔍 Buscando movimentações expandidas...');
     return this.http.get<Movimentacao[]>(this.apiUrl).pipe(
@@ -33,10 +36,11 @@ export class MovimentacaoService {
         console.log('📦 Primeira movimentação recebida:', movimentacoes?.[0]);
         
         if (!movimentacoes || movimentacoes.length === 0) {
+          console.log('📦 Nenhuma movimentação encontrada');
           return of([]);
         }
 
-        // Primeiro, buscar todos os produtos e funcionários uma única vez
+        // Buscar produtos e funcionários em paralelo
         return forkJoin({
           produtos: this.getProdutos().pipe(catchError(() => of([]))),
           funcionarios: this.getFuncionarios().pipe(catchError(() => of([])))
@@ -44,66 +48,26 @@ export class MovimentacaoService {
           map(({ produtos, funcionarios }) => {
             console.log('🏭 Produtos carregados:', produtos?.length || 0);
             console.log('👥 Funcionários carregados:', funcionarios?.length || 0);
-            console.log('👥 Primeiro funcionário:', funcionarios?.[0]);
             
-            // Mapear movimentações com os nomes dos produtos e funcionários
+            // Expandir cada movimentação com nomes
             return movimentacoes.map(mov => {
               const produto = produtos.find(p => p.id === mov.produtoId);
+              const funcionario = funcionarios.find(f => String(f.id) === String(mov.funcionarioId));
               
-              console.log(`🔍 Movimentação ${mov.id}:`);
-              console.log(`   - funcionarioId da movimentação: "${mov.funcionarioId}"`);
-              console.log(`   - tipo do funcionarioId: ${typeof mov.funcionarioId}`);
-              console.log(`   - lista de funcionários disponíveis:`, funcionarios.map(f => ({id: f.id, nome: f.nome, tipo: typeof f.id})));
-              
-              // Busca mais robusta do funcionário - comparando strings
-              let funcionario = funcionarios.find(f => {
-                const funcId = String(f.id).trim().toLowerCase();
-                const movFuncId = String(mov.funcionarioId).trim().toLowerCase();
-                console.log(`   - comparando: "${funcId}" === "${movFuncId}" = ${funcId === movFuncId}`);
-                console.log(`   - f.id original:`, f.id, typeof f.id);
-                console.log(`   - mov.funcionarioId original:`, mov.funcionarioId, typeof mov.funcionarioId);
-                return funcId === movFuncId;
-              });
-
-              // Se não encontrou, tenta busca mais flexível
-              if (!funcionario) {
-                console.log(`   - ⚠️ Funcionário não encontrado com busca exata, tentando busca flexível...`);
-                funcionario = funcionarios.find(f => 
-                  f.id === mov.funcionarioId || 
-                  String(f.id) === String(mov.funcionarioId) ||
-                  (f.id && f.id.toString().includes(String(mov.funcionarioId))) ||
-                  (f.id && String(mov.funcionarioId).includes(f.id.toString()))
-                );
-                if (funcionario) {
-                  console.log(`   - ✅ Funcionário encontrado com busca flexível:`, funcionario);
-                }
-              }
-              
-              console.log(`   - funcionário encontrado:`, funcionario);
-              console.log(`   - nome do funcionário: ${funcionario?.nome}`);
-              
-              const resultado = {
+              return {
                 ...mov,
                 produtoNome: produto?.nome || `Produto ID: ${mov.produtoId}`,
-                funcionarioNome: funcionario?.nome || `Funcionário não encontrado (ID: ${mov.funcionarioId})`
+                funcionarioNome: funcionario?.nome || `Funcionário ID: ${mov.funcionarioId}`
               };
-              
-              console.log(`   - resultado final:`, resultado);
-              return resultado;
             });
           })
         );
       }),
       catchError(error => {
-        console.error('❌ Erro ao buscar movimentações:', error);
+        console.error('❌ Erro ao buscar movimentações expandidas:', error);
         return of([]);
       })
     );
-  }
-
-  private expandirDadosMovimentacao(movimentacao: Movimentacao): Movimentacao {
-    // Esta função será expandida quando tivermos os dados do backend
-    return movimentacao;
   }
 
   getMovimentacao(id: number): Observable<Movimentacao> {
@@ -123,17 +87,110 @@ export class MovimentacaoService {
   }
 
   pesquisarMovimentacoes(termo: string): Observable<Movimentacao[]> {
-    return this.http.get<Movimentacao[]>(`${this.apiUrl}/pesquisar?termo=${termo}`);
+    return this.http.get<Movimentacao[]>(`${this.apiUrl}/pesquisar?termo=${termo}`).pipe(
+      catchError(error => {
+        console.error('❌ Erro ao pesquisar movimentações:', error);
+        return of([]);
+      })
+    );
+  }
+
+  // Filtrar movimentações via backend
+filtrarMovimentacoes(tipo?: string, dataInicial?: Date, dataFinal?: Date): Observable<Movimentacao[]> {
+  let params = new URLSearchParams();
+  
+  try {
+    if (tipo && tipo !== '') {
+      params.append('tipo', tipo);
+    }
+    
+    if (dataInicial) {
+      let dataString: string;
+      if (dataInicial instanceof Date) {
+        dataString = dataInicial.toISOString();
+      } else if (typeof dataInicial === 'string') {
+        dataString = new Date(dataInicial).toISOString();
+      } else {
+        dataString = new Date(dataInicial as any).toISOString();
+      }
+      params.append('dataInicial', dataString);
+    }
+    
+    if (dataFinal) {
+      let dataString: string;
+      if (dataFinal instanceof Date) {
+        dataString = dataFinal.toISOString();
+      } else if (typeof dataFinal === 'string') {
+        dataString = new Date(dataFinal).toISOString();
+      } else {
+        dataString = new Date(dataFinal as any).toISOString();
+      }
+      params.append('dataFinal', dataString);
+    }
+
+    const url = `${this.apiUrl}/filtrar${params.toString() ? '?' + params.toString() : ''}`;
+    console.log('🔍 URL de filtro:', url);
+    console.log('🔍 Parâmetros processados:', params.toString());
+    
+    return this.http.get<Movimentacao[]>(url).pipe(
+      catchError(error => {
+        console.error('❌ Erro ao filtrar movimentações:', error);
+        return of([]);
+      })
+    );
+    
+  } catch (error) {
+    console.error('❌ Erro ao processar parâmetros de filtro:', error);
+    return of([]);
+  }
+}
+
+  // Expandir movimentações que já foram buscadas
+  expandirMovimentacoes(movimentacoes: Movimentacao[]): Observable<Movimentacao[]> {
+    if (!movimentacoes || movimentacoes.length === 0) {
+      return of([]);
+    }
+
+    return forkJoin({
+      produtos: this.getProdutos().pipe(catchError(() => of([]))),
+      funcionarios: this.getFuncionarios().pipe(catchError(() => of([])))
+    }).pipe(
+      map(({ produtos, funcionarios }) => {
+        return movimentacoes.map(mov => {
+          const produto = produtos.find(p => p.id === mov.produtoId);
+          const funcionario = funcionarios.find(f => String(f.id) === String(mov.funcionarioId));
+          
+          return {
+            ...mov,
+            produtoNome: produto?.nome || `Produto ID: ${mov.produtoId}`,
+            funcionarioNome: funcionario?.nome || `Funcionário ID: ${mov.funcionarioId}`
+          };
+        });
+      }),
+      catchError(error => {
+        console.error('❌ Erro ao expandir movimentações:', error);
+        return of(movimentacoes); // Retorna as movimentações originais se der erro
+      })
+    );
   }
 
   // Métodos auxiliares para buscar produtos e funcionários
   getProdutos(): Observable<ProdutoEstoque[]> {
-    return this.http.get<ProdutoEstoque[]>(this.produtosUrl);
+    return this.http.get<ProdutoEstoque[]>(this.produtosUrl).pipe(
+      catchError(error => {
+        console.error('❌ Erro ao buscar produtos:', error);
+        return of([]);
+      })
+    );
   }
 
   getFuncionarios(): Observable<Funcionario[]> {
     return this.http.get<{success: boolean, message: string, data: Funcionario[]}>(this.funcionariosUrl).pipe(
-      map(response => response.data || [])
+      map(response => response.data || []),
+      catchError(error => {
+        console.error('❌ Erro ao buscar funcionários:', error);
+        return of([]);
+      })
     );
   }
 }

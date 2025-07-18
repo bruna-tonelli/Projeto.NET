@@ -11,15 +11,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Adicionar HttpClient
 builder.Services.AddHttpClient();
 
+// Registrar apenas o service (sem repository)
 builder.Services.AddScoped<MovimentacaoService.Services.MovimentacaoService>();
 
 builder.Services.AddCors(options => {
@@ -32,24 +31,26 @@ builder.Services.AddCors(options => {
 
 var app = builder.Build();
 
-// Migra��o autom�tica do banco de dados
+// Migração automática do banco de dados
 using (var scope = app.Services.CreateScope()) {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    context.Database.Migrate();
-
+    try {
+        context.Database.Migrate();
+        Console.WriteLine("Migração do banco executada com sucesso");
+    } catch (Exception ex) {
+        Console.WriteLine($"Erro na migração: {ex.Message}");
+    }
 }
 
-// Configura��o do pipeline HTTP
+// Configuração do pipeline HTTP
 if (app.Environment.IsDevelopment()) {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseCors(); // Adicione esta linha antes de app.UseAuthorization();
-
+app.UseCors();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
