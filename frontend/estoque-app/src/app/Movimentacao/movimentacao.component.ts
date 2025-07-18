@@ -53,6 +53,17 @@ export class MovimentacaoComponent implements OnInit {
   modalConfirmacaoAberto = false;
   movimentacaoParaRemover: Movimentacao | null = null;
 
+  modalFiltroAberto = false;
+
+  filtroPorValorAtivado = false;
+
+  filtros = {
+    tipo: '',
+    dataInicial: null,
+    dataFinal: null,
+    dataMovimentacao: '' as string,
+  };
+
   constructor(
     private movimentacaoService: MovimentacaoService,
     private authService: AuthService
@@ -175,6 +186,31 @@ export class MovimentacaoComponent implements OnInit {
     this.termoBusca = '';
     this.movimentacoesExibidas = this.listaCompletaMovimentacoes;
     this.pesquisaRealizada = false;
+  }
+
+  aplicarFiltro(): void {
+  this.movimentacoesExibidas = this.listaCompletaMovimentacoes.filter(mov => {
+    const tipoOk = !this.filtros.tipo || mov.tipo.toLowerCase() === this.filtros.tipo.toLowerCase();
+
+
+    // Data segura
+    const dataMov = mov.dataMovimentacao ? new Date(mov.dataMovimentacao) : null;
+    const dataInicialOk = !this.filtros.dataInicial || (dataMov && dataMov >= new Date(this.filtros.dataInicial));
+    const dataFinalOk = !this.filtros.dataFinal || (dataMov && dataMov <= new Date(this.filtros.dataFinal));
+
+    return tipoOk && dataInicialOk && dataFinalOk;
+  });
+
+  this.fecharModalFiltrar();
+}
+
+
+  abrirModalFiltrar(): void {
+    this.modalFiltroAberto = true;
+  }
+
+  fecharModalFiltrar(): void {
+    this.modalFiltroAberto = false;
   }
 
   

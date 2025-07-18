@@ -1,14 +1,12 @@
-<div class="app-container" [class.sidebar-collapsed]="sidebarColapsada" [class.no-sidebar]="!showSidebar">
+<div class="app-container" [class.sidebar-collapsed]="sidebarColapsada" [class.no-sidebar]="!showSidebar"
+  [class.dark-mode]="isDarkMode">
   <aside class="sidebar" *ngIf="showSidebar">
     <button class="sidebar-toggle" (click)="toggleSidebar()" aria-label="Abrir/Fechar menu">
       <i class="fas fa-bars"></i>
     </button>
     <div class="logo-container">
-      <img src="assets/images/logo.png" 
-           alt="Logo da Empresa" 
-           class="logo-image"
-           (load)="onLogoLoad()"
-           (error)="onLogoError()">
+      <img src="assets/images/logo.png" alt="Logo da Empresa" class="logo-image" (load)="onLogoLoad()"
+        (error)="onLogoError()">
     </div>
     <nav class="menu">
       <a class="menu-item" routerLink="/estoque" routerLinkActive="active">
@@ -32,6 +30,14 @@
         <span>Inventário</span>
       </a>
     </nav>
+    <a class="menu-item" *ngIf="!isDarkMode" (click)="toggleDarkMode()" style="cursor: pointer;">
+      <i class="fa-solid fa-moon"></i>
+      <span>Modo Escuro</span>
+    </a>
+    <a class="menu-item" *ngIf="isDarkMode" (click)="toggleDarkMode()" style="cursor: pointer;">
+      <i class="fa-solid fa-sun"></i>
+      <span>Modo Claro</span>
+    </a>
     <a class="logout-item" (click)="logout()" style="cursor: pointer;">
       <i class="fas fa-sign-out-alt"></i>
       <span>Sair</span>

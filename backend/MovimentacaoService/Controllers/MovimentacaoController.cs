@@ -13,6 +13,15 @@ namespace MovimentacaoService.Controllers {
         private readonly MovimentacaoService.Services.MovimentacaoService _service;
         public MovimentacaoController(MovimentacaoService.Services.MovimentacaoService service) => _service = service;
 
+        [HttpGet("tipo/{tipo}")] // Novo endpoint para filtro por tipo
+        public async Task<IActionResult> GetByTipo(string tipo) {
+            var movimentacoes = await _service.GetByTipoAsync(tipo);
+            if (!movimentacoes.Any()) {
+                return NotFound($"Nenhuma movimentação encontrada para o tipo: {tipo}");
+            }
+            return Ok(movimentacoes);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Get() => Ok(await _service.GetAllAsync());
 

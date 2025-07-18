@@ -8,6 +8,12 @@ namespace MovimentacaoService.Repositories {
         private readonly AppDbContext _context;
         public MovimentacaoRepository(AppDbContext context) => _context = context;
 
+        public async Task<IEnumerable<Movimentacao>> GetByTipoAsync(string tipo) {
+            return await _context.movimentacao
+                                 .Where(m => m.Tipo.ToUpper() == tipo.ToUpper())
+                                 .ToListAsync();
+        }
+
         public async Task<IEnumerable<Movimentacao>> GetAllAsync() =>
             await _context.movimentacao.ToListAsync();
 
