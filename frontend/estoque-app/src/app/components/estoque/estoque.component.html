@@ -139,17 +139,18 @@
     </div>
   </div>
 
+  <!--Filtro -->
+
 <div class="modal-filtro" *ngIf="modalFiltroAberto">
-  <div class="filtro-container">
-    <div class="filtro-header">
+  <div class="filtro-container" [class.filtro-container-dark]  = "modoEscuroAtivo">
+    <div class="filtro-header" [class.filtro-header-dark] = "modoEscuroAtivo">
       <h2>Filtros</h2>
-      <button class="close-btn" (click)="fecharModalFiltrar()">
+      <button class="close-btn" [class.close-btn-dark] = "modoEscuroAtivo" (click)="fecharModalFiltrar()">
         <i class="fas fa-times"></i>
       </button>
     </div>
 
-    <div class="filtro-body">
-      <!-- Filtro Tipo -->
+    <div class="filtro-body" [class.filtro-body-dark] = "modoEscuroAtivo">
       <label>Tipo</label>
       <select [(ngModel)]="filtros.tipo">
         <option value="">Todos</option>
@@ -157,11 +158,11 @@
         <option value="saida">Saída</option>
       </select>
 
-      <button class="aplicar-btn" (click)="aplicarFiltro()">Aplicar</button>
+      <button class="aplicar-btn" [class.aplicar-btn-dark] = "modoEscuroAtivo" (click)="aplicarFiltro()">Aplicar</button>
     </div>
   </div>
 
-
+<!--Modal Confirmação-->
   <div class="modal-backdrop" *ngIf="modalConfirmacaoAberto">
     <div class="modal-confirmacao">
       <div class="modal-icon">
