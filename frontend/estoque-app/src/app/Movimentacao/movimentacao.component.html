@@ -159,21 +159,6 @@
         <input type="date" [(ngModel)]="filtros.dataFinal" />
       </div>
 
-      <!-- Checkbox para ativar filtro de valor -->
-      <div class="valor-toggle">
-        <input type="checkbox" [(ngModel)]="filtroPorValorAtivado" id="valorToggle" />
-        <label for="valorToggle">Valor</label>
-      </div>
-
-      <!-- Filtro de Valor (aparece só se ativado) -->
-      <div class="valor-range" *ngIf="filtroPorValorAtivado">
-        <label>Mínimo</label>
-        <input type="number" [(ngModel)]="filtros.valorMin" placeholder="R$ 0,00" />
-
-        <label>Máximo</label>
-        <input type="number" [(ngModel)]="filtros.valorMax" placeholder="R$ 100,00" />
-      </div>
-    </div>
 
     <button class="aplicar-btn" (click)="aplicarFiltro()">Aplicar</button>
   </div>

@@ -42,9 +42,7 @@ export class EstoqueComponent implements OnInit {
   filtroPorValorAtivado = false;
 
   filtros = {
-    tipo: '',
-    valorMin: null as number | null,
-    valorMax: null as number | null
+    tipo: ''
   };
 
 
@@ -187,11 +185,9 @@ export class EstoqueComponent implements OnInit {
 
   aplicarFiltro(): void {
     this.estoqueExibido = this.listaCompletaEstoque.filter(produto => {
-      const tipoOk = !this.filtros.tipo || produto.descricao.toLowerCase().includes(this.filtros.tipo.toLowerCase());
-      const valorMinOk = !this.filtroPorValorAtivado || this.filtros.valorMin == null || produto.precoVenda >= this.filtros.valorMin!;
-      const valorMaxOk = !this.filtroPorValorAtivado || this.filtros.valorMax == null || produto.precoVenda <= this.filtros.valorMax!;
-      return tipoOk && valorMinOk && valorMaxOk;
-    });
+    const tipoOk = !this.filtros.tipo || produto.descricao.toLowerCase().includes(this.filtros.tipo.toLowerCase());
+    return tipoOk;
+  });
 
     this.fecharModalFiltrar();
   }

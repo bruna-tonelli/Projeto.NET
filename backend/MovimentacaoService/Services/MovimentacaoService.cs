@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovimentacaoService.Data;
 using MovimentacaoService.Models;
+using MovimentacaoService.Repositories;
 using System.Text;
 using System.Text.Json;
 
@@ -9,12 +10,18 @@ namespace MovimentacaoService.Services {
 
         private readonly AppDbContext _context;
         private readonly HttpClient _httpClient;
+        private readonly MovimentacaoRepository _repository;
         private readonly string _produtoServiceUrl = "http://produto-service:8080/api/produtos";
 
-        public MovimentacaoService(AppDbContext context, HttpClient httpClient) {
+        public MovimentacaoService(AppDbContext context, HttpClient httpClient, MovimentacaoRepository repository) {
             _context = context;
             _httpClient = httpClient;
+            _repository = repository;
         }
+
+        public async Task<IEnumerable<Movimentacao>> GetByTipoAsync(string tipo) =>
+            await _repository.GetByTipoAsync(tipo); // Usar o repositório
+        
 
         public async Task<IEnumerable<Movimentacao>> GetAllAsync() =>
             await _context.movimentacao.ToListAsync();

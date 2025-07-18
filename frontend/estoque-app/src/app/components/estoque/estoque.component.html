@@ -139,36 +139,23 @@
     </div>
   </div>
 
-  <div class="modal-filtro" *ngIf="modalFiltroAberto">
-    <div class="filtro-container">
-      <div class="filtro-header">
-        <h2>Filtros</h2>
-        <button class="close-btn" (click)="fecharModalFiltrar()">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
+<div class="modal-filtro" *ngIf="modalFiltroAberto">
+  <div class="filtro-container">
+    <div class="filtro-header">
+      <h2>Filtros</h2>
+      <button class="close-btn" (click)="fecharModalFiltrar()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
 
-      <div class="filtro-body">
-        <label>Tipo</label>
-        <select [(ngModel)]="filtros.tipo">
-          <option value="">Todos</option>
-          <option value="entrada">Entrada</option>
-          <option value="saida">Saída</option>
-        </select>
-
-        <div class="valor-toggle">
-          <input type="checkbox" [(ngModel)]="filtroPorValorAtivado" id="valorToggle" />
-          <label for="valorToggle">Valor</label>
-        </div>
-
-        <div class="valor-range" *ngIf="filtroPorValorAtivado">
-          <label>Mínimo</label>
-          <input type="number" [(ngModel)]="filtros.valorMin" placeholder="R$ 0,00" />
-
-          <label>Máximo</label>
-          <input type="number" [(ngModel)]="filtros.valorMax" placeholder="R$ 100,00" />
-        </div>
-      </div>
+    <div class="filtro-body">
+      <!-- Filtro Tipo -->
+      <label>Tipo</label>
+      <select [(ngModel)]="filtros.tipo">
+        <option value="">Todos</option>
+        <option value="entrada">Entrada</option>
+        <option value="saida">Saída</option>
+      </select>
 
       <button class="aplicar-btn" (click)="aplicarFiltro()">Aplicar</button>
     </div>
