@@ -1,28 +1,28 @@
-<title>Estoque</title> <base href="/estoque">
-<div class="page-container">
+<title>Estoque</title>
+<base href="/estoque">
+<div class="page-container" ng-class="{'dark-mode': modoEscuroAtivo}">
   <header class="page-header">
     <div class="search-container">
-      <div class="search-box search-box-small">
+      <div class="search-box search-box-small" [class.dark]="modoEscuroAtivo">
         <i class="fas fa-search search-icon"></i>
-        <input 
-          type="text" 
-          placeholder="Pesquise por nome ou por Id"
-          [(ngModel)]="termoBusca"
-          (input)="buscar()"
+        <input type="text" placeholder="Pesquise por nome ou por Id" [(ngModel)]="termoBusca" (input)="buscar()"
           (keyup.enter)="pesquisarPorBotao()">
-        <button *ngIf="pesquisaRealizada || termoBusca" class="btn-clear-inline" (click)="limparPesquisa()" title="Limpar pesquisa">
+        <button *ngIf="pesquisaRealizada || termoBusca" class="btn-clear-inline" (click)="limparPesquisa()"
+          title="Limpar pesquisa">
           <i class="fas fa-times"></i>
         </button>
       </div>
-      <button class="btn btn-search" (click)="pesquisarPorBotao()" title="Pesquisar">
+      <button class="btn btn-search" [class.btn-search-dark]="modoEscuroAtivo" (click)="pesquisarPorBotao()" title="Pesquisar">
         <i class="fas fa-search"></i>
       </button>
-      <button class="btn btn-filtro" (click)="abrirModalFiltrar()">
+
+      <button class="btn btn-filtro" [class.btn-filtro-dark]="modoEscuroAtivo" (click)="abrirModalFiltrar()">
         <i class="fa-solid fa-sliders"></i>
       </button>
+
     </div>
     <div class="actions">
-      <button class="btn btn-primary" (click)="abrirModalAdicionar()">
+      <button class="btn btn-primary" [class.btn-roxo-dark]="modoEscuroAtivo" (click)="abrirModalAdicionar()">
         <i class="fas fa-plus"></i> ADICIONAR PRODUTO
       </button>
     </div>
@@ -34,14 +34,14 @@
       <div *ngIf="pesquisaRealizada && termoBusca && estoqueExibido.length > 0" class="search-result-message">
         Resultados da pesquisa por "{{ termoBusca }}": {{ estoqueExibido.length }} produto(s) encontrado(s)
       </div>
-      <div *ngIf="pesquisaRealizada && termoBusca && estoqueExibido.length === 0" class="search-result-message no-results">
+      <div *ngIf="pesquisaRealizada && termoBusca && estoqueExibido.length === 0"
+        class="search-result-message no-results">
         Nenhum produto encontrado para "{{ termoBusca }}"
       </div>
-      <div *ngIf="estoqueExibido.length === 0 && !pesquisaRealizada" class="status-message">Nenhum produto encontrado.</div>
+      <div *ngIf="estoqueExibido.length === 0 && !pesquisaRealizada" class="status-message">Nenhum produto encontrado.
+      </div>
       <div class="item-list">
-        <div 
-          class="item-card" 
-          *ngFor="let produto of estoqueExibido">
+        <div class="item-card" *ngFor="let produto of estoqueExibido">
           <div class="card-section id-section">
             <span class="card-label">ID</span>
             <span class="card-value">{{ produto.id }}</span>
@@ -55,17 +55,11 @@
             <span class="card-value">{{ produto.quantidade | number }}</span>
           </div>
           <div class="card-actions">
-            <button 
-              class="btn btn-edit" 
-              type="button"
-              (click)="editarProduto(produto); $event.stopPropagation()"
+            <button class="btn btn-edit" type="button" (click)="editarProduto(produto); $event.stopPropagation()"
               title="Editar produto">
               <i class="fas fa-edit"></i>
             </button>
-            <button 
-              class="btn btn-delete" 
-              type="button"
-              (click)="removerProduto(produto.id!); $event.stopPropagation()"
+            <button class="btn btn-delete" type="button" (click)="removerProduto(produto.id!); $event.stopPropagation()"
               title="Remover produto">
               <i class="fas fa-trash"></i>
             </button>
@@ -75,7 +69,6 @@
     </ng-container>
   </section>
 
-  <!-- Modal de Adicionar Produto -->
   <div class="modal-backdrop" *ngIf="modalAberto">
     <div class="modal-produto">
       <button class="modal-close-btn" type="button" (click)="fecharModal()" title="Fechar">
@@ -84,15 +77,11 @@
       <h2>Novo Produto</h2>
       <form (ngSubmit)="adicionarProduto()" #formProduto="ngForm">
         <label for="nome">Nome</label>
-        <input id="nome" type="text" placeholder="Ex. Mouse Razer X" [(ngModel)]="novoProduto.nome" name="nome" required>
+        <input id="nome" type="text" placeholder="Ex. Mouse Razer X" [(ngModel)]="novoProduto.nome" name="nome"
+          required>
 
         <label for="quantidade">Quantidade</label>
-        <input 
-          id="quantidade" 
-          type="number" 
-          value="0" 
-          readonly 
-          class="input-readonly"
+        <input id="quantidade" type="number" value="0" readonly class="input-readonly"
           title="A quantidade inicial é sempre 0. Use movimentações para adicionar estoque">
         <small class="info-text">
           <i class="fas fa-info-circle"></i>
@@ -100,20 +89,22 @@
         </small>
 
         <label for="precoCompra">Preço de Compra</label>
-        <input id="precoCompra" type="number" placeholder="Ex. R$10,00" [(ngModel)]="novoProduto.precoCompra" name="precoCompra" required min="0" step="0.01">
+        <input id="precoCompra" type="number" placeholder="Ex. R$10,00" [(ngModel)]="novoProduto.precoCompra"
+          name="precoCompra" required min="0" step="0.01">
 
         <label for="precoVenda">Preço de Venda</label>
-        <input id="precoVenda" type="number" placeholder="Ex. R$15,69" [(ngModel)]="novoProduto.precoVenda" name="precoVenda" required min="0" step="0.01">
+        <input id="precoVenda" type="number" placeholder="Ex. R$15,69" [(ngModel)]="novoProduto.precoVenda"
+          name="precoVenda" required min="0" step="0.01">
 
         <label for="descricao">Descrição</label>
-        <textarea id="descricao" placeholder="Ex. Mouse modelo XYZ" [(ngModel)]="novoProduto.descricao" name="descricao" rows="4" style="resize: vertical;"></textarea>
+        <textarea id="descricao" placeholder="Ex. Mouse modelo XYZ" [(ngModel)]="novoProduto.descricao" name="descricao"
+          rows="4" style="resize: vertical;"></textarea>
 
         <button class="btn btn-primary" type="submit" [disabled]="formProduto.invalid">Salvar</button>
       </form>
     </div>
   </div>
 
-  <!-- Modal de Editar Produto -->
   <div class="modal-backdrop" *ngIf="modalEditarAberto">
     <div class="modal-produto" *ngIf="produtoEditando">
       <button class="modal-close-btn" type="button" (click)="fecharModalEditar()" title="Fechar">
@@ -125,12 +116,7 @@
         <input id="edit-nome" type="text" [(ngModel)]="produtoEditando.nome" name="editNome" required>
 
         <label for="edit-quantidade">Quantidade</label>
-        <input 
-          id="edit-quantidade" 
-          type="number" 
-          [value]="produtoEditando.quantidade" 
-          readonly 
-          class="input-readonly"
+        <input id="edit-quantidade" type="number" [value]="produtoEditando.quantidade" readonly class="input-readonly"
           title="A quantidade só pode ser alterada através das movimentações de estoque">
         <small class="info-text">
           <i class="fas fa-info-circle"></i>
@@ -138,10 +124,12 @@
         </small>
 
         <label for="edit-precoCompra">Preço de Compra</label>
-        <input id="edit-precoCompra" type="number" [(ngModel)]="produtoEditando.precoCompra" name="editPrecoCompra" required min="0" step="0.01">
+        <input id="edit-precoCompra" type="number" [(ngModel)]="produtoEditando.precoCompra" name="editPrecoCompra"
+          required min="0" step="0.01">
 
         <label for="edit-precoVenda">Preço de Venda</label>
-        <input id="edit-precoVenda" type="number" [(ngModel)]="produtoEditando.precoVenda" name="editPrecoVenda" required min="0" step="0.01">
+        <input id="edit-precoVenda" type="number" [(ngModel)]="produtoEditando.precoVenda" name="editPrecoVenda"
+          required min="0" step="0.01">
 
         <label for="edit-descricao">Descrição</label>
         <textarea id="edit-descricao" [(ngModel)]="produtoEditando.descricao" name="editDescricao" rows="4"></textarea>
@@ -151,47 +139,42 @@
     </div>
   </div>
 
-  <!-- Modal de filtro -->
-<div class="modal-filtro" *ngIf="modalFiltroAberto">
-  <div class="filtro-container">
-    <div class="filtro-header">
-      <h2>Filtros</h2>
-      <button class="close-btn" (click)="fecharModalFiltrar()">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-
-    <div class="filtro-body">
-      <!-- Filtro Tipo -->
-      <label>Tipo</label>
-      <select [(ngModel)]="filtros.tipo">
-        <option value="">Todos</option>
-        <option value="entrada">Entrada</option>
-        <option value="saida">Saída</option>
-      </select>
-
-      <!-- Checkbox para ativar filtro de valor -->
-      <div class="valor-toggle">
-        <input type="checkbox" [(ngModel)]="filtroPorValorAtivado" id="valorToggle" />
-        <label for="valorToggle">Valor</label>
+  <div class="modal-filtro" *ngIf="modalFiltroAberto">
+    <div class="filtro-container">
+      <div class="filtro-header">
+        <h2>Filtros</h2>
+        <button class="close-btn" (click)="fecharModalFiltrar()">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
 
-      <!-- Filtro de Valor (aparece só se ativado) -->
-      <div class="valor-range" *ngIf="filtroPorValorAtivado">
-        <label>Mínimo</label>
-        <input type="number" [(ngModel)]="filtros.valorMin" placeholder="R$ 0,00" />
+      <div class="filtro-body">
+        <label>Tipo</label>
+        <select [(ngModel)]="filtros.tipo">
+          <option value="">Todos</option>
+          <option value="entrada">Entrada</option>
+          <option value="saida">Saída</option>
+        </select>
 
-        <label>Máximo</label>
-        <input type="number" [(ngModel)]="filtros.valorMax" placeholder="R$ 100,00" />
+        <div class="valor-toggle">
+          <input type="checkbox" [(ngModel)]="filtroPorValorAtivado" id="valorToggle" />
+          <label for="valorToggle">Valor</label>
+        </div>
+
+        <div class="valor-range" *ngIf="filtroPorValorAtivado">
+          <label>Mínimo</label>
+          <input type="number" [(ngModel)]="filtros.valorMin" placeholder="R$ 0,00" />
+
+          <label>Máximo</label>
+          <input type="number" [(ngModel)]="filtros.valorMax" placeholder="R$ 100,00" />
+        </div>
       </div>
-    </div>
 
-    <button class="aplicar-btn" (click)="aplicarFiltro()">Aplicar</button>
+      <button class="aplicar-btn" (click)="aplicarFiltro()">Aplicar</button>
+    </div>
   </div>
-</div>
 
 
-  <!-- Modal de Confirmação de Exclusão -->
   <div class="modal-backdrop" *ngIf="modalConfirmacaoAberto">
     <div class="modal-confirmacao">
       <div class="modal-icon">
@@ -199,11 +182,11 @@
       </div>
       <h3>Confirmar Exclusão</h3>
       <p>
-        Tem certeza que deseja remover o produto 
+        Tem certeza que deseja remover o produto
         <strong>{{ produtoParaRemover?.nome }}</strong>?
       </p>
       <p class="warning-text">Esta ação não pode ser desfeita.</p>
-      
+
       <div class="modal-actions">
         <button class="btn btn-secondary" type="button" (click)="cancelarRemocao()">
           Cancelar

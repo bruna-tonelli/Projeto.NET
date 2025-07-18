@@ -6,6 +6,7 @@
     display: flex;
     flex-direction: column;
   }
+
   .item-card {
     display: flex !important;
     flex-direction: column !important;
@@ -16,6 +17,7 @@
     width: 100%;
     max-width: 400px;
   }
+
   .card-section {
     display: flex !important;
     flex-direction: column !important;
@@ -25,6 +27,7 @@
     margin-bottom: 0 !important;
     width: 100%;
   }
+
   .card-actions {
     justify-content: center !important;
     align-items: center !important;
@@ -34,12 +37,14 @@
     width: 100%;
   }
 }
-// Cores principais
+
 
 $primary: #0353A4;
 $gray: #6c757d;
 $light: #f8f9fa;
 $dark: #343a40;
+$roxo-escuro: #570063;
+$roxo-claro: #870c7d;
 
 .page-container {
   padding: 0;
@@ -101,13 +106,15 @@ $dark: #343a40;
     &:focus {
       border-color: $primary;
       outline: none;
-      box-shadow: 0 0 0 3px rgba(3,83,164,0.1);
+      box-shadow: 0 0 0 3px rgba(3, 83, 164, 0.1);
     }
 
     &::placeholder {
       color: #999;
     }
   }
+
+  
 
   .btn-clear-inline {
     position: absolute;
@@ -147,6 +154,17 @@ $dark: #343a40;
     }
   }
 
+  // New style for dark mode ADD PRODUCT button
+  &.btn-roxo-dark {
+    background: $roxo-claro;
+    color: white;
+
+    &:hover {
+      background: color.adjust($roxo-claro, $lightness: -10%);
+      transform: scale(1.05);
+    }
+  }
+
   &.btn-search {
     background: $primary;
     color: white;
@@ -157,8 +175,24 @@ $dark: #343a40;
     }
   }
 
+  &.btn-search-dark {
+    background: $roxo-claro;
+    color: white;
+    padding: 12px;
+
+    &:hover {
+      background: color.adjust($roxo-claro, $lightness: -10%);
+    }
+  }
+
+
   &.btn-filtro {
     color: $primary;
+  }
+
+  &.btn-filtro-dark {
+    color: $roxo-claro;
+    background: #4d3f4a;
   }
 
   &.btn-edit {
@@ -206,7 +240,8 @@ $dark: #343a40;
   padding: 0 32px 32px;
 }
 
-.status-message, .search-result-message {
+.status-message,
+.search-result-message {
   text-align: center;
   padding: 40px 20px;
   color: $gray;
@@ -265,31 +300,31 @@ $dark: #343a40;
 
 
 
-  .card-section {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    text-align: center;
-    align-items: center;
+.card-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+  align-items: center;
 
-    .card-label {
-      font: 600 0.75rem inherit;
-      font-weight: 600;
-      color: $gray;
-      letter-spacing: 0.1px;
-    }
-
-    .card-value {
-      font: 500 1rem inherit;
-      color: $dark;
-      word-break: break-word;
-    }
+  .card-label {
+    font: 600 0.75rem inherit;
+    font-weight: 600;
+    color: $gray;
+    letter-spacing: 0.1px;
   }
 
-  .card-actions {
-    display: flex;
-    gap: 8px;
+  .card-value {
+    font: 500 1rem inherit;
+    color: $dark;
+    word-break: break-word;
   }
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
 
 // Modal adicionar produto
 
@@ -299,7 +334,7 @@ $dark: #343a40;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -310,7 +345,7 @@ $dark: #343a40;
   background: white;
   border-radius: 12px;
   padding: 32px 28px 24px;
-  box-shadow: 0 8px 32px rgba(3,83,164,0.15);
+  box-shadow: 0 8px 32px rgba(3, 83, 164, 0.15);
   min-width: 420px;
   max-width: 500px;
   width: 90vw;
@@ -365,7 +400,8 @@ $dark: #343a40;
       display: block;
     }
 
-    input, textarea {
+    input,
+    textarea {
       width: 100%;
       padding: 12px;
       border: 1px solid #ddd;
@@ -374,7 +410,7 @@ $dark: #343a40;
       box-sizing: border-box;
       transition: all 0.2s;
 
-      
+
     }
 
     textarea {
@@ -394,7 +430,7 @@ $dark: #343a40;
   background: white;
   border-radius: 12px;
   padding: 32px;
-  box-shadow: 0 8px 32px rgba(3,83,164,0.15);
+  box-shadow: 0 8px 32px rgba(3, 83, 164, 0.15);
   min-width: 400px;
   max-width: 500px;
   width: 90vw;
@@ -454,7 +490,7 @@ input[type="number"]::-webkit-outer-spin-button {
   background-color: #f5f5f5 !important;
   color: #6c757d !important;
   cursor: not-allowed !important;
-  
+
   &:focus {
     outline: none !important;
     box-shadow: 0 0 0 2px rgba(108, 117, 125, 0.25) !important;
@@ -470,7 +506,7 @@ input[type="number"]::-webkit-outer-spin-button {
   font-size: 0.875rem;
   margin-top: 4px;
   margin-bottom: 16px;
-  
+
   .fas {
     color: #17a2b8;
   }
@@ -592,4 +628,5 @@ input[type="number"]::-webkit-outer-spin-button {
       font-family: inherit;
     }
   }
+
 }
