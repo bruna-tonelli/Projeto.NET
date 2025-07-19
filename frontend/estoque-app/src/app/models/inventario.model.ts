@@ -1,48 +1,43 @@
 export interface Inventario {
   id: number;
-  nome: string;
-  descricao?: string;
   dataCriacao: Date;
-  confirmado: boolean;
-  status: string;
-  itens: InventarioItem[];
+  responsavel?: string;
+  status?: string;
+  produtos: InventarioProduto[];
+  nome?: string; // Novo campo para o nome do inventário
 }
 
-export interface InventarioItem {
+export interface InventarioProduto {
   id: number;
   produtoId: number;
-  produtoNome: string;
   quantidadeContada: number;
-  quantidadeEstoque: number;
-  diferenca: number;
-  precoVenda: number;
-  valorTotal: number;
+  inventarioId?: number;
 }
 
 export interface CreateInventarioDto {
+  nome: string; // Mudança: agora pede apenas o nome
+  responsavel?: string; // Será preenchido automaticamente
+  status?: string; // Será sempre "Pendente"
+}
+
+export interface UpdateInventarioDto {
+  nome?: string;
+  responsavel?: string;
+  status?: string;
+}
+
+export interface AddProdutoInventarioDto {
+  produtoId: number;
+  quantidadeContada: number;
+  inventarioId?: number;
+}
+
+export interface Produto {
+  id: number;
   nome: string;
-  descricao?: string;
-}
-
-export interface AddItemInventarioDto {
-  produtoId: number;
-  produtoNome: string;
-  quantidadeContada: number;
+  descricao: string;
+  quantidade: number;
+  precoCompra: number;
   precoVenda: number;
-}
-
-export interface ComparacaoInventario {
-  inventarioId: number;
-  nomeInventario: string;
-  dataComparacao: Date;
-  diferencas: DiferencaItem[];
-}
-
-export interface DiferencaItem {
-  produtoId: number;
-  produtoNome: string;
-  quantidadeEstoque: number;
-  quantidadeContada: number;
-  diferenca: number;
-  tipoDiferenca: string;
+  ativo: boolean;
 }

@@ -50,41 +50,57 @@ namespace ProdutoService.Services
             // Primeiro, tenta buscar por ID exato
             if (int.TryParse(term, out int id))
             {
+                Console.WriteLine($"Termo é numérico, buscando por ID: {id}");
                 var produtoPorId = await _context.Produtos
                     .Where(p => p.Id == id)
                     .ToListAsync();
-                
+
                 if (produtoPorId.Any())
                 {
-                    Console.WriteLine($"Encontrado produto por ID: {produtoPorId.Count}");
+                    Console.WriteLine($"Produto encontrado por ID: {produtoPorId.First().Nome}");
                     return produtoPorId;
                 }
             }
 
-            // Depois busca por nome (case-insensitive)
-            var termLower = term.ToLower();
+            // Se não encontrou por ID, busca por nome
+            Console.WriteLine("Buscando por nome...");
             var produtosPorNome = await _context.Produtos
-                .Where(p => p.Nome.ToLower().Contains(termLower))
+                .Where(p => p.Nome.ToLower().Contains(term.ToLower()))
                 .ToListAsync();
 
             Console.WriteLine($"Produtos encontrados por nome: {produtosPorNome.Count}");
-            foreach (var p in produtosPorNome)
-            {
-                Console.WriteLine($"- {p.Id}: {p.Nome}");
-            }
-
-            // Se não encontrou por nome, busca na descrição
-            if (!produtosPorNome.Any())
-            {
-                var produtosPorDescricao = await _context.Produtos
-                    .Where(p => p.Descricao != null && p.Descricao.ToLower().Contains(termLower))
-                    .ToListAsync();
-                
-                Console.WriteLine($"Produtos encontrados por descrição: {produtosPorDescricao.Count}");
-                return produtosPorDescricao;
-            }
-
             return produtosPorNome;
+        }
+
+        public async Task AtualizarQuantidadesAsync(List<Controllers.AtualizarQuantidadeDto> atualizacoes)
+        {
+            try
+            {
+                Console.WriteLine($"Iniciando atualização de {atualizacoes.Count} produtos");
+                
+                foreach (var atualizacao in atualizacoes)
+                {
+                    var produto = await _context.Produtos.FindAsync(atualizacao.Id);
+                    if (produto != null)
+                    {
+                        Console.WriteLine($"Atualizando produto {produto.Nome}: {produto.Quantidade} → {atualizacao.Quantidade}");
+                        produto.Quantidade = atualizacao.Quantidade;
+                        produto.DataAtualizacao = DateTime.Now;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Produto com ID {atualizacao.Id} não encontrado");
+                    }
+                }
+                
+                await _context.SaveChangesAsync();
+                Console.WriteLine("Todas as quantidades foram atualizadas no banco");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro no serviço de atualização: {ex.Message}");
+                throw;
+            }
         }
     }
 }

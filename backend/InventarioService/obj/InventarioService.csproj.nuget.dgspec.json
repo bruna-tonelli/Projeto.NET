@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\backend\\InventarioService\\InventarioService.csproj": {}
+    "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\InventarioService\\InventarioService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\backend\\InventarioService\\InventarioService.csproj": {
+    "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\InventarioService\\InventarioService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\backend\\InventarioService\\InventarioService.csproj",
+        "projectUniqueName": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\InventarioService\\InventarioService.csproj",
         "projectName": "InventarioService",
-        "projectPath": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\backend\\InventarioService\\InventarioService.csproj",
-        "packagesPath": "C:\\Users\\vynny\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\vynny\\OneDrive\\Documentos\\GitHub\\Projeto.NET\\backend\\InventarioService\\obj\\",
+        "projectPath": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\InventarioService\\InventarioService.csproj",
+        "packagesPath": "C:\\Users\\edval\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\edval\\Downloads\\Projeto-Controle-Estoque\\backend\\InventarioService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\vynny\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\edval\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

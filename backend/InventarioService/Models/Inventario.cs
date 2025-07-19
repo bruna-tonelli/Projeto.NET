@@ -3,71 +3,46 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InventarioService.Models
 {
+    [Table("Inventarios")]
     public class Inventario
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        public string Nome { get; set; } = string.Empty;
+        [Column("DataCriacao")]
+        public DateTime DataCriacao { get; set; } = DateTime.Now;
 
-        public string? Descricao { get; set; }
+        [Column("Responsavel")]
+        [StringLength(100)]
+        public string? Responsavel { get; set; }
 
-        [Required]
-        public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
+        [Column("Status")]
+        [StringLength(50)]
+        public string? Status { get; set; } = "Pendente";
 
-        public bool Confirmado { get; set; } = false;
-
-        public string Status { get; set; } = "Pendente"; // Pendente, Comparado, Confirmado
-
-        // Relacionamento com itens
-        public List<InventarioItem> Itens { get; set; } = new List<InventarioItem>();
+        // Relacionamento com InventariosProduto
+        public virtual ICollection<InventarioProduto> Produtos { get; set; } = new List<InventarioProduto>();
     }
 
-    public class InventarioItem
+    [Table("InventariosProduto")]
+    public class InventarioProduto
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        public int InventarioId { get; set; }
-        public Inventario Inventario { get; set; }
-
-        [Required]
+        [Column("ProdutoId")]
         public int ProdutoId { get; set; }
 
         [Required]
-        public string ProdutoNome { get; set; } = string.Empty;
-
-        [Required]
+        [Column("QuantidadeContada")]
         public int QuantidadeContada { get; set; }
 
-        public int QuantidadeEstoque { get; set; }
-
-        public int Diferenca => QuantidadeContada - QuantidadeEstoque;
-
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal PrecoVenda { get; set; }
-
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal ValorTotal => QuantidadeContada * PrecoVenda;
-    }
-
-    public class ComparacaoInventario
-    {
-        public int InventarioId { get; set; }
-        public string NomeInventario { get; set; } = string.Empty;
-        public DateTime DataComparacao { get; set; }
-        public List<DiferencaItem> Diferencas { get; set; } = new List<DiferencaItem>();
-    }
-
-    public class DiferencaItem
-    {
-        public int ProdutoId { get; set; }
-        public string ProdutoNome { get; set; } = string.Empty;
-        public int QuantidadeEstoque { get; set; }
-        public int QuantidadeContada { get; set; }
-        public int Diferenca { get; set; }
-        public string TipoDiferenca { get; set; } = string.Empty; // "Sobra", "Falta", "Igual"
+        // Foreign Key para Inventario (se necessário)
+        public int? InventarioId { get; set; }
+        
+        [ForeignKey("InventarioId")]
+        public virtual Inventario? Inventario { get; set; }
     }
 }

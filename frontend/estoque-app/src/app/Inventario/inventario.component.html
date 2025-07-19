@@ -1,285 +1,410 @@
 <title>Inventário</title> <base href="/inventario">
 <div class="page-container">
   <header class="page-header">
-    <h1 class="page-title">Inventário</h1>
-    <button class="btn btn-primary" (click)="abrirModalNovoInventario()">
-      <i class="fas fa-plus"></i>
-      Novo Inventário
-    </button>
+    <div class="header-content">
+      <h1 class="page-title">
+        <i class="fas fa-clipboard-list"></i>
+        Inventários
+      </h1>
+      <button 
+        class="btn btn-primary" 
+        type="button"
+        (click)="abrirModalNovoInventario()"
+        title="Criar novo inventário">
+        <i class="fas fa-plus"></i>
+        Novo Inventário
+      </button>
+    </div>
   </header>
 
   <section class="page-content">
-    <div *ngIf="isLoading" class="status-message">Carregando inventários...</div>
-
-    <div *ngIf="!isLoading && inventarios.length === 0" class="status-message">
-      Nenhum inventário encontrado. Clique em "Novo Inventário" para começar.
+    <div *ngIf="isLoading" class="status-message">
+      <i class="fas fa-spinner fa-spin"></i>
+      Carregando...
     </div>
+    
+    <ng-container *ngIf="!isLoading">
+      <div *ngIf="inventarios.length === 0" class="status-message">
+        <i class="fas fa-inbox"></i>
+        Nenhum inventário encontrado.
+      </div>
+      
+      <div class="inventario-grid" *ngIf="inventarios.length > 0">
+        <div 
+          class="inventario-card" 
+          *ngFor="let inventario of inventarios">
+          
+          <div class="card-header">
+            <div class="inventario-info">
+              <h3 class="inventario-id">{{ getInventarioNome(inventario) }}</h3>
+              <span class="inventario-status" [ngClass]="getStatusClass(inventario.status)">
+                {{ inventario.status || 'Pendente' }}
+              </span>
+            </div>
+            <div class="card-actions">
+              <button 
+                class="btn btn-edit" 
+                (click)="editarInventario(inventario)"
+                [title]="inventario.status === 'Finalizado' ? 'Inventário finalizado - somente visualização' : 'Continuar editando inventário'">
+                <i class="fas fa-edit" *ngIf="inventario.status !== 'Finalizado'"></i>
+                <i class="fas fa-eye" *ngIf="inventario.status === 'Finalizado'"></i>
+              </button>
+              <button 
+                class="btn btn-delete" 
+                (click)="confirmarExclusaoInventario(inventario)"
+                title="Excluir inventário">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
 
-    <div class="inventarios-grid" *ngIf="!isLoading && inventarios.length > 0">
-      <div class="inventario-card" *ngFor="let inventario of inventarios">
-        <div class="card-header">
-          <h3 class="card-title">{{ inventario.nome }}</h3>
-          <span class="status-badge" [class]="getStatusClass(inventario.status)">
-            {{ inventario.status }}
-          </span>
+          <div class="card-body">
+            <div class="inventario-detail">
+              <span class="detail-label">Responsável:</span>
+              <span class="detail-value">{{ inventario.responsavel || 'Não informado' }}</span>
+            </div>
+            
+            <div class="inventario-detail">
+              <span class="detail-label">Data de Criação:</span>
+              <span class="detail-value">{{ formatarData(inventario.dataCriacao) }}</span>
+            </div>
+            
+            <div class="inventario-detail">
+              <span class="detail-label">Produtos:</span>
+              <span class="detail-value">{{ (inventario.produtos && inventario.produtos.length) || 0 }} itens</span>
+            </div>
+
+            <div class="produtos-lista" *ngIf="inventario.produtos && inventario.produtos.length > 0">
+              <h4><i class="fas fa-box"></i> Produtos no Inventário:</h4>
+              <div class="produto-item" *ngFor="let produto of inventario.produtos">
+                <span class="produto-nome">{{ obterNomeProduto(produto.produtoId) }}</span>
+                <span class="produto-quantidade">{{ produto.quantidadeContada }} unidades</span>
+              </div>
+            </div>
+          </div>
         </div>
-        
-        <div class="card-content">
-          <p class="card-description" *ngIf="inventario.descricao">{{ inventario.descricao }}</p>
-          <div class="card-info">
-            <span class="info-item">
-              <i class="fas fa-calendar"></i>
-              {{ inventario.dataCriacao | date:'dd/MM/yyyy HH:mm' }}
-            </span>
-            <span class="info-item">
-              <i class="fas fa-box"></i>
-              {{ inventario.itens.length }} itens
-            </span>
+      </div>
+    </ng-container>
+  </section>
+
+  <!-- Modal Novo Inventário -->
+  <div class="modal-backdrop" *ngIf="modalNovoInventarioAberto">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h2><i class="fas fa-plus-circle"></i> Novo Inventário</h2>
+        <button class="modal-close" (click)="fecharModalNovoInventario()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <form (ngSubmit)="criarInventario()" #formInventario="ngForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="nome">
+              <i class="fas fa-tag"></i>
+              Nome do Inventário
+            </label>
+            <input 
+              id="nome" 
+              type="text" 
+              [(ngModel)]="novoInventario.nome" 
+              name="nome" 
+              placeholder="Ex: Inventário Mensal - Janeiro 2025"
+              required>
+          </div>
+
+          <div class="info-automatica">
+            <h4><i class="fas fa-info-circle"></i> Informações Automáticas</h4>
+            <div class="info-item">
+              <span class="info-label">
+                <i class="fas fa-user"></i>
+                Responsável:
+              </span>
+              <span class="info-value">{{ usuarioLogado?.name || usuarioLogado?.email || 'Usuário logado' }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">
+                <i class="fas fa-clock"></i>
+                Status:
+              </span>
+              <span class="info-value">Pendente</span>
+            </div>
           </div>
         </div>
 
-        <div class="card-actions">
-          <button 
-            *ngIf="inventario.status === 'Pendente'" 
-            class="btn btn-secondary btn-sm"
-            (click)="iniciarAdicionarItens(inventario)">
-            <i class="fas fa-plus"></i>
-            Adicionar Itens
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="fecharModalNovoInventario()">
+            <i class="fas fa-times"></i>
+            Cancelar
           </button>
-          
-          <button 
-            *ngIf="inventario.itens.length > 0 && inventario.status !== 'Confirmado'" 
-            class="btn btn-primary btn-sm"
-            (click)="compararInventario(inventario)">
-            <i class="fas fa-balance-scale"></i>
-            Comparar
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- Modal Novo Inventário -->
-<div class="modal-backdrop" *ngIf="modalNovoInventario">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Novo Inventário</h2>
-      <button class="modal-close-btn" (click)="fecharModalNovoInventario()">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    
-    <div class="modal-body">
-      <div class="form-group">
-        <label for="nome">Nome do Inventário *</label>
-        <input 
-          type="text" 
-          id="nome" 
-          [(ngModel)]="novoInventario.nome" 
-          placeholder="Ex: Inventário Julho 2025"
-          class="form-control">
-      </div>
-      
-      <div class="form-group">
-        <label for="descricao">Descrição (opcional)</label>
-        <textarea 
-          id="descricao" 
-          [(ngModel)]="novoInventario.descricao" 
-          placeholder="Descrição do inventário..."
-          class="form-control"
-          rows="3"></textarea>
-      </div>
-    </div>
-    
-    <div class="modal-footer">
-      <button class="btn btn-secondary" (click)="fecharModalNovoInventario()">
-        Cancelar
-      </button>
-      <button class="btn btn-primary" (click)="criarInventario()">
-        <i class="fas fa-save"></i>
-        Criar Inventário
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Adicionar Itens -->
-<div class="modal-backdrop" *ngIf="modalAdicionarItens">
-  <div class="modal-content modal-large">
-    <div class="modal-header">
-      <h2>Adicionar Itens - {{ inventarioAtual?.nome }}</h2>
-      <button class="modal-close-btn" (click)="fecharModalAdicionarItens()">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    
-    <div class="modal-body">
-      <div class="progress-container">
-        <div class="progress-bar">
-          <div class="progress-fill" [style.width.%]="progressoAtual"></div>
-        </div>
-        <span class="progress-text">
-          {{ produtoAtualIndex }} de {{ produtos.length }} produtos
-        </span>
-      </div>
-
-      <div class="produto-atual" *ngIf="produtoSelecionado">
-        <div class="produto-info">
-          <h3>{{ produtoAtualNome }}</h3>
-          <p class="estoque-atual">
-            <i class="fas fa-warehouse"></i>
-            Estoque atual: {{ produtoAtualEstoque }} unidades
-          </p>
-        </div>
-
-        <div class="quantidade-input">
-          <label for="quantidade">Quantidade contada:</label>
-          <input 
-            type="number" 
-            id="quantidade"
-            [(ngModel)]="quantidadeDigitada" 
-            min="0"
-            class="form-control quantity-input"
-            placeholder="0">
-        </div>
-
-        <div class="produto-actions">
-          <button class="btn btn-secondary" (click)="pularProduto()">
-            <i class="fas fa-forward"></i>
-            Pular
-          </button>
-          <button class="btn btn-primary" (click)="adicionarItemAtual()">
-            <i class="fas fa-check"></i>
-            Confirmar
-          </button>
-        </div>
-      </div>
-
-      <div class="finalizacao" *ngIf="produtoAtualIndex >= produtos.length">
-        <div class="success-message">
-          <i class="fas fa-check-circle"></i>
-          <h3>Todos os produtos foram processados!</h3>
-          <p>{{ itensInventario.length }} itens adicionados ao inventário.</p>
-          <button class="btn btn-primary" (click)="finalizarAdicionarItens()">
+          <button type="submit" class="btn btn-primary" [disabled]="formInventario.invalid">
             <i class="fas fa-save"></i>
-            Finalizar
+            Criar Inventário
           </button>
         </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Editar/Visualizar Inventário -->
+  <div class="modal-backdrop" *ngIf="modalAdicionarProdutoAberto">
+    <div class="modal-container large">
+      <div class="modal-header">
+        <h2>
+          <i class="fas fa-edit" *ngIf="inventarioSelecionado?.status !== 'Finalizado'"></i>
+          <i class="fas fa-eye" *ngIf="inventarioSelecionado?.status === 'Finalizado'"></i>
+          {{ inventarioSelecionado?.status === 'Finalizado' ? 'Visualizar' : 'Editar' }} 
+          {{ inventarioSelecionado ? getInventarioNome(inventarioSelecionado) : '' }}
+        </h2>
+        <button class="modal-close" (click)="fecharModalAdicionarProduto()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <!-- Informações do Inventário -->
+        <div class="inventario-info-modal">
+          <div class="info-row">
+            <span class="info-label">
+              <i class="fas fa-info-circle"></i>
+              Status:
+            </span>
+            <span class="inventario-status-small" [ngClass]="getStatusClass(inventarioSelecionado?.status)">
+              {{ inventarioSelecionado?.status || 'Pendente' }}
+            </span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">
+              <i class="fas fa-user"></i>
+              Responsável:
+            </span>
+            <span>{{ inventarioSelecionado?.responsavel }}</span>
+          </div>
+        </div>
+        
+        <!-- Formulário só aparece se não estiver finalizado -->
+        <form (ngSubmit)="adicionarProdutoInventario()" #formProduto="ngForm" *ngIf="inventarioSelecionado?.status !== 'Finalizado'">
+          <div class="form-group">
+            <label for="produto">
+              <i class="fas fa-box"></i>
+              Produto
+            </label>
+            <select 
+              id="produto" 
+              [(ngModel)]="novoProdutoInventario.produtoId" 
+              name="produtoId" 
+              required>
+              <option value="0">Selecione um produto</option>
+              <option *ngFor="let produto of produtosDisponiveis" [value]="produto.id">
+                {{ produto.nome }} (Estoque: {{ produto.quantidade }})
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="quantidade">
+              <i class="fas fa-calculator"></i>
+              Quantidade Contada
+            </label>
+            <input 
+              id="quantidade" 
+              type="number" 
+              [(ngModel)]="novoProdutoInventario.quantidadeContada" 
+              name="quantidadeContada" 
+              placeholder="Quantidade encontrada na contagem física"
+              min="0"
+              required>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" [disabled]="formProduto.invalid">
+              <i class="fas fa-plus"></i>
+              Adicionar Produto
+            </button>
+          </div>
+        </form>
+
+        <!-- Produtos já adicionados -->
+        <div class="produtos-section" *ngIf="(inventarioSelecionado?.produtos?.length || 0) > 0">
+          <h4>
+            <i class="fas fa-boxes"></i>
+            Produtos no Inventário
+          </h4>
+          <div class="produtos-lista-scroll">
+            <div class="produto-adicionado" *ngFor="let produto of inventarioSelecionado?.produtos; trackBy: trackByProdutoId">
+              <div class="produto-info">
+                <span class="produto-nome">
+                  <i class="fas fa-box"></i>
+                  {{ obterNomeProduto(produto.produtoId) }}
+                </span>
+                <span class="produto-quantidade">{{ produto.quantidadeContada }} unidades</span>
+              </div>
+              <button 
+                type="button" 
+                class="btn btn-remove-produto" 
+                (click)="removerProdutoInventario(produto)"
+                [disabled]="inventarioSelecionado?.status === 'Finalizado'"
+                title="Remover produto do inventário">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mensagem quando não há produtos -->
+        <div *ngIf="!inventarioSelecionado?.produtos || inventarioSelecionado?.produtos?.length === 0" class="nenhum-produto">
+          <i class="fas fa-inbox"></i>
+          <br>
+          Nenhum produto adicionado ainda.
+          <br>
+          <small>Adicione produtos para começar a contagem.</small>
+        </div>
+      </div>
+
+      <!-- Footer do Modal -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="fecharModalAdicionarProduto()">
+          <i class="fas fa-times"></i>
+          {{ inventarioSelecionado?.status === 'Finalizado' ? 'Fechar' : 'Cancelar' }}
+        </button>
+        <button type="button" class="btn btn-success" (click)="confirmarFinalizarInventario()" 
+                *ngIf="inventarioSelecionado?.status !== 'Finalizado'">
+          <i class="fas fa-check-circle"></i>
+          Finalizar Inventário
+        </button>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Modal Comparação -->
-<div class="modal-backdrop" *ngIf="modalComparacao">
-  <div class="modal-content modal-xl">
-    <div class="modal-header">
-      <h2>Comparação - {{ comparacao?.nomeInventario }}</h2>
-      <button class="modal-close-btn" (click)="fecharModalComparacao()">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    
-    <div class="modal-body">
-      <div class="comparacao-info">
-        <p>
-          <i class="fas fa-info-circle"></i>
-          Comparação realizada em {{ comparacao?.dataComparacao | date:'dd/MM/yyyy HH:mm' }}
-        </p>
+  <!-- Modal de Confirmação de Exclusão de Inventário -->
+  <div class="modal-backdrop confirmation-modal" *ngIf="modalConfirmacaoExclusao">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h2><i class="fas fa-exclamation-triangle"></i> Confirmar Exclusão</h2>
+        <button class="modal-close" (click)="cancelarExclusao()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="confirmation-icon danger">
+          <i class="fas fa-trash-alt"></i>
+        </div>
+        <div class="confirmation-message">
+          Tem certeza que deseja excluir o inventário<br>
+          <strong>"{{ inventarioParaExcluir ? getInventarioNome(inventarioParaExcluir) : '' }}"</strong>?
+          <br><br>
+          Esta ação não pode ser desfeita.
+        </div>
       </div>
 
-      <div class="diferencas-table">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Produto</th>
-              <th>Estoque</th>
-              <th>Contado</th>
-              <th>Diferença</th>
-              <th>Tipo</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let diferenca of comparacao?.diferencas" [class]="getTipoDiferencaClass(diferenca.tipoDiferenca)">
-              <td>{{ diferenca.produtoNome }}</td>
-              <td>{{ diferenca.quantidadeEstoque }}</td>
-              <td>{{ diferenca.quantidadeContada }}</td>
-              <td>
-                <span class="diferenca-valor">
-                  {{ diferenca.diferenca > 0 ? '+' : '' }}{{ diferenca.diferenca }}
-                </span>
-              </td>
-              <td>
-                <span class="tipo-badge" [class]="getTipoDiferencaClass(diferenca.tipoDiferenca)">
-                  {{ diferenca.tipoDiferenca }}
-                </span>
-              </td>
-              <td>
-                <button class="btn btn-sm btn-edit" (click)="editarItem(diferenca)">
-                  <i class="fas fa-edit"></i>
-                  Editar
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cancelarExclusao()">
+          <i class="fas fa-times"></i>
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-delete" (click)="confirmarExclusao()">
+          <i class="fas fa-trash"></i>
+          Excluir Inventário
+        </button>
       </div>
-    </div>
-    
-    <div class="modal-footer">
-      <button class="btn btn-secondary" (click)="fecharModalComparacao()">
-        Fechar
-      </button>
-      <button class="btn btn-success" (click)="atualizarEstoque(comparacao!.inventarioId)">
-        <i class="fas fa-sync"></i>
-        Atualizar Estoque
-      </button>
     </div>
   </div>
-</div>
 
-<!-- Modal Edição -->
-<div class="modal-backdrop" *ngIf="modalEdicao">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Editar Item</h2>
-      <button class="modal-close-btn" (click)="fecharModalEdicao()">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    
-    <div class="modal-body" *ngIf="itemEditando">
-      <div class="form-group">
-        <label>Produto:</label>
-        <p class="readonly-field">{{ itemEditando.produtoNome }}</p>
+  <!-- Modal Confirmação Remoção Produto -->
+  <div class="modal-backdrop" *ngIf="modalConfirmacaoRemocaoProduto" (click)="cancelarRemocaoProduto()">
+    <div class="modal-container modal-small" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2><i class="fas fa-exclamation-triangle"></i> Remover Produto</h2>
+        <button class="modal-close" (click)="cancelarRemocaoProduto()">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
       
-      <div class="form-group">
-        <label>Estoque atual:</label>
-        <p class="readonly-field">{{ itemEditando.quantidadeEstoque }}</p>
+      <div class="modal-content">
+        <p>Deseja realmente remover <strong>{{ produtoParaRemover ? obterNomeProduto(produtoParaRemover.produtoId) : '' }}</strong> do inventário?</p>
       </div>
       
-      <div class="form-group">
-        <label for="quantidadeContada">Quantidade contada:</label>
-        <input 
-          type="number" 
-          id="quantidadeContada"
-          [(ngModel)]="itemEditando.quantidadeContada" 
-          min="0"
-          class="form-control">
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="cancelarRemocaoProduto()">
+          <i class="fas fa-times"></i>
+          Cancelar
+        </button>
+        <button class="btn btn-danger" (click)="confirmarRemocaoProduto()">
+          <i class="fas fa-trash"></i>
+          Remover
+        </button>
       </div>
     </div>
+  </div>
+
+  <!-- Modal Confirmação Finalização com Diferenças -->
+  <div class="modal-backdrop" *ngIf="modalConfirmacaoFinalizacao" (click)="cancelarFinalizacao()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2><i class="fas fa-check-circle"></i> Finalizar Inventário</h2>
+        <button class="modal-close" (click)="cancelarFinalizacao()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="modal-content">
+        <div *ngIf="diferencasEncontradas.length === 0">
+          <p>Todas as quantidades do inventário estão de acordo com o estoque. Deseja finalizar o inventário?</p>
+        </div>
+        
+        <div *ngIf="diferencasEncontradas.length > 0">
+          <p><strong>Foram encontradas as seguintes diferenças:</strong></p>
+          
+          <div class="diferencas-lista">
+            <div class="diferenca-item" *ngFor="let diferenca of diferencasEncontradas">
+              <div class="produto-info">
+                <strong>{{ diferenca.nome }}</strong>
+              </div>
+              <div class="diferenca-detalhes">
+                <span class="quantidade-inventario">Inventário: {{ diferenca.quantidadeInventario }}</span>
+                <span class="quantidade-real">Estoque: {{ diferenca.quantidadeReal }}</span>
+                <span class="diferenca-valor" [ngClass]="diferenca.diferenca > 0 ? 'positiva' : 'negativa'">
+                  Diferença: {{ diferenca.diferenca > 0 ? '+' : '' }}{{ diferenca.diferenca }} itens
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="aviso-atualizacao">
+            <i class="fas fa-info-circle"></i>
+            <p>Ao confirmar, as quantidades do inventário serão aplicadas ao estoque real.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="cancelarFinalizacao()">
+          <i class="fas fa-times"></i>
+          Cancelar
+        </button>
+        <button class="btn btn-success" (click)="finalizarInventario()">
+          <i class="fas fa-check"></i>
+          Finalizar Inventário
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifications -->
+  <div class="toast-container">
+    <div class="toast success" *ngIf="mostrarToastSucesso">
+      <div class="toast-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <div class="toast-message">{{ mensagemToast }}</div>
+    </div>
     
-    <div class="modal-footer">
-      <button class="btn btn-secondary" (click)="fecharModalEdicao()">
-        Cancelar
-      </button>
-      <button class="btn btn-primary" (click)="salvarEdicao()">
-        <i class="fas fa-save"></i>
-        Salvar
-      </button>
+    <div class="toast error" *ngIf="mostrarToastErro">
+      <div class="toast-icon">
+        <i class="fas fa-exclamation-circle"></i>
+      </div>
+      <div class="toast-message">{{ mensagemToast }}</div>
     </div>
   </div>
 </div>

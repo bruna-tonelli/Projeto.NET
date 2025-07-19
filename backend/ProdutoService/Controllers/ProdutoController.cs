@@ -48,7 +48,8 @@ namespace ProdutoService.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var produto = await _service.GetByIdAsync(id);
-            return produto == null ? NotFound() : Ok(produto);
+            if (produto == null) return NotFound();
+            return Ok(produto);
         }
 
         [HttpPost]
@@ -73,6 +74,29 @@ namespace ProdutoService.Controllers
             return NoContent();
         }
 
+        [HttpPut("atualizar-quantidades")]
+        public async Task<ActionResult> AtualizarQuantidades([FromBody] List<AtualizarQuantidadeDto> atualizacoes)
+        {
+            try
+            {
+                Console.WriteLine($"Recebido pedido para atualizar {atualizacoes.Count} produtos");
+                foreach (var atualizacao in atualizacoes)
+                {
+                    Console.WriteLine($"Produto ID: {atualizacao.Id}, Nova quantidade: {atualizacao.Quantidade}");
+                }
+
+                await _service.AtualizarQuantidadesAsync(atualizacoes);
+                Console.WriteLine("Quantidades atualizadas com sucesso");
+                return Ok("Quantidades atualizadas com sucesso");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao atualizar quantidades: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                return StatusCode(500, $"Erro ao atualizar quantidades: {ex.Message}");
+            }
+        }
+
         [HttpGet("testar-conexao")]
         public async Task<IActionResult> TestarConexao([FromServices] AppDbContext context)
         {
@@ -93,5 +117,12 @@ namespace ProdutoService.Controllers
                 return StatusCode(500, $"Erro de conexão: {ex.Message}");
             }
         }
+    }
+
+    // DTO temporário no mesmo arquivo
+    public class AtualizarQuantidadeDto
+    {
+        public int Id { get; set; }
+        public int Quantidade { get; set; }
     }
 }
