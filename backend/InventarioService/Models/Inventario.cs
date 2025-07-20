@@ -3,24 +3,46 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InventarioService.Models
 {
+    [Table("Inventarios")]
     public class Inventario
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        public string Nome { get; set; } = string.Empty;
+        [Column("DataCriacao")]
+        public DateTime DataCriacao { get; set; } = DateTime.Now;
 
-        public string? Descricao { get; set; }
+        [Column("Responsavel")]
+        [StringLength(100)]
+        public string? Responsavel { get; set; }
+
+        [Column("Status")]
+        [StringLength(50)]
+        public string? Status { get; set; } = "Pendente";
+
+        // Relacionamento com InventariosProduto
+        public virtual ICollection<InventarioProduto> Produtos { get; set; } = new List<InventarioProduto>();
+    }
+
+    [Table("InventariosProduto")]
+    public class InventarioProduto
+    {
+        [Key]
+        public int Id { get; set; }
 
         [Required]
-        public int Quantidade { get; set; }
+        [Column("ProdutoId")]
+        public int ProdutoId { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal PrecoVenda { get; set; }
+        [Column("QuantidadeContada")]
+        public int QuantidadeContada { get; set; }
 
-        public bool Confirmado { get; set; } = false;
-        public DateTime DataCadastro { get; set; } = DateTime.UtcNow;
+        // Foreign Key para Inventario (se necessário)
+        public int? InventarioId { get; set; }
+        
+        [ForeignKey("InventarioId")]
+        public virtual Inventario? Inventario { get; set; }
     }
 }

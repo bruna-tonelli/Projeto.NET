@@ -51,8 +51,6 @@ export class EstoqueComponent implements OnInit {
     private darkModeService: DarkModeService
   ) {}
 
-
-
   ngOnInit(): void {
     this.darkModeService.darkMode$.subscribe(isDark => {
       this.modoEscuroAtivo = isDark;
@@ -199,7 +197,6 @@ export class EstoqueComponent implements OnInit {
   fecharModalFiltrar(): void {
     this.modalFiltroAberto = false;
   }
-
   removerProduto(id: string | number): void {
     const numericId = typeof id === 'string' ? Number(id) : id;
     if (isNaN(numericId)) {

@@ -221,7 +221,7 @@ $dark: #343a40;
   padding: 20px;
   transition: all 0.2s;
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr 1fr 1fr; // ID, Produto, Data, Quantidade, Valor Total
+  grid-template-columns: 0.8fr 2fr 1.2fr 0.8fr 0.8fr 1.4fr; // ID, Produto, Data, Quantidade, Tipo, Valor Total
   gap: 20px;
   align-items: center;
   cursor: pointer;
@@ -516,9 +516,6 @@ input[type="number"]::-webkit-outer-spin-button {
     color: #721c24;
   }
 }
-// ... todo o seu SCSS existente vai aqui ...
-
-// Cole o seu SCSS anterior aqui e adicione este novo bloco no final.
 
 // Estilos para o Gráfico
 .grafico-container {
@@ -543,4 +540,136 @@ input[type="number"]::-webkit-outer-spin-button {
   position: relative;
   height: 350px; // Altura do gráfico
   width: 100%;
+}
+
+.saldo-icon {
+  color: #6c757d;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    color: #0353A4;
+    transform: scale(1.1);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+}
+.modal-filtro {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  font-family: inherit;
+
+  .filtro-container {
+    background: white;
+    border-radius: 16px;
+    padding: 20px 24px;
+    width: 300px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+    font-family: inherit;
+
+    .filtro-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h2 {
+        color: $primary;
+        font-size: 25px;
+        font-weight: 700;
+        margin: 0;
+        font-family: inherit;
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: #333;
+        border-radius: 50%;
+
+        &:hover {
+          background: $light;
+          color: #dc3545;
+        }
+      }
+    }
+
+    .filtro-body {
+      margin-top: 20px;
+      font-family: inherit;
+
+      label {
+        font-weight: 450;
+        display: block;
+        margin-top: 12px;
+        font-family: inherit;
+      }
+
+      select,
+      input[type="number"] {
+        width: 100%;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-top: 4px;
+        font-family: inherit;
+      }
+
+
+      .data-range {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 16px;
+
+    label {
+      grid-column: span 2;
+      font-weight: 450;
+    }
+
+    input {
+      grid-column: span 1;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+  }
+}
+
+    .aplicar-btn {
+      margin-top: 40px;
+      width: 100%;
+      background: #1e3a8a;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .limpar-btn {
+      margin-top: 40px;
+      width: 100%;
+      background: #1e3a8a;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+  }
 }

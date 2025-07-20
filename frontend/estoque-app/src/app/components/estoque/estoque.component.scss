@@ -307,7 +307,7 @@ $roxo-claro: #601dac;
   padding: 20px;
   transition: all 0.2s;
   display: grid;
-  grid-template-columns: 80px 1fr 120px 1fr 120px auto;
+  grid-template-columns: 80px 1fr 120px 1fr 180px auto;
   gap: 20px;
   align-items: center;
   cursor: pointer;
@@ -324,7 +324,7 @@ $roxo-claro: #601dac;
   gap: 8px;
   justify-content: flex-end;
   align-items: center;
-  grid-column: 4 / span 2;
+  grid-column: 5 / span 2;
 }
 
 

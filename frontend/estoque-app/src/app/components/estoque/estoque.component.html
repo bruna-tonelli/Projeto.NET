@@ -54,6 +54,12 @@
             <span class="card-label">Quantidade</span>
             <span class="card-value">{{ produto.quantidade | number }}</span>
           </div>
+          <div class="card-section date-section">
+            <span class="card-label">Última Atualização</span>
+            <span class="card-value">
+              {{ produto.dataAtualizacao ? (produto.dataAtualizacao | date:'dd/MM/yyyy HH:mm') : 'N/A' }}
+            </span>
+          </div>
           <div class="card-actions">
             <button class="btn btn-edit" type="button" (click)="editarProduto(produto); $event.stopPropagation()"
               title="Editar produto">
@@ -138,6 +144,7 @@
       </form>
     </div>
   </div>
+
 
   <!--Filtro -->
 
