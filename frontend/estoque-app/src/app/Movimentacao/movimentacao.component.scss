@@ -41,6 +41,9 @@ $gray: #6c757d;
 $light: #f8f9fa;
 $dark: #343a40;
 
+$roxo-escuro: #570063;
+$roxo-claro: #601dac;
+
 .page-container {
   padding: 0;
   height: 100vh;
@@ -126,6 +129,37 @@ $dark: #343a40;
   }
 }
 
+.search-box-dark {
+  input {
+    background-color: rgb(43, 44, 44);
+    border-color: #6c6575;
+    color: #e2e8f0;
+
+    &::placeholder {
+      color: #a0aec0;
+    }
+
+    &:focus {
+      border-color: $roxo-claro;
+      box-shadow: 0 0 0 3px rgba($roxo-claro, 0.3);
+    }
+  }
+
+  .search-icon {
+    color: #a0aec0;
+  }
+
+  .btn-clear-inline {
+    color: #a0aec0;
+
+    &:hover {
+      background: #4a5568;
+      color: #e53e3e;
+    }
+  }
+}
+
+
 .btn {
   padding: 12px 20px;
   border: none;
@@ -147,6 +181,17 @@ $dark: #343a40;
     }
   }
 
+  &.btn-roxo-dark {
+    background: $roxo-claro;
+    color: white;
+
+    &:hover {
+      background: $roxo-claro;
+      transform: scale(1.05);
+    }
+  }
+
+
   &.btn-search {
     background: $primary;
     color: white;
@@ -157,9 +202,26 @@ $dark: #343a40;
     }
   }
 
+  &.btn-search-dark {
+    background: $roxo-claro;
+    color: white;
+    padding: 12px;
+
+    &:hover {
+      background: $roxo-claro;
+    }
+  }
+
+
   &.btn-filtro {
     color: $primary;
   }
+
+  &.btn-filtro-dark {
+    color: $roxo-claro;
+    background: #bbb6ba;
+  }
+
 
   &.btn-edit {
     background: $primary;

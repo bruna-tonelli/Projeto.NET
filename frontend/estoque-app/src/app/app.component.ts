@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './services/auth.service';
+import { DarkModeService } from './services/dark-mode.service';
 
 @Component({
   selector: 'app-root',
@@ -22,15 +23,18 @@ export class AppComponent implements OnInit {
   showSidebar = true;
   isDarkMode = false;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private darkModeService: DarkModeService
+  ) { }
 
   toggleSidebar() {
     this.sidebarColapsada = !this.sidebarColapsada;
   }
 
   toggleDarkMode() {
-    this.isDarkMode = !this.isDarkMode;
-    localStorage.setItem('darkMode', String(this.isDarkMode));
+    this.darkModeService.toggleDarkMode();
   }
 
   onLogoLoad() {
@@ -43,7 +47,11 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     // Carrega preferência do modo escuro
-    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
+    this.darkModeService.darkMode$.subscribe(isDark => {
+      this.isDarkMode = isDark;
+    });
+
+    this.darkModeService.setDarkMode(this.darkModeService.isDarkMode());
 
     // Verifica logo
     const img = new Image();

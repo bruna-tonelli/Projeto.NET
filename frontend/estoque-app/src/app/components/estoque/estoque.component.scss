@@ -6,6 +6,7 @@
     display: flex;
     flex-direction: column;
   }
+
   .item-card {
     display: flex !important;
     flex-direction: column !important;
@@ -16,6 +17,7 @@
     width: 100%;
     max-width: 400px;
   }
+
   .card-section {
     display: flex !important;
     flex-direction: column !important;
@@ -25,6 +27,7 @@
     margin-bottom: 0 !important;
     width: 100%;
   }
+
   .card-actions {
     justify-content: center !important;
     align-items: center !important;
@@ -34,12 +37,14 @@
     width: 100%;
   }
 }
-// Cores principais
+
 
 $primary: #0353A4;
 $gray: #6c757d;
 $light: #f8f9fa;
 $dark: #343a40;
+$roxo-escuro: #570063;
+$roxo-claro: #601dac;
 
 .page-container {
   padding: 0;
@@ -89,6 +94,8 @@ $dark: #343a40;
     z-index: 1;
   }
 
+
+
   input {
     width: 100%;
     padding: 12px 50px 12px 45px;
@@ -101,13 +108,16 @@ $dark: #343a40;
     &:focus {
       border-color: $primary;
       outline: none;
-      box-shadow: 0 0 0 3px rgba(3,83,164,0.1);
+      box-shadow: 0 0 0 3px rgba(3, 83, 164, 0.1);
     }
 
     &::placeholder {
       color: #999;
     }
   }
+
+
+
 
   .btn-clear-inline {
     position: absolute;
@@ -122,6 +132,36 @@ $dark: #343a40;
     &:hover {
       background: $light;
       color: #dc3545;
+    }
+  }
+}
+
+.search-box-dark {
+  input {
+    background-color: rgb(43, 44, 44);
+    border-color: #6c6575;
+    color: #e2e8f0;
+
+    &::placeholder {
+      color: #a0aec0;
+    }
+
+    &:focus {
+      border-color: $roxo-claro;
+      box-shadow: 0 0 0 3px rgba($roxo-claro, 0.3);
+    }
+  }
+
+  .search-icon {
+    color: #a0aec0;
+  }
+
+  .btn-clear-inline {
+    color: #a0aec0;
+
+    &:hover {
+      background: #4a5568;
+      color: #e53e3e;
     }
   }
 }
@@ -147,6 +187,17 @@ $dark: #343a40;
     }
   }
 
+  // New style for dark mode ADD PRODUCT button
+  &.btn-roxo-dark {
+    background: $roxo-claro;
+    color: white;
+
+    &:hover {
+      background: $roxo-claro;
+      transform: scale(1.05);
+    }
+  }
+
   &.btn-search {
     background: $primary;
     color: white;
@@ -157,8 +208,24 @@ $dark: #343a40;
     }
   }
 
+  &.btn-search-dark {
+    background: $roxo-claro;
+    color: white;
+    padding: 12px;
+
+    &:hover {
+      background: $roxo-claro;
+    }
+  }
+
+
   &.btn-filtro {
     color: $primary;
+  }
+
+  &.btn-filtro-dark {
+    color: $roxo-claro;
+    background: #bbb6ba;
   }
 
   &.btn-edit {
@@ -206,7 +273,8 @@ $dark: #343a40;
   padding: 0 32px 32px;
 }
 
-.status-message, .search-result-message {
+.status-message,
+.search-result-message {
   text-align: center;
   padding: 40px 20px;
   color: $gray;
@@ -248,6 +316,8 @@ $dark: #343a40;
   overflow: visible;
 }
 
+
+
 .card-actions {
   display: flex;
   flex-direction: row;
@@ -265,31 +335,31 @@ $dark: #343a40;
 
 
 
-  .card-section {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    text-align: center;
-    align-items: center;
+.card-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+  align-items: center;
 
-    .card-label {
-      font: 600 0.75rem inherit;
-      font-weight: 600;
-      color: $gray;
-      letter-spacing: 0.1px;
-    }
-
-    .card-value {
-      font: 500 1rem inherit;
-      color: $dark;
-      word-break: break-word;
-    }
+  .card-label {
+    font: 600 0.75rem inherit;
+    font-weight: 600;
+    color: $gray;
+    letter-spacing: 0.1px;
   }
 
-  .card-actions {
-    display: flex;
-    gap: 8px;
+  .card-value {
+    font: 500 1rem inherit;
+    color: $dark;
+    word-break: break-word;
   }
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
 
 // Modal adicionar produto
 
@@ -299,7 +369,7 @@ $dark: #343a40;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -310,7 +380,7 @@ $dark: #343a40;
   background: white;
   border-radius: 12px;
   padding: 32px 28px 24px;
-  box-shadow: 0 8px 32px rgba(3,83,164,0.15);
+  box-shadow: 0 8px 32px rgba(3, 83, 164, 0.15);
   min-width: 420px;
   max-width: 500px;
   width: 90vw;
@@ -365,7 +435,8 @@ $dark: #343a40;
       display: block;
     }
 
-    input, textarea {
+    input,
+    textarea {
       width: 100%;
       padding: 12px;
       border: 1px solid #ddd;
@@ -374,7 +445,7 @@ $dark: #343a40;
       box-sizing: border-box;
       transition: all 0.2s;
 
-      
+
     }
 
     textarea {
@@ -394,7 +465,7 @@ $dark: #343a40;
   background: white;
   border-radius: 12px;
   padding: 32px;
-  box-shadow: 0 8px 32px rgba(3,83,164,0.15);
+  box-shadow: 0 8px 32px rgba(3, 83, 164, 0.15);
   min-width: 400px;
   max-width: 500px;
   width: 90vw;
@@ -454,7 +525,7 @@ input[type="number"]::-webkit-outer-spin-button {
   background-color: #f5f5f5 !important;
   color: #6c757d !important;
   cursor: not-allowed !important;
-  
+
   &:focus {
     outline: none !important;
     box-shadow: 0 0 0 2px rgba(108, 117, 125, 0.25) !important;
@@ -470,7 +541,7 @@ input[type="number"]::-webkit-outer-spin-button {
   font-size: 0.875rem;
   margin-top: 4px;
   margin-bottom: 16px;
-  
+
   .fas {
     color: #17a2b8;
   }
@@ -524,6 +595,8 @@ input[type="number"]::-webkit-outer-spin-button {
       }
     }
 
+    
+
     .filtro-body {
       margin-top: 20px;
       font-family: inherit;
@@ -545,7 +618,7 @@ input[type="number"]::-webkit-outer-spin-button {
         font-family: inherit;
       }
 
-      
+
     }
 
     .aplicar-btn {
@@ -562,4 +635,85 @@ input[type="number"]::-webkit-outer-spin-button {
       font-family: inherit;
     }
   }
+
+  .filtro-container-dark {
+    background-color: rgb(43, 44, 44);
+    border-radius: 16px;
+    padding: 20px 24px;
+    width: 300px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+    font-family: inherit;
+
+    .filtro-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h2 {
+        color: white;
+        font-size: 25px;
+        font-weight: 700;
+        margin: 0;
+        font-family: inherit;
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: #adadad;
+        border-radius: 50%;
+
+        &:hover {
+          background: $dark;
+          color: #dc3545;
+        }
+      }
+    }
+
+    
+
+    .filtro-body {
+      margin-top: 20px;
+      font-family: inherit;
+
+      label {
+        font-weight: 450;
+        display: block;
+        margin-top: 12px;
+        font-family: inherit;
+      }
+
+      select,
+      input[type="number"] {
+        background-color: #141414;
+        width: 100%;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #3d3d3d;
+        margin-top: 4px;
+        font-family: inherit;
+        color: #c7c6c6;
+      }
+
+
+    }
+
+    .aplicar-btn {
+      margin-top: 40px;
+      width: 100%;
+      background: $roxo-claro;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+  }
+
+
 }
