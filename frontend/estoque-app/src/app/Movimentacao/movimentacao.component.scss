@@ -977,46 +977,61 @@ input[type="number"]::-webkit-outer-spin-button {
     }
   }
 
-  // Modal de filtro
+    // Modal de filtro - CORRIGIDO
   .modal-filtro {
-    background: $dark-bg-tertiary;
-    color: $dark-text-primary;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.8) !important;
 
-    h3 {
-      color: $dark-text-primary;
-    }
+    .filtro-container {
+      background: $dark-bg-secondary !important;
+      color: $dark-text-primary !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
 
-    .form-group {
-      label {
-        color: $dark-text-primary;
-      }
-
-      select, input {
-        background: $dark-input-bg;
-        border-color: $dark-border;
-        color: $dark-text-primary;
-
-        &:focus {
-          border-color: $dark-primary;
-          box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+      .filtro-header {
+        h2 {
+          color: $dark-text-primary !important;
         }
 
-        option {
-          background: $dark-input-bg;
-          color: $dark-text-primary;
+        .close-btn {
+          color: $dark-text-secondary !important;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
+            color: #ef4444 !important;
+          }
         }
       }
-    }
 
-    .modal-actions {
-      .btn-secondary {
-        background: $dark-bg-secondary;
-        border-color: $dark-border;
-        color: $dark-text-primary;
+      .filtro-body {
+        label {
+          color: $dark-text-primary !important;
+        }
 
-        &:hover {
-          background: #3a3d4a;
+        select, input {
+          background: $dark-input-bg !important;
+          border: 1px solid $dark-border !important;
+          color: $dark-text-primary !important;
+
+          &:focus {
+            border-color: $dark-primary !important;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
+          }
+
+          option {
+            background: $dark-input-bg !important;
+            color: $dark-text-primary !important;
+          }
+        }
+      }
+
+      .filtro-footer {
+        .aplicar-btn, .limpar-btn {
+          background: $dark-primary !important;
+          color: white !important;
+          border: 1px solid $dark-primary !important;
+
+          &:hover {
+            background: $dark-primary-hover !important;
+          }
         }
       }
     }
