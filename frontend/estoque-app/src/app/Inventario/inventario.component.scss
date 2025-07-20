@@ -942,3 +942,531 @@ $dark: #343a40;
 .modal-small {
   max-width: 400px;
 }
+// ===== MODO ESCURO - INVENTÁRIO =====
+.app-container.dark-mode {
+  
+  // Variáveis para modo escuro
+  $dark-bg-primary: #141414;
+  $dark-bg-secondary: #2a2d3a;
+  $dark-bg-tertiary: #1e1e1e;
+  $dark-text-primary: #f0f0f0;
+  $dark-text-secondary: #b0b0b0;
+  $dark-border: #404040;
+  $dark-input-bg: #2b2c2c;
+  $dark-primary: #6366f1;
+  $dark-primary-hover: #4f46e5;
+
+  // Container principal
+  .page-container {
+    background: transparent;
+  }
+
+  // Header
+  .page-header {
+    .header-content {
+      .page-title {
+        color: $dark-text-primary;
+
+        i {
+          color: $dark-primary;
+        }
+      }
+    }
+  }
+
+  // Barra de pesquisa (se existir)
+  .search-box {
+    .search-icon {
+      color: #a0a0a0;
+    }
+
+    input {
+      background-color: $dark-input-bg;
+      border-color: $dark-border;
+      color: $dark-text-primary;
+
+      &::placeholder {
+        color: #888;
+      }
+
+      &:focus {
+        border-color: $dark-primary;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+      }
+    }
+
+    .btn-clear-inline {
+      color: #a0a0a0;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #dc3545;
+      }
+    }
+  }
+
+  // Botões do header
+  .btn {
+    &.btn-search {
+      background: $dark-primary;
+      border-color: $dark-primary;
+      color: white;
+
+      &:hover {
+        background: $dark-primary-hover;
+        border-color: $dark-primary-hover;
+      }
+    }
+
+    &.btn-primary {
+      background: $dark-primary;
+      border-color: $dark-primary;
+      color: white;
+
+      &:hover {
+        background: $dark-primary-hover;
+        border-color: $dark-primary-hover;
+      }
+    }
+
+    &.btn-secondary {
+      background: $dark-bg-secondary;
+      border-color: $dark-border;
+      color: $dark-text-primary;
+
+      &:hover {
+        background: #3a3d4a;
+        border-color: #505050;
+      }
+    }
+
+    &.btn-success {
+      background: #22c55e;
+      border-color: #16a34a;
+      color: white;
+
+      &:hover {
+        background: #16a34a;
+        border-color: #15803d;
+      }
+    }
+
+    &.btn-warning {
+      background: #f59e0b;
+      border-color: #d97706;
+      color: white;
+
+      &:hover {
+        background: #d97706;
+        border-color: #b45309;
+      }
+    }
+
+    &.btn-danger {
+      background: #ef4444;
+      border-color: #dc2626;
+      color: white;
+
+      &:hover {
+        background: #dc2626;
+        border-color: #b91c1c;
+      }
+    }
+  }
+
+  // Mensagens de status
+  .status-message {
+    color: $dark-text-secondary;
+  }
+
+  // Grid de inventários
+  .inventario-grid {
+    .inventario-card {
+      background: $dark-bg-secondary;
+      border: 1px solid $dark-border;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+
+      &:hover {
+        background: #343640;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+      }
+
+      .card-header {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: white;
+
+        .inventario-info {
+          .inventario-id {
+            color: white;
+          }
+        }
+
+        .inventario-status {
+          background: rgba(255, 255, 255, 0.2);
+          color: white;
+          backdrop-filter: blur(10px);
+        }
+
+        .card-actions {
+          .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: white;
+
+            &:hover {
+              background: rgba(255, 255, 255, 0.3);
+              border-color: rgba(255, 255, 255, 0.5);
+            }
+
+            &.btn-visualizar {
+              background: rgba(99, 102, 241, 0.3);
+              border-color: rgba(99, 102, 241, 0.5);
+
+              &:hover {
+                background: rgba(99, 102, 241, 0.5);
+              }
+            }
+
+            &.btn-finalizar {
+              background: rgba(34, 197, 94, 0.3);
+              border-color: rgba(34, 197, 94, 0.5);
+
+              &:hover {
+                background: rgba(34, 197, 94, 0.5);
+              }
+            }
+          }
+        }
+      }
+
+      .card-body {
+        background: $dark-bg-secondary;
+
+        .inventario-detail {
+          .detail-label {
+            color: $dark-text-primary;
+          }
+
+          .detail-value {
+            color: $dark-text-secondary;
+          }
+        }
+
+        .produtos-lista {
+          background: $dark-bg-tertiary;
+          border: 1px solid $dark-border;
+
+          h4 {
+            color: $dark-text-primary;
+          }
+
+          .produto-item {
+            border-bottom-color: $dark-border;
+
+            .produto-nome {
+              color: $dark-text-primary;
+            }
+
+            .produto-quantidade {
+              color: #22c55e;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Modais
+  .modal-backdrop {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-container {
+    background: $dark-bg-tertiary;
+    color: $dark-text-primary;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+
+    &.large {
+      background: $dark-bg-tertiary;
+    }
+
+    .modal-header {
+      background: $dark-bg-secondary;
+      border-bottom: 1px solid $dark-border;
+
+      h2, h3 {
+        color: $dark-text-primary;
+      }
+
+      .btn-close {
+        color: $dark-text-secondary;
+        background: none;
+        border: none;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+          color: #ef4444;
+        }
+      }
+    }
+
+    .modal-body {
+      background: $dark-bg-tertiary;
+
+      .inventario-info {
+        background: $dark-bg-secondary;
+        border: 1px solid $dark-border;
+
+        h3 {
+          color: $dark-text-primary;
+        }
+
+        .info-item {
+          span:first-child {
+            color: $dark-text-secondary;
+          }
+
+          span:last-child {
+            color: $dark-text-primary;
+          }
+        }
+      }
+
+      .product-list {
+        background: $dark-bg-secondary;
+        border: 1px solid $dark-border;
+
+        .list-header {
+          background: $dark-bg-tertiary;
+          border-bottom: 1px solid $dark-border;
+
+          h4 {
+            color: $dark-text-primary;
+          }
+        }
+
+        .product-item {
+          background: $dark-input-bg;
+          border-bottom: 1px solid $dark-border;
+
+          &:hover {
+            background: #3a3d4a;
+          }
+
+          .product-info {
+            h4 {
+              color: $dark-text-primary;
+            }
+
+            .product-details {
+              color: $dark-text-secondary;
+            }
+          }
+
+          .quantity-controls {
+            .btn-quantity {
+              background: $dark-bg-secondary;
+              border-color: $dark-border;
+              color: $dark-text-primary;
+
+              &:hover {
+                background: #3a3d4a;
+                border-color: #505050;
+              }
+
+              &:disabled {
+                background: #1a1a1a;
+                color: #666;
+                border-color: #333;
+              }
+            }
+
+            input {
+              background: $dark-bg-tertiary;
+              border-color: $dark-border;
+              color: $dark-text-primary;
+
+              &:focus {
+                border-color: $dark-primary;
+                box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+              }
+            }
+          }
+
+          .difference-display {
+            &.positive {
+              color: #22c55e;
+              background: rgba(34, 197, 94, 0.1);
+            }
+
+            &.negative {
+              color: #ef4444;
+              background: rgba(239, 68, 68, 0.1);
+            }
+
+            &.neutral {
+              color: $dark-text-secondary;
+              background: rgba(107, 114, 128, 0.1);
+            }
+          }
+        }
+      }
+
+      .summary-section {
+        background: $dark-bg-secondary;
+        border: 1px solid $dark-border;
+
+        h4 {
+          color: $dark-text-primary;
+        }
+
+        .summary-item {
+          .summary-label {
+            color: $dark-text-secondary;
+          }
+
+          .summary-value {
+            color: $dark-text-primary;
+
+            &.positive {
+              color: #22c55e;
+            }
+
+            &.negative {
+              color: #ef4444;
+            }
+          }
+        }
+      }
+    }
+
+    .modal-footer {
+      background: $dark-bg-secondary;
+      border-top: 1px solid $dark-border;
+
+      .btn-secondary {
+        background: $dark-bg-tertiary;
+        border-color: $dark-border;
+        color: $dark-text-primary;
+
+        &:hover {
+          background: #3a3d4a;
+        }
+      }
+
+      .btn-success {
+        background: #22c55e;
+        border-color: #16a34a;
+
+        &:hover {
+          background: #16a34a;
+        }
+      }
+
+      .btn-primary {
+        background: $dark-primary;
+        border-color: $dark-primary;
+
+        &:hover {
+          background: $dark-primary-hover;
+        }
+      }
+    }
+  }
+
+  // Modal de confirmação personalizado
+  .custom-confirmation-modal {
+    background: $dark-bg-tertiary;
+    color: $dark-text-primary;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+    .confirmation-icon {
+      i {
+        color: #fbbf24;
+      }
+    }
+
+    h3 {
+      color: $dark-text-primary;
+    }
+
+    p {
+      color: $dark-text-secondary;
+
+      strong {
+        color: $dark-text-primary;
+      }
+    }
+
+    .confirmation-actions {
+      .btn-cancel {
+        background: $dark-bg-secondary;
+        border-color: $dark-border;
+        color: $dark-text-primary;
+
+        &:hover {
+          background: #3a3d4a;
+        }
+      }
+
+      .btn-confirm {
+        background: #22c55e;
+        border-color: #16a34a;
+
+        &:hover {
+          background: #16a34a;
+        }
+      }
+    }
+  }
+
+  // Toast notifications (se existirem)
+  .toast {
+    background: $dark-bg-tertiary;
+    border: 1px solid $dark-border;
+    color: $dark-text-primary;
+
+    &.toast-success {
+      border-left: 4px solid #22c55e;
+    }
+
+    &.toast-error {
+      border-left: 4px solid #ef4444;
+    }
+
+    &.toast-warning {
+      border-left: 4px solid #f59e0b;
+    }
+
+    &.toast-info {
+      border-left: 4px solid $dark-primary;
+    }
+  }
+
+  // Loading spinner (se existir)
+  .loading-spinner {
+    color: $dark-primary;
+  }
+
+  // Badges de status
+  .status-badge {
+    &.status-pendente {
+      background: rgba(251, 191, 36, 0.2);
+      color: #fbbf24;
+      border: 1px solid rgba(251, 191, 36, 0.3);
+    }
+
+    &.status-finalizado {
+      background: rgba(34, 197, 94, 0.2);
+      color: #22c55e;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    &.status-cancelado {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+  }
+}

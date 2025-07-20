@@ -1,5 +1,5 @@
 <title>Inventário</title> <base href="/inventario">
-<div class="page-container">
+<div class="page-container app-container" [ngClass]="{'dark-mode': modoEscuroAtivo}">
   <header class="page-header">
     <div class="header-content">
       <h1 class="page-title">
@@ -37,7 +37,9 @@
           <div class="card-header">
             <div class="inventario-info">
               <h3 class="inventario-id">{{ getInventarioNome(inventario) }}</h3>
-              <span class="inventario-status" [ngClass]="getStatusClass(inventario.status)">
+              <span class="inventario-status status-badge"
+                    [class.status-pendente]="inventario.status === 'Pendente' || !inventario.status"
+                    [class.status-finalizado]="inventario.status === 'Finalizado'">
                 {{ inventario.status || 'Pendente' }}
               </span>
             </div>
@@ -57,7 +59,7 @@
               </button>
             </div>
           </div>
-
+          
           <div class="card-body">
             <div class="inventario-detail">
               <span class="detail-label">Responsável:</span>
@@ -73,7 +75,7 @@
               <span class="detail-label">Produtos:</span>
               <span class="detail-value">{{ (inventario.produtos && inventario.produtos.length) || 0 }} itens</span>
             </div>
-
+            
             <div class="produtos-lista" *ngIf="inventario.produtos && inventario.produtos.length > 0">
               <h4><i class="fas fa-box"></i> Produtos no Inventário:</h4>
               <div class="produto-item" *ngFor="let produto of inventario.produtos">

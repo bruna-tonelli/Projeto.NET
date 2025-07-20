@@ -1,45 +1,19 @@
 @use 'sass:color';
 
-@media (max-width: 900px) {
-  .item-list {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-  }
-  .item-card {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 10px !important;
-    padding: 16px 10px !important;
-    grid-template-columns: none !important;
-    width: 100%;
-    max-width: 400px;
-  }
-  .card-section {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
-    gap: 2px !important;
-    margin-bottom: 0 !important;
-    width: 100%;
-  }
-  .card-actions {
-    justify-content: center !important;
-    align-items: center !important;
-    margin-top: 8px !important;
-    margin-bottom: 0 !important;
-    align-self: center !important;
-    width: 100%;
-  }
-}
 // Cores principais
-
 $primary: #0353A4;
 $gray: #6c757d;
 $light: #f8f9fa;
 $dark: #343a40;
+
+// Dark mode variables
+$dark-bg-primary: #141414;
+$dark-bg-secondary: #2a2d3a;
+$dark-bg-tertiary: #3a3f4b;
+$dark-text-primary: #ffffff;
+$dark-text-secondary: #b0b3b8;
+$dark-border: #444;
+$dark-accent: #3498db;
 
 .page-container {
   padding: 0;
@@ -670,6 +644,312 @@ input[type="number"]::-webkit-outer-spin-button {
       font-size: 14px;
       cursor: pointer;
       font-family: inherit;
+    }
+  }
+}
+// ===== MODO ESCURO - FINANCEIRO =====
+.app-container.dark-mode {
+  background: $dark-bg-primary;
+  color: $dark-text-primary;
+
+  // Header styling
+  .page-header {
+    background: $dark-bg-primary;
+
+    .page-title {
+      color: $dark-text-primary;
+    }
+
+    .search-container {
+      .search-box {
+        .search-icon {
+          color: $dark-text-secondary;
+        }
+
+        input {
+          background: $dark-bg-secondary;
+          color: $dark-text-primary;
+          border: 1px solid $dark-border;
+
+          &::placeholder {
+            color: $dark-text-secondary;
+          }
+
+          &:focus {
+            border-color: $dark-accent;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+          }
+        }
+
+        .btn-clear-inline {
+          color: $dark-text-secondary;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #dc3545;
+          }
+        }
+      }
+
+      .btn {
+        &.btn-search {
+          background: $dark-accent;
+          border-color: $dark-accent;
+          color: white;
+
+          &:hover {
+            background: darken($dark-accent, 10%);
+          }
+        }
+
+        &.btn-filtro {
+          background: $dark-bg-tertiary;
+          border-color: $dark-border;
+          color: $dark-text-primary;
+
+          &:hover {
+            background: lighten($dark-bg-tertiary, 10%);
+          }
+        }
+      }
+    }
+  }
+
+  // Saldo card styling
+  .saldo-empresarial-container {
+    .saldo-card {
+      background: $dark-bg-secondary;
+      border: 1px solid $dark-border;
+      color: $dark-text-primary;
+
+      .saldo-header {
+        border-bottom: 1px solid $dark-border;
+
+        .saldo-title {
+          color: $dark-text-primary;
+        }
+
+        .saldo-icon {
+          color: $dark-text-secondary;
+        }
+      }
+
+      .saldo-valor {
+        color: $dark-text-primary;
+
+        &.valor-positivo {
+          color: #27ae60;
+        }
+
+        &.valor-negativo {
+          color: #e74c3c;
+        }
+      }
+
+      .saldo-info {
+        border-top: 1px solid $dark-border;
+
+        .saldo-descricao {
+          color: $dark-text-secondary;
+        }
+
+        .saldo-status {
+          &.status-positivo {
+            background-color: rgba(39, 174, 96, 0.2);
+            color: #27ae60;
+          }
+
+          &.status-negativo {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+          }
+        }
+      }
+    }
+  }
+
+  // Gráfico container
+  .grafico-container {
+    background: $dark-bg-secondary;
+    border: 1px solid $dark-border;
+    color: $dark-text-primary;
+
+    .grafico-titulo {
+      color: $dark-text-primary;
+    }
+
+    .no-data-message {
+      color: $dark-text-secondary;
+    }
+  }
+
+  // Item cards (transações) - CORRIGIDO
+  .item-list {
+    .item-card {
+      background: $dark-bg-secondary !important;
+      border: 1px solid $dark-border !important;
+      color: $dark-text-primary !important;
+
+      &:hover {
+        background: lighten($dark-bg-secondary, 5%) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+        transform: scale(1.01) !important;
+      }
+
+      .card-section {
+        .card-label {
+          color: $dark-text-secondary !important;
+        }
+
+        .card-value {
+          color: $dark-text-primary !important;
+        }
+
+        // Estilização específica para badges de tipo
+        .tipo-badge {
+          &.tipo-entrada {
+            background: rgba(220, 53, 69, 0.2) !important;
+            color: #dc3545 !important;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+          }
+
+          &.tipo-saida {
+            background: rgba(40, 167, 69, 0.2) !important;
+            color: #28a745 !important;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+          }
+        }
+      }
+
+      // Seções específicas dos cards
+      .id-section .card-value {
+        color: $dark-accent !important;
+        font-weight: 600;
+      }
+
+      .name-section .card-value {
+        color: $dark-text-primary !important;
+        font-weight: 500;
+      }
+
+      .date-section .card-value {
+        color: $dark-text-secondary !important;
+        font-size: 0.9rem;
+      }
+
+      .quantity-section .card-value {
+        color: $dark-text-primary !important;
+        font-weight: 600;
+      }
+
+      .type-section .card-value {
+        color: $dark-text-primary !important;
+      }
+
+      .value-section .card-value {
+        font-weight: 700 !important;
+        // As cores dos valores são definidas inline no HTML baseado no tipo
+      }
+    }
+  }
+
+  // Status messages
+  .status-message, .search-result-message {
+    color: $dark-text-secondary;
+
+    &.no-results {
+      color: #e74c3c;
+    }
+  }
+
+  // Filter modal
+  .modal-overlay {
+    background: rgba(0, 0, 0, 0.8);
+
+    .modal-content {
+      background: $dark-bg-secondary;
+      color: $dark-text-primary;
+      border: 1px solid $dark-border;
+
+      .modal-header {
+        background: $dark-bg-primary;
+        border-bottom: 1px solid $dark-border;
+
+        h3 {
+          color: $dark-text-primary;
+        }
+
+        .close-btn {
+          color: $dark-text-secondary;
+
+          &:hover {
+            color: $dark-text-primary;
+          }
+        }
+      }
+
+      .modal-body {
+        background: $dark-bg-secondary;
+
+        .form-group {
+          label {
+            color: $dark-text-primary;
+          }
+
+          input, select {
+            background: $dark-bg-primary;
+            color: $dark-text-primary;
+            border: 1px solid $dark-border;
+
+            &:focus {
+              border-color: $dark-accent;
+              box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+            }
+
+            &::placeholder {
+              color: $dark-text-secondary;
+            }
+
+            option {
+              background: $dark-bg-primary;
+              color: $dark-text-primary;
+            }
+          }
+        }
+      }
+
+      .modal-footer {
+        background: $dark-bg-secondary;
+        border-top: 1px solid $dark-border;
+
+        .btn {
+          &.btn-primary {
+            background: $dark-accent;
+            border-color: $dark-accent;
+            color: white;
+
+            &:hover {
+              background: darken($dark-accent, 10%);
+            }
+          }
+
+          &.btn-secondary {
+            background: $dark-bg-tertiary;
+            border-color: $dark-border;
+            color: $dark-text-primary;
+
+            &:hover {
+              background: lighten($dark-bg-tertiary, 10%);
+            }
+          }
+        }
+      }
     }
   }
 }

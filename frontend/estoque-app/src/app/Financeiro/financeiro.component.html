@@ -1,5 +1,5 @@
 <title>Financeiro</title> <base href="/financeiro">
-<div class="page-container">
+<div class="page-container" [class.app-container]="true" [class.dark-mode]="modoEscuroAtivo">
   <header class="page-header">
     <h1 class="page-title">Transações</h1>
     <div class="search-container">
@@ -90,7 +90,11 @@
           </div>
           <div class="card-section type-section">
             <span class="card-label">Tipo</span>
-            <span class="card-value">{{ movimentacao.tipo }}</span>
+            <span class="card-value tipo-badge"
+                  [class.tipo-entrada]="movimentacao.tipo === 'ENTRADA'"
+                  [class.tipo-saida]="movimentacao.tipo === 'SAIDA' || movimentacao.tipo === 'SAÍDA'">
+              {{ movimentacao.tipo }}
+            </span>
           </div>
           <div class="card-section value-section">
             <span class="card-label">Valor Total</span>
@@ -104,38 +108,47 @@
     </ng-container>
   </section>
 
-     <!-- Modal de filtro -->
-<div class="modal-filtro" *ngIf="modalFiltroAberto">
-  <div class="filtro-container">
-    <div class="filtro-header">
-      <h2>Filtros</h2>
-      <button class="close-btn" (click)="fecharModalFiltrar()">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-
-    <div class="filtro-body">
-      <!-- Filtro Tipo -->
-      <label>Tipo</label>
-      <select [(ngModel)]="filtros.tipo">
-        <option value="">Todos</option>
-        <option value="ENTRADA">Entrada</option>
-        <option value="SAIDA">Saída</option>
-      </select>
-
-      <!-- Filtro por Data -->
-      <div class="data-range">
-        <label>Data Inicial</label>
-        <input type="date" [(ngModel)]="filtros.dataInicial" />
-
-        <label>Data Final</label>
-        <input type="date" [(ngModel)]="filtros.dataFinal" />
+  <!-- Modal de Filtro -->
+  <div class="modal-overlay" *ngIf="modalFiltroAberto" (click)="fecharModalFiltrar()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Filtrar Transações</h3>
+        <button class="btn-fechar" (click)="fecharModalFiltrar()">&times;</button>
       </div>
-    </div>
-
-    <div class="filtro-footer">
-      <button class="limpar-btn" (click)="limparFiltros()">Limpar Filtros</button>
-      <button class="aplicar-btn" (click)="aplicarFiltro()">Aplicar</button>
+      
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="tipoFiltro">Tipo de Transação:</label>
+          <select id="tipoFiltro" [(ngModel)]="filtros.tipo" class="form-control">
+            <option value="">Todos</option>
+            <option value="ENTRADA">Entrada</option>
+            <option value="SAIDA">Saída</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="dataInicial">Data Inicial:</label>
+          <input 
+            type="date" 
+            id="dataInicial" 
+            [(ngModel)]="filtros.dataInicial" 
+            class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label for="dataFinal">Data Final:</label>
+          <input 
+            type="date" 
+            id="dataFinal" 
+            [(ngModel)]="filtros.dataFinal" 
+            class="form-control">
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="limparFiltros()">Limpar</button>
+        <button class="btn btn-primary" (click)="aplicarFiltro()">Aplicar</button>
+      </div>
     </div>
   </div>
 </div>

@@ -1,9 +1,9 @@
 <title>Estoque</title>
 <base href="/estoque">
-<div class="page-container" ng-class="{'dark-mode': modoEscuroAtivo}">
+<div class="page-container" [class.app-container]="true" [class.dark-mode]="modoEscuroAtivo">
   <header class="page-header">
     <div class="search-container">
-       <div class="search-box search-box-small" [class.search-box-dark]="modoEscuroAtivo">
+       <div class="search-box search-box-small">
         <i class="fas fa-search search-icon"></i>
         <input type="text" placeholder="Pesquise por nome ou por Id" [(ngModel)]="termoBusca" (input)="buscar()"
           (keyup.enter)="pesquisarPorBotao()">
@@ -12,17 +12,17 @@
           <i class="fas fa-times"></i>
         </button>
       </div>
-      <button class="btn btn-search" [class.btn-search-dark]="modoEscuroAtivo" (click)="pesquisarPorBotao()" title="Pesquisar">
+      <button class="btn btn-search" (click)="pesquisarPorBotao()" title="Pesquisar">
         <i class="fas fa-search"></i>
       </button>
 
-      <button class="btn btn-filtro" [class.btn-filtro-dark]="modoEscuroAtivo" (click)="abrirModalFiltrar()">
+      <button class="btn btn-filtro" (click)="abrirModalFiltrar()">
         <i class="fa-solid fa-sliders"></i>
       </button>
 
     </div>
     <div class="actions">
-      <button class="btn btn-primary" [class.btn-roxo-dark]="modoEscuroAtivo" (click)="abrirModalAdicionar()">
+      <button class="btn btn-primary" (click)="abrirModalAdicionar()">
         <i class="fas fa-plus"></i> ADICIONAR PRODUTO
       </button>
     </div>
@@ -41,7 +41,7 @@
       <div *ngIf="estoqueExibido.length === 0 && !pesquisaRealizada" class="status-message">Nenhum produto encontrado.
       </div>
       <div class="item-list">
-        <div class="item-card" [class.item-card-dark] *ngFor="let produto of estoqueExibido">
+        <div class="item-card" *ngFor="let produto of estoqueExibido">
           <div class="card-section id-section">
             <span class="card-label">ID</span>
             <span class="card-value">{{ produto.id }}</span>
@@ -61,11 +61,17 @@
             </span>
           </div>
           <div class="card-actions">
-            <button class="btn btn-edit" type="button" (click)="editarProduto(produto); $event.stopPropagation()"
+            <button 
+              class="btn btn-edit" 
+              type="button"
+              (click)="editarProduto(produto); $event.stopPropagation()"
               title="Editar produto">
               <i class="fas fa-edit"></i>
             </button>
-            <button class="btn btn-delete" type="button" (click)="removerProduto(produto.id!); $event.stopPropagation()"
+            <button 
+              class="btn btn-delete" 
+              type="button"
+              (click)="removerProduto(produto.id!); $event.stopPropagation()"
               title="Remover produto">
               <i class="fas fa-trash"></i>
             </button>

@@ -1,5 +1,16 @@
 @use 'sass:color';
 
+$dark-bg-primary: #141414;       
+$dark-bg-secondary: #2a2d3a; 
+$dark-bg-tertiary: #1e1e1e;        
+$dark-text-primary: #f0f0f0;      
+$dark-text-secondary: #b0b0b0;
+$dark-border: #404040;
+$dark-input-bg: #2b2c2c;
+$dark-primary: #6366f1;
+$dark-primary-hover: #4f46e5;
+$dark-accent: #3498db;
+
 @media (max-width: 900px) {
   .item-list {
     align-items: center;
@@ -233,7 +244,15 @@ $roxo-claro: #601dac;
     }
   }
 
-  
+  &.btn-delete {
+    background: #dc3545;
+    color: white;
+    padding: 8px 12px;
+
+    &:hover {
+      background: color.adjust(#dc3545, $lightness: -10%);
+    }
+  }
 
   &.btn-secondary {
     background: $gray;
@@ -657,6 +676,349 @@ input[type="number"]::-webkit-outer-spin-button {
       font-size: 14px;
       cursor: pointer;
       font-family: inherit;
+    }
+  }
+}
+// ===== MODO ESCURO - MOVIMENTAÇÃO =====
+.app-container.dark-mode {
+  
+  // Header
+  .page-header {
+    .page-title {
+      color: $dark-text-primary;
+    }
+  }
+
+  // Barra de pesquisa
+  .search-box {
+    .search-icon {
+      color: #a0a0a0;
+    }
+
+    input {
+      background-color: $dark-input-bg;
+      border-color: $dark-border;
+      color: $dark-text-primary;
+
+      &::placeholder {
+        color: #888;
+      }
+
+      &:focus {
+        border-color: $dark-primary;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+      }
+    }
+
+    .btn-clear-inline {
+      color: #a0a0a0;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #dc3545;
+      }
+    }
+  }
+
+  // Botões do header
+  .btn {
+    &.btn-search {
+      background: $dark-primary;
+      border-color: $dark-primary;
+      color: white;
+
+      &:hover {
+        background: $dark-primary-hover;
+        border-color: $dark-primary-hover;
+      }
+    }
+
+    &.btn-filtro {
+      background: $dark-bg-secondary;
+      border-color: $dark-border;
+      color: $dark-text-primary;
+
+      &:hover {
+        background: #3a3d4a;
+        border-color: #505050;
+      }
+    }
+
+    &.btn-primary {
+      background: $dark-primary;
+      border-color: $dark-primary;
+      color: white;
+
+      &:hover {
+        background: $dark-primary-hover;
+        border-color: $dark-primary-hover;
+      }
+    }
+  }
+
+  // Cards dos itens
+  .item-card {
+    background: $dark-bg-secondary;
+    border-color: $dark-border;
+    color: $dark-text-primary;
+
+    &:hover {
+      background: #343640;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-label {
+      color: $dark-text-secondary;
+    }
+
+    .card-value {
+      color: $dark-text-primary;
+    }
+
+    .tipo-entrada {
+      background: rgba(34, 197, 94, 0.2);
+      color: #22c55e;
+    }
+
+    .tipo-saida {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+
+    .btn-edit {
+      background: rgba(99, 102, 241, 0.2);
+      color: $dark-primary;
+      border-color: rgba(99, 102, 241, 0.3);
+
+      &:hover {
+        background: rgba(99, 102, 241, 0.3);
+        color: #8b5cf6;
+      }
+    }
+
+    .btn-delete {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+      border-color: rgba(239, 68, 68, 0.3);
+
+      &:hover {
+        background: rgba(239, 68, 68, 0.3);
+        color: #f87171;
+      }
+    }
+  }
+
+   .modal-backdrop {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .modal-produto {
+    background: $dark-bg-tertiary !important;
+    color: $dark-text-primary !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+
+    .modal-header {
+      background: $dark-bg-secondary !important;
+      border-bottom: 1px solid $dark-border !important;
+
+      h2 {
+        color: $dark-text-primary !important;
+      }
+
+      .modal-close {
+        color: $dark-text-secondary !important;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1) !important;
+          color: #ef4444 !important;
+        }
+      }
+    }
+
+    form {
+      background: $dark-bg-tertiary !important;
+
+      label {
+        color: $dark-text-primary !important;
+      }
+
+      input, select, textarea {
+        background: $dark-input-bg !important;
+        border: 1px solid $dark-border !important;
+        color: $dark-text-primary !important;
+
+        &:focus {
+          border-color: $dark-primary !important;
+          box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
+        }
+
+        &::placeholder {
+          color: $dark-text-secondary !important;
+        }
+
+        option {
+          background: $dark-input-bg !important;
+          color: $dark-text-primary !important;
+        }
+      }
+
+      .input-readonly {
+        background: #1a1a1a !important;
+        color: #666 !important;
+        border-color: $dark-border !important;
+
+        &:focus {
+          background: #1a1a1a !important;
+          border-color: $dark-border !important;
+          box-shadow: none !important;
+        }
+      }
+
+      .btn {
+        &.btn-primary {
+          background: $dark-primary !important;
+          border-color: $dark-primary !important;
+          color: white !important;
+
+          &:hover {
+            background: $dark-primary-hover !important;
+          }
+
+          &:disabled {
+            background: #4a5568 !important;
+            border-color: #4a5568 !important;
+            color: #a0aec0 !important;
+          }
+        }
+      }
+    }
+  }
+
+  .modal-produto {
+    background: $dark-bg-tertiary;
+    color: $dark-text-primary;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+    .modal-header {
+      background: $dark-bg-secondary;
+      border-bottom-color: $dark-border;
+
+      h2 {
+        color: $dark-text-primary;
+      }
+
+      .modal-close {
+        color: $dark-text-secondary;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+          color: #ef4444;
+        }
+      }
+    }
+
+    .modal-body {
+      label {
+        color: $dark-text-primary;
+      }
+
+      input, select, textarea {
+        background: $dark-input-bg;
+        border-color: $dark-border;
+        color: $dark-text-primary;
+
+        &:focus {
+          border-color: $dark-primary;
+          box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        option {
+          background: $dark-input-bg;
+          color: $dark-text-primary;
+        }
+      }
+    }
+  }
+
+  .modal-confirmacao {
+    background: $dark-bg-tertiary;
+    color: $dark-text-primary;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+    h3 {
+      color: $dark-text-primary;
+    }
+
+    p {
+      color: $dark-text-secondary;
+
+      strong {
+        color: $dark-text-primary;
+      }
+    }
+
+    .btn-secondary {
+      background: $dark-bg-secondary;
+      border-color: $dark-border;
+      color: $dark-text-primary;
+
+      &:hover {
+        background: #3a3d4a;
+      }
+    }
+
+    .btn-danger {
+      background: #ef4444;
+      border-color: #dc2626;
+
+      &:hover {
+        background: #dc2626;
+      }
+    }
+  }
+
+  // Modal de filtro
+  .modal-filtro {
+    background: $dark-bg-tertiary;
+    color: $dark-text-primary;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+    h3 {
+      color: $dark-text-primary;
+    }
+
+    .form-group {
+      label {
+        color: $dark-text-primary;
+      }
+
+      select, input {
+        background: $dark-input-bg;
+        border-color: $dark-border;
+        color: $dark-text-primary;
+
+        &:focus {
+          border-color: $dark-primary;
+          box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        option {
+          background: $dark-input-bg;
+          color: $dark-text-primary;
+        }
+      }
+    }
+
+    .modal-actions {
+      .btn-secondary {
+        background: $dark-bg-secondary;
+        border-color: $dark-border;
+        color: $dark-text-primary;
+
+        &:hover {
+          background: #3a3d4a;
+        }
+      }
     }
   }
 }
