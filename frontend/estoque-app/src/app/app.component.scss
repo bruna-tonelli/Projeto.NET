@@ -10,44 +10,44 @@
   box-sizing: border-box; // Adicione esta linha
 
   &.sidebar-collapsed {
-  .sidebar {
-    width: 64px !important;
-    min-width: 64px;
-    max-width: 64px;
-    overflow-x: hidden;
+    .sidebar {
+      width: 64px !important;
+      min-width: 64px;
+      max-width: 64px;
+      overflow-x: hidden;
 
-    .logo-container {
-      padding: 20px 10px;
+      .logo-container {
+        padding: 20px 10px;
 
-      .logo-image {
-        max-width: 44px;
-        max-height: 44px;
+        .logo-image {
+          max-width: 44px;
+          max-height: 44px;
+        }
+      }
+
+      .menu-item,
+      .logout-item {
+        justify-content: center;
+        padding: 18px 0;
+
+        span {
+          display: none;
+        }
+
+        i {
+          font-size: 1.6rem;
+          margin: 0;
+          width: 100%;
+          text-align: center;
+        }
       }
     }
 
-    .menu-item,
-    .logout-item {
-      justify-content: center;
-      padding: 18px 0;
-
-      span {
-        display: none;
-      }
-
-      i {
-        font-size: 1.6rem;
-        margin: 0;
-        width: 100%;
-        text-align: center;
-      }
+    .main-view {
+      margin-left: 64px;
+      transition: margin-left 0.3s;
     }
   }
-
-  .main-view {
-    margin-left: 64px;
-    transition: margin-left 0.3s;
-  }
-}
 
   &.no-sidebar {
     .main-view {
@@ -79,7 +79,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
     .logo-image {
       max-width: 200px;
       max-height: 100px;
@@ -95,7 +95,8 @@
     margin-top: 10px;
   }
 
-  .menu-item, .logout-item {
+  .menu-item,
+  .logout-item {
     display: flex;
     align-items: center;
     padding: 18px 25px;
@@ -116,7 +117,8 @@
       font-weight: 500;
     }
 
-    &:hover, &.active {
+    &:hover,
+    &.active {
       background-color: rgba(255, 255, 255, 0.1);
       border-left: 4px solid #FFFFFF;
     }
@@ -145,4 +147,40 @@
   outline: none;
   display: flex;
   justify-content: flex-start;
+}
+
+
+.app-container.dark-mode {
+  background-color: #141414;
+  color: #f0f0f0;
+
+  .sidebar {
+
+    background:linear-gradient(145deg, #2f0b61, #2b166a, #282781);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.5);
+
+
+    .menu-item,
+    .logout-item {
+      color: #f0f0f0;
+
+      &:hover,
+      &.active {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-left: 4px solid #f0f0f0;
+      }
+    }
+
+    .logo-container {
+      color: #f0f0f0;
+    }
+
+    .sidebar-toggle {
+      color: #f0f0f0;
+    }
+  }
+
+  .main-view {
+    color: #f0f0f0;
+  }
 }

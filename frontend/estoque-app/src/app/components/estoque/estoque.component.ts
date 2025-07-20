@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProdutoEstoque } from '../../models/produto-estoque.model';
 import { EstoqueService } from '../../services/estoque.service';
+import { DarkModeService } from '../../services/dark-mode.service';
 
 @Component({
   selector: 'app-estoque',
@@ -18,6 +19,7 @@ export class EstoqueComponent implements OnInit {
   public itemSelecionado: ProdutoEstoque | null = null; // Guarda o item clicado
   public pesquisaRealizada: boolean = false; // Adicionar propriedade faltante
   private listaCompletaEstoque: ProdutoEstoque[] = [];
+  public modoEscuroAtivo: boolean = false;
 
   modalAberto = false;
   novoProduto: { nome: string; quantidade: number; precoCompra: number | null; precoVenda: number | null; descricao: string } = {
@@ -28,15 +30,34 @@ export class EstoqueComponent implements OnInit {
     descricao: ''
   };
 
+
   modalEditarAberto = false;
   produtoEditando: ProdutoEstoque | null = null;
-  
+
   modalConfirmacaoAberto = false;
   produtoParaRemover: ProdutoEstoque | null = null;
 
-  constructor(private estoqueService: EstoqueService) {}
+  modalFiltroAberto = false;
+
+  filtroPorValorAtivado = false;
+
+  filtros = {
+    tipo: ''
+  };
+
+
+  constructor(
+    private estoqueService: EstoqueService,
+    private darkModeService: DarkModeService
+  ) {}
+
+
 
   ngOnInit(): void {
+    this.darkModeService.darkMode$.subscribe(isDark => {
+      this.modoEscuroAtivo = isDark;
+    });
+
     this.carregarEstoque();
   }
 
@@ -84,7 +105,7 @@ export class EstoqueComponent implements OnInit {
     this.estoqueExibido = this.listaCompletaEstoque;
   }
 
-  
+
 
   // Edita apenas o item selecionado
   editar(): void {
@@ -116,7 +137,7 @@ export class EstoqueComponent implements OnInit {
 
   adicionarProduto(): void {
     console.log('Tentando adicionar produto:', this.novoProduto);
-    
+
     if (
       !this.novoProduto.nome ||
       this.novoProduto.precoCompra === null ||
@@ -162,12 +183,29 @@ export class EstoqueComponent implements OnInit {
     });
   }
 
+  aplicarFiltro(): void {
+    this.estoqueExibido = this.listaCompletaEstoque.filter(produto => {
+    const tipoOk = !this.filtros.tipo || produto.descricao.toLowerCase().includes(this.filtros.tipo.toLowerCase());
+    return tipoOk;
+  });
+
+    this.fecharModalFiltrar();
+  }
+
+  abrirModalFiltrar(): void {
+    this.modalFiltroAberto = true;
+  }
+
+  fecharModalFiltrar(): void {
+    this.modalFiltroAberto = false;
+  }
+
   removerProduto(id: string | number): void {
     const numericId = typeof id === 'string' ? Number(id) : id;
     if (isNaN(numericId)) {
       return;
     }
-    
+
     // Encontra o produto para mostrar no modal de confirmação
     this.produtoParaRemover = this.estoqueExibido.find(p => p.id === id) || null;
     this.modalConfirmacaoAberto = true;
@@ -180,10 +218,10 @@ export class EstoqueComponent implements OnInit {
 
   confirmarRemocaoFinal(): void {
     if (this.produtoParaRemover && this.produtoParaRemover.id !== undefined) {
-      const numericId = typeof this.produtoParaRemover.id === 'string' 
-        ? Number(this.produtoParaRemover.id) 
+      const numericId = typeof this.produtoParaRemover.id === 'string'
+        ? Number(this.produtoParaRemover.id)
         : this.produtoParaRemover.id;
-      
+
       if (!isNaN(numericId)) {
         this.estoqueService.removerProduto(numericId).subscribe(() => {
           this.carregarEstoque();

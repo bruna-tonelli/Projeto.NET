@@ -31,6 +31,8 @@ $primary: #0353A4;
 $gray: #6c757d;
 $light: #f8f9fa;
 $dark: #343a40;
+$roxo-escuro: #570063;
+$roxo-claro: #601dac;
 
 .page-container {
   padding: 0;
@@ -51,6 +53,8 @@ $dark: #343a40;
     color: $primary;
     font: 600 1.8rem/1.2 inherit;
   }
+
+  
 
   .search-container {
     flex: 1;
@@ -111,6 +115,36 @@ $dark: #343a40;
   }
 }
 
+.search-box-dark {
+  input {
+    background-color: rgb(43, 44, 44);
+    border-color: #6c6575;
+    color: #e2e8f0;
+
+    &::placeholder {
+      color: #a0aec0;
+    }
+
+    &:focus {
+      border-color: $roxo-claro;
+      box-shadow: 0 0 0 3px rgba($roxo-claro, 0.3);
+    }
+  }
+
+  .search-icon {
+    color: #a0aec0;
+  }
+
+  .btn-clear-inline {
+    color: #a0aec0;
+
+    &:hover {
+      background: #4a5568;
+      color: #e53e3e;
+    }
+  }
+}
+
 .btn {
   padding: 12px 20px;
   border: none;
@@ -129,6 +163,16 @@ $dark: #343a40;
 
     &:hover {
       background: color.adjust($primary, $lightness: -10%);
+    }
+  }
+
+  &.btn-search-dark {
+    background: $roxo-claro;
+    color: white;
+    padding: 12px;
+
+    &:hover {
+      background: $roxo-claro;
     }
   }
 
@@ -207,14 +251,10 @@ $dark: #343a40;
   cursor: pointer;
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    border-color: $primary;
+  transform: scale(1.01);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   }
 
-  &.item-selecionado {
-    border-color: $primary;
-    box-shadow: 0 0 0 2px rgba(3,83,164,0.1);
-  }
 
   .card-section {
     display: flex;

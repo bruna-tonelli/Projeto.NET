@@ -2,7 +2,7 @@
 <div class="page-container">
   <header class="page-header">
     <div class="search-container">
-      <div class="search-box search-box-small">
+      <div class="search-box search-box-small" [class.search-box-dark]="modoEscuroAtivo">
         <i class="fas fa-search search-icon"></i>
         <input 
           type="text" 
@@ -13,13 +13,17 @@
         <button *ngIf="pesquisaRealizada || termoBusca" class="btn-clear-inline" (click)="limparPesquisa()" title="Limpar pesquisa">
           <i class="fas fa-times"></i>
         </button>
+        
       </div>
-      <button class="btn btn-search" (click)="pesquisarPorBotao()" title="Pesquisar">
+      <button class="btn btn-search" [class.btn-search-dark]="modoEscuroAtivo" (click)="pesquisarPorBotao()" title="Pesquisar">
         <i class="fas fa-search"></i>
+      </button>
+      <button class="btn btn-filtro" [class.btn-filtro-dark]="modoEscuroAtivo" (click)="abrirModalFiltrar()">
+        <i class="fa-solid fa-sliders"></i>
       </button>
     </div>
     <div class="actions">
-      <button class="btn btn-primary" (click)="abrirModalAdicionar()">
+      <button class="btn btn-primary" [class.btn-roxo-dark]="modoEscuroAtivo" (click)="abrirModalAdicionar()">
         <i class="fas fa-plus"></i> ADICIONAR MOVIMENTAÇÃO
       </button>
     </div>
@@ -126,6 +130,39 @@
       </form>
     </div>
   </div>
+
+   <!-- Modal de filtro -->
+<div class="modal-filtro" *ngIf="modalFiltroAberto">
+  <div class="filtro-container">
+    <div class="filtro-header">
+      <h2>Filtros</h2>
+      <button class="close-btn" (click)="fecharModalFiltrar()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="filtro-body">
+      <!-- Filtro Tipo -->
+      <label>Tipo</label>
+      <select [(ngModel)]="filtros.tipo">
+        <option value="">Todos</option>
+        <option value="entrada">Entrada</option>
+        <option value="saida">Saída</option>
+      </select>
+
+      <!-- Filtro por Data -->
+      <div class="data-range">
+        <label>Data Inicial</label>
+        <input type="date" [(ngModel)]="filtros.dataInicial" />
+
+        <label>Data Final</label>
+        <input type="date" [(ngModel)]="filtros.dataFinal" />
+      </div>
+
+
+    <button class="aplicar-btn" (click)="aplicarFiltro()">Aplicar</button>
+  </div>
+</div>
 
   <!-- Modal de Editar Movimentação -->
   <div class="modal-backdrop" *ngIf="modalEditarAberto">

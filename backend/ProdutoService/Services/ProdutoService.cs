@@ -1,6 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using ProdutoService.Data;
 using ProdutoService.Models;
-using Microsoft.EntityFrameworkCore;
+using ProdutoService.Repositories;
 using System.Linq;
 
 namespace ProdutoService.Services

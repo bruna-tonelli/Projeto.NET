@@ -7,6 +7,7 @@ import { MovimentacaoService } from '../services/movimentacao.service';
 import { ProdutoEstoque } from '../models/produto-estoque.model';
 import { Funcionario } from '../models/funcionario.model';
 import { AuthService, UserInfo } from '../services/auth.service';
+import { DarkModeService } from '../services/dark-mode.service';
 
 @Component({
   selector: 'app-movimentacao',
@@ -23,6 +24,7 @@ export class MovimentacaoComponent implements OnInit {
   private listaCompletaMovimentacoes: Movimentacao[] = [];
   public pesquisaRealizada: boolean = false; 
   public usuarioLogado: UserInfo | null = null;
+  public modoEscuroAtivo: boolean = false;
 
   // Listas para seleção
   public produtos: ProdutoEstoque[] = [];
@@ -53,16 +55,32 @@ export class MovimentacaoComponent implements OnInit {
   modalConfirmacaoAberto = false;
   movimentacaoParaRemover: Movimentacao | null = null;
 
+  modalFiltroAberto = false;
+
+  filtroPorValorAtivado = false;
+
+  filtros = {
+    tipo: '',
+    dataInicial: null,
+    dataFinal: null,
+    dataMovimentacao: '' as string,
+  };
+
   constructor(
     private movimentacaoService: MovimentacaoService,
-    private authService: AuthService
+    private authService: AuthService,
+    private darkModeService: DarkModeService
   ) {}
 
   ngOnInit(): void {
+    this.darkModeService.darkMode$.subscribe(isDark => {
+      this.modoEscuroAtivo = isDark;
+    });
     // Obter o usuário logado
     this.usuarioLogado = this.authService.getCurrentUserValue();
     console.log('Usuário logado:', this.usuarioLogado);
     this.carregarDados();
+    
   }
 
   carregarDados(): void {
@@ -174,6 +192,31 @@ export class MovimentacaoComponent implements OnInit {
     this.termoBusca = '';
     this.movimentacoesExibidas = this.listaCompletaMovimentacoes;
     this.pesquisaRealizada = false;
+  }
+
+  aplicarFiltro(): void {
+  this.movimentacoesExibidas = this.listaCompletaMovimentacoes.filter(mov => {
+    const tipoOk = !this.filtros.tipo || mov.tipo.toLowerCase() === this.filtros.tipo.toLowerCase();
+
+
+    // Data segura
+    const dataMov = mov.dataMovimentacao ? new Date(mov.dataMovimentacao) : null;
+    const dataInicialOk = !this.filtros.dataInicial || (dataMov && dataMov >= new Date(this.filtros.dataInicial));
+    const dataFinalOk = !this.filtros.dataFinal || (dataMov && dataMov <= new Date(this.filtros.dataFinal));
+
+    return tipoOk && dataInicialOk && dataFinalOk;
+  });
+
+  this.fecharModalFiltrar();
+}
+
+
+  abrirModalFiltrar(): void {
+    this.modalFiltroAberto = true;
+  }
+
+  fecharModalFiltrar(): void {
+    this.modalFiltroAberto = false;
   }
 
   

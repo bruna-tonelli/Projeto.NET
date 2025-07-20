@@ -4,13 +4,13 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './services/auth.service';
+import { DarkModeService } from './services/dark-mode.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     CommonModule,
-    // Adiciona as ferramentas ao componente
     RouterOutlet,
     RouterLink,
     RouterLinkActive
@@ -20,12 +20,21 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent implements OnInit {
   sidebarColapsada = false;
-  showSidebar = true; // Nova propriedade para controlar a visibilidade da sidebar
+  showSidebar = true;
+  isDarkMode = false;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private darkModeService: DarkModeService
+  ) { }
 
   toggleSidebar() {
     this.sidebarColapsada = !this.sidebarColapsada;
+  }
+
+  toggleDarkMode() {
+    this.darkModeService.toggleDarkMode();
   }
 
   onLogoLoad() {
@@ -37,23 +46,28 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Debug: verificar se a imagem está sendo carregada
-    console.log('Verificando se a logo está carregando...');
+    // Carrega preferência do modo escuro
+    this.darkModeService.darkMode$.subscribe(isDark => {
+      this.isDarkMode = isDark;
+    });
+
+    this.darkModeService.setDarkMode(this.darkModeService.isDarkMode());
+
+    // Verifica logo
     const img = new Image();
     img.onload = () => console.log('Logo carregada com sucesso!');
     img.onerror = () => console.log('Erro ao carregar logo. Verifique o caminho.');
     img.src = 'assets/images/logo.png';
 
-    // Escuta mudanças na rota para controlar a visibilidade da sidebar
+    // Escuta mudanças de rota
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        // Oculta a sidebar nas rotas de login e register
         const authRoutes = ['/login', '/register'];
         this.showSidebar = !authRoutes.includes(event.urlAfterRedirects);
       });
 
-    // Verifica a rota inicial
+    // Rota atual
     const currentUrl = this.router.url;
     const authRoutes = ['/login', '/register'];
     this.showSidebar = !authRoutes.includes(currentUrl);
