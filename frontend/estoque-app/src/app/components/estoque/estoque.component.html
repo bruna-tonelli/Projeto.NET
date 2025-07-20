@@ -17,9 +17,6 @@
       <button class="btn btn-search" (click)="pesquisarPorBotao()" title="Pesquisar">
         <i class="fas fa-search"></i>
       </button>
-      <button class="btn btn-filtro" (click)="abrirModalFiltrar()">
-        <i class="fa-solid fa-sliders"></i>
-      </button>
     </div>
     <div class="actions">
       <button class="btn btn-primary" (click)="abrirModalAdicionar()">
@@ -53,6 +50,12 @@
           <div class="card-section quantity-section">
             <span class="card-label">Quantidade</span>
             <span class="card-value">{{ produto.quantidade | number }}</span>
+          </div>
+          <div class="card-section date-section">
+            <span class="card-label">Última Atualização</span>
+            <span class="card-value">
+              {{ produto.dataAtualizacao ? (produto.dataAtualizacao | date:'dd/MM/yyyy HH:mm') : 'N/A' }}
+            </span>
           </div>
           <div class="card-actions">
             <button 
@@ -150,31 +153,6 @@
       </form>
     </div>
   </div>
-
-  <!-- Modal de filtro -->
-<div class="modal-filtro" *ngIf="modalFiltroAberto">
-  <div class="filtro-container">
-    <div class="filtro-header">
-      <h2>Filtros</h2>
-      <button class="close-btn" (click)="fecharModalFiltrar()">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-
-    <div class="filtro-body">
-      <!-- Filtro Tipo -->
-      <label>Tipo</label>
-      <select [(ngModel)]="filtros.tipo">
-        <option value="">Todos</option>
-        <option value="entrada">Entrada</option>
-        <option value="saida">Saída</option>
-      </select>
-
-
-    <button class="aplicar-btn" (click)="aplicarFiltro()">Aplicar</button>
-  </div>
-</div>
-
 
   <!-- Modal de Confirmação de Exclusão -->
   <div class="modal-backdrop" *ngIf="modalConfirmacaoAberto">

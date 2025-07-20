@@ -35,15 +35,6 @@ export class EstoqueComponent implements OnInit {
   modalConfirmacaoAberto = false;
   produtoParaRemover: ProdutoEstoque | null = null;
 
-  modalFiltroAberto = false;
-
-  filtroPorValorAtivado = false;
-
-  filtros = {
-    tipo: ''
-  };
-
-
   constructor(private estoqueService: EstoqueService) {}
 
   ngOnInit(): void {
@@ -170,23 +161,6 @@ export class EstoqueComponent implements OnInit {
         alert('Erro ao adicionar produto. Verifique o console para mais detalhes.');
       }
     });
-  }
-
-  aplicarFiltro(): void {
-    this.estoqueExibido = this.listaCompletaEstoque.filter(produto => {
-    const tipoOk = !this.filtros.tipo || produto.descricao.toLowerCase().includes(this.filtros.tipo.toLowerCase());
-    return tipoOk;
-  });
-
-  this.fecharModalFiltrar();
-}
-
-  abrirModalFiltrar(): void {
-    this.modalFiltroAberto = true;
-  }
-
-  fecharModalFiltrar(): void {
-    this.modalFiltroAberto = false;
   }
 
   removerProduto(id: string | number): void {

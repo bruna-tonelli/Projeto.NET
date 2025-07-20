@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http'; // ADICIONAR HttpParams
+import { Observable, of } from 'rxjs'; // ADICIONAR of
+import { map, catchError, switchMap} from 'rxjs/operators'; // ADICIONAR catchError
 import { MovimentacaoService } from '../services/movimentacao.service';
 import { Movimentacao } from '../models/movimentacao.model';
 
@@ -127,4 +127,18 @@ export class FinanceiroService {
       })
     );
   }
+
+  buscarTransacoesFiltradas(tipo?: string, dataInicial?: Date, dataFinal?: Date): Observable<Movimentacao[]> {
+  // Usar o mesmo método que já funciona no MovimentacaoService
+  return this.movimentacaoService.filtrarMovimentacoes(tipo, dataInicial, dataFinal).pipe(
+    // Expandir os dados se necessário
+    switchMap(movimentacoesFiltradas => {
+      return this.movimentacaoService.expandirMovimentacoes(movimentacoesFiltradas);
+    }),
+    catchError(error => {
+      console.error('Erro ao buscar transações filtradas:', error);
+      return of([]);
+    })
+  );
+}
 }

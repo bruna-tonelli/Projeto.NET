@@ -13,6 +13,9 @@
       <button class="btn btn-search" (click)="pesquisarPorBotao()" title="Pesquisar">
         <i class="fas fa-search"></i>
       </button>
+       <button class="btn btn-filtro" (click)="abrirModalFiltrar()">
+        <i class="fa-solid fa-sliders"></i>
+      </button>
     </div>
   </header>
 
@@ -100,4 +103,39 @@
       </div>
     </ng-container>
   </section>
+
+     <!-- Modal de filtro -->
+<div class="modal-filtro" *ngIf="modalFiltroAberto">
+  <div class="filtro-container">
+    <div class="filtro-header">
+      <h2>Filtros</h2>
+      <button class="close-btn" (click)="fecharModalFiltrar()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="filtro-body">
+      <!-- Filtro Tipo -->
+      <label>Tipo</label>
+      <select [(ngModel)]="filtros.tipo">
+        <option value="">Todos</option>
+        <option value="ENTRADA">Entrada</option>
+        <option value="SAIDA">Saída</option>
+      </select>
+
+      <!-- Filtro por Data -->
+      <div class="data-range">
+        <label>Data Inicial</label>
+        <input type="date" [(ngModel)]="filtros.dataInicial" />
+
+        <label>Data Final</label>
+        <input type="date" [(ngModel)]="filtros.dataFinal" />
+      </div>
+    </div>
+
+    <div class="filtro-footer">
+      <button class="limpar-btn" (click)="limparFiltros()">Limpar Filtros</button>
+      <button class="aplicar-btn" (click)="aplicarFiltro()">Aplicar</button>
+    </div>
+  </div>
 </div>
