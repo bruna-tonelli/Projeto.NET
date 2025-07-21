@@ -38,7 +38,7 @@
       <div *ngIf="pesquisaRealizada && termoBusca && movimentacoesExibidas.length === 0" class="search-result-message no-results">
         Nenhuma movimentação encontrada para "{{ termoBusca }}"
       </div>
-      <div *ngIf="movimentacoesExibidas.length === 0 && !pesquisaRealizada" class="status-message">Nenhum produto encontrado.</div>
+      <div *ngIf="movimentacoesExibidas.length === 0 && !pesquisaRealizada" class="status-message">Nenhuma movimentação encontrada.</div>
       <div class="item-list">
         <div 
           class="item-card" 
@@ -133,34 +133,37 @@
 
    <!-- Modal de filtro -->
 <div class="modal-filtro" *ngIf="modalFiltroAberto">
-  <div class="filtro-container">
-    <div class="filtro-header">
+  <div class="filtro-container" [class.filtro-container-dark]  = "modoEscuroAtivo">
+    <div class="filtro-header" [class.filtro-header-dark]  = "modoEscuroAtivo">
       <h2>Filtros</h2>
-      <button class="close-btn" (click)="fecharModalFiltrar()">
+      <button class="close-btn" [class.close-btn-dark]  = "modoEscuroAtivo"(click)="fecharModalFiltrar()">
         <i class="fas fa-times"></i>
       </button>
     </div>
 
-    <div class="filtro-body">
+    <div class="filtro-body" [class.filtro-body-dark] = "modoEscuroAtivo">
       <!-- Filtro Tipo -->
       <label>Tipo</label>
       <select [(ngModel)]="filtros.tipo">
         <option value="">Todos</option>
-        <option value="entrada">Entrada</option>
-        <option value="saida">Saída</option>
+        <option value="ENTRADA">Entrada</option>
+        <option value="SAIDA">Saída</option>
       </select>
 
       <!-- Filtro por Data -->
-      <div class="data-range">
+      <div class="data-range" [class.data-range-dark] = "modoEscuroAtivo">
         <label>Data Inicial</label>
         <input type="date" [(ngModel)]="filtros.dataInicial" />
 
         <label>Data Final</label>
         <input type="date" [(ngModel)]="filtros.dataFinal" />
       </div>
+    </div>
 
-
-    <button class="aplicar-btn" (click)="aplicarFiltro()">Aplicar</button>
+    <div class="filtro-footer">
+      <button class="limpar-btn" [class.limpar-btn-dark] = "modoEscuroAtivo" (click)="limparFiltros()">Limpar Filtros</button>
+      <button class="aplicar-btn" [class.aplicar-btn-dark] = "modoEscuroAtivo" (click)="aplicarFiltro()">Aplicar</button>
+    </div>
   </div>
 </div>
 

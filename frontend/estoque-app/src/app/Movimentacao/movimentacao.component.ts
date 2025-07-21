@@ -59,12 +59,11 @@ export class MovimentacaoComponent implements OnInit {
 
   filtroPorValorAtivado = false;
 
-  filtros = {
-    tipo: '',
-    dataInicial: null,
-    dataFinal: null,
-    dataMovimentacao: '' as string,
-  };
+ filtros = {
+  tipo: '',
+  dataInicial: null as Date | null,
+  dataFinal: null as Date | null,
+};
 
   constructor(
     private movimentacaoService: MovimentacaoService,
@@ -167,7 +166,8 @@ export class MovimentacaoComponent implements OnInit {
       observacoes: this.novaMovimentacao.observacoes,
       precoCompra: this.novaMovimentacao.precoCompra,
       precoVenda: this.novaMovimentacao.precoVenda,
-      dataMovimentacao: new Date().toISOString()
+      dataMovimentacao: new Date().toISOString(),
+      valorTotal: this.calcularValorTotal() // ADICIONADO
     };
 
     console.log('Enviando movimentação:', movimentacao);
@@ -195,30 +195,61 @@ export class MovimentacaoComponent implements OnInit {
   }
 
   aplicarFiltro(): void {
-  this.movimentacoesExibidas = this.listaCompletaMovimentacoes.filter(mov => {
-    const tipoOk = !this.filtros.tipo || mov.tipo.toLowerCase() === this.filtros.tipo.toLowerCase();
+  // Se não houver filtros, mostrar todas as movimentações
+  if (!this.filtros.tipo && !this.filtros.dataInicial && !this.filtros.dataFinal) {
+    this.movimentacoesExibidas = [...this.listaCompletaMovimentacoes];
+    this.fecharModalFiltrar();
+    return;
+  }
 
-
-    // Data segura
-    const dataMov = mov.dataMovimentacao ? new Date(mov.dataMovimentacao) : null;
-    const dataInicialOk = !this.filtros.dataInicial || (dataMov && dataMov >= new Date(this.filtros.dataInicial));
-    const dataFinalOk = !this.filtros.dataFinal || (dataMov && dataMov <= new Date(this.filtros.dataFinal));
-
-    return tipoOk && dataInicialOk && dataFinalOk;
+  // Usar o backend para filtrar
+  this.isLoading = true;
+  this.movimentacaoService.filtrarMovimentacoes(
+    this.filtros.tipo || undefined,
+    this.filtros.dataInicial || undefined,
+    this.filtros.dataFinal || undefined
+  ).subscribe({
+    next: (movimentacoesFiltradas) => {
+      // Expandir dados das movimentações filtradas
+      this.movimentacaoService.expandirMovimentacoes(movimentacoesFiltradas).subscribe({
+        next: (movimentacoesExpandidas) => {
+          this.movimentacoesExibidas = movimentacoesExpandidas;
+          this.isLoading = false;
+          this.fecharModalFiltrar();
+        },
+        error: (error) => {
+          console.error('Erro ao expandir movimentações filtradas:', error);
+          this.movimentacoesExibidas = movimentacoesFiltradas;
+          this.isLoading = false;
+          this.fecharModalFiltrar();
+        }
+      });
+    },
+    error: (error) => {
+      console.error('Erro ao filtrar movimentações:', error);
+      this.isLoading = false;
+      this.fecharModalFiltrar();
+    }
   });
+}
 
+limparFiltros(): void {
+  this.filtros = {
+    tipo: '',
+    dataInicial: null,
+    dataFinal: null,
+  };
+  this.movimentacoesExibidas = [...this.listaCompletaMovimentacoes];
   this.fecharModalFiltrar();
 }
 
+abrirModalFiltrar(): void {
+  this.modalFiltroAberto = true;
+}
 
-  abrirModalFiltrar(): void {
-    this.modalFiltroAberto = true;
-  }
-
-  fecharModalFiltrar(): void {
-    this.modalFiltroAberto = false;
-  }
-
+fecharModalFiltrar(): void {
+  this.modalFiltroAberto = false;
+}
   
   abrirModalAdicionar(): void {
     console.log('=== ABRINDO MODAL ===');
@@ -343,4 +374,19 @@ export class MovimentacaoComponent implements OnInit {
     // Sempre usar o nome do usuário logado, que é mais confiável
     return this.usuarioLogado.name || 'Usuário sem nome';
   }
+
+  private calcularValorTotal(): number {
+  if (!this.novaMovimentacao.quantidade) {
+    return 0;
+  }
+
+  let preco = 0;
+  if (this.novaMovimentacao.tipo === 'ENTRADA' && this.novaMovimentacao.precoCompra) {
+    preco = this.novaMovimentacao.precoCompra;
+  } else if ((this.novaMovimentacao.tipo === 'SAIDA' || this.novaMovimentacao.tipo === 'SAÍDA') && this.novaMovimentacao.precoVenda) {
+    preco = this.novaMovimentacao.precoVenda;
+  }
+
+  return preco * this.novaMovimentacao.quantidade;
+}
 }

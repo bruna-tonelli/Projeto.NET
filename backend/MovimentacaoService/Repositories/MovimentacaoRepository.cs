@@ -14,6 +14,30 @@ namespace MovimentacaoService.Repositories {
                                  .ToListAsync();
         }
 
+        public async Task<IEnumerable<Movimentacao>> FiltrarMovimentacoesAsync(string? tipo, DateTime? dataInicial, DateTime? dataFinal)
+        {
+            var query = _context.movimentacao.AsQueryable();
+
+            if (!string.IsNullOrEmpty(tipo))
+            {
+                query = query.Where(m => m.Tipo.ToUpper() == tipo.ToUpper());
+            }
+
+            if (dataInicial.HasValue)
+            {
+                query = query.Where(m => m.DataMovimentacao >= dataInicial.Value);
+            }
+
+            if (dataFinal.HasValue)
+            {
+                // Adicionar 23:59:59 à data final para incluir todo o dia
+                var dataFinalCompleta = dataFinal.Value.Date.AddDays(1).AddTicks(-1);
+                query = query.Where(m => m.DataMovimentacao <= dataFinalCompleta);
+            }
+
+            return await query.OrderByDescending(m => m.DataMovimentacao).ToListAsync();
+        }
+
         public async Task<IEnumerable<Movimentacao>> GetAllAsync() =>
             await _context.movimentacao.ToListAsync();
 
