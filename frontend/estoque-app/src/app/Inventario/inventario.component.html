@@ -3,7 +3,7 @@
 <div class="page-container app-container" [ngClass]="{'dark-mode': modoEscuroAtivo}">
   <header class="page-header">
     <div class="header-content">
-      <button class="btn btn-primary" [class.btn-dark]="modoEscuroAtivo" type="button"
+      <button class="btn btn-primary" [class.btn-dark] = "modoEscuroAtivo" type="button"
         (click)="abrirModalNovoInventario()" title="Criar novo inventário">
         <i class="fas fa-plus"></i>
         NOVO INVENTÁRIO

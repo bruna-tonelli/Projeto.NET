@@ -562,15 +562,7 @@ $roxo-claro: #601dac;
   }
 }
 
-.btn-dark {
-  background: $roxo-claro;
-  color: white;
 
-  &:hover {
-    background: color.adjust($roxo-escuro, $lightness: 7%);
-    transform: scale(1.05);
-  }
-}
 
 .btn-success {
   background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
@@ -947,8 +939,8 @@ $roxo-claro: #601dac;
   $dark-text-secondary: #b0b0b0;
   $dark-border: #404040;
   $dark-input-bg: #2b2c2c;
-  $dark-primary: #6366f1;
-  $dark-primary-hover: #4f46e5;
+  $dark-primary: $roxo-claro;
+  $dark-primary-hover: $roxo-claro;
 
   // Container principal
   .page-container {
@@ -1012,6 +1004,16 @@ $roxo-claro: #601dac;
       }
     }
 
+    &.btn-dark {
+      background: $roxo-escuro;
+      color: white;
+
+      &:hover {
+        background: color.adjust($roxo-escuro, $lightness: 7%);
+        transform: scale(1.05);
+      }
+    }
+
     &.btn-primary {
       background: $dark-primary;
       border-color: $dark-primary;
@@ -1031,6 +1033,7 @@ $roxo-claro: #601dac;
       &:hover {
         background: #3a3d4a;
         border-color: #505050;
+        transform: scale(1.1);
       }
     }
 
@@ -1209,7 +1212,7 @@ $roxo-claro: #601dac;
     .info-automatica {
       background-color: #2b2c2c !important;
       border-color: $roxo-claro;
-      color: $roxo-claro !important;
+      color: #e2e8f0 !important;
       background: $dark;
 
       .info-item {
@@ -1401,7 +1404,7 @@ $roxo-claro: #601dac;
         border-color: $dark-primary;
 
         &:hover {
-          background: $roxo-escuro;
+          transform: scale(1.1);
         }
       }
     }
@@ -1502,4 +1505,3 @@ $roxo-claro: #601dac;
     }
   }
 }
-
