@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InventarioService } from '../services/inventario.service';
 import { AuthService } from '../services/auth.service';
+import { DarkModeService } from '../services/dark-mode.service';
 import { 
   Inventario, 
   CreateInventarioDto, 
@@ -61,10 +62,14 @@ export class InventarioComponent implements OnInit {
 
   constructor(
     private inventarioService: InventarioService,
-    private authService: AuthService
+    private authService: AuthService,
+    private darkModeService: DarkModeService
   ) {}
 
   ngOnInit(): void {
+    this.darkModeService.darkMode$.subscribe(isDark => {
+      this.modoEscuroAtivo = isDark;
+    });
     this.carregarDados();
   }
 
