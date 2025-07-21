@@ -16,8 +16,7 @@ registro de movimentações, registro de funcionários, dados financeiros.
 
 ## 🧠 Diagrama Entidade-Relacionamento (DER)
 
-![DER: Modelo Lógico](https://github.com/bruna-tonelli/Projeto.NET/blob/main/Captura%20de%20tela%202025-07-11%20095941.png)
-![DER: Modelo Coneitual](https://github.com/bruna-tonelli/Projeto.NET/blob/main/Captura%20de%20tela%202025-07-11%20095848.png)
+![DER: Modelo Coneitual](https://github.com/bruna-tonelli/Projeto.NET/blob/Altera%C3%A7%C3%B5esEdvaldo/Captura%20de%20tela%202025-07-21%20145303.png)
 
 ---
 
