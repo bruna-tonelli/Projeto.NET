@@ -1,21 +1,47 @@
 @use 'sass:color';
 
+@media (max-width: 900px) {
+  .item-list {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+  .item-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 16px 10px !important;
+    grid-template-columns: none !important;
+    width: 100%;
+    max-width: 400px;
+  }
+  .card-section {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 2px !important;
+    margin-bottom: 0 !important;
+    width: 100%;
+  }
+  .card-actions {
+    justify-content: center !important;
+    align-items: center !important;
+    margin-top: 8px !important;
+    margin-bottom: 0 !important;
+    align-self: center !important;
+    width: 100%;
+  }
+}
 // Cores principais
+
 $primary: #0353A4;
 $gray: #6c757d;
 $light: #f8f9fa;
 $dark: #343a40;
 $roxo-escuro: #570063;
 $roxo-claro: #601dac;
-
-// Dark mode variables
-$dark-bg-primary: #141414;
-$dark-bg-secondary: #2a2d3a;
-$dark-bg-tertiary: #3a3f4b;
-$dark-text-primary: #ffffff;
-$dark-text-secondary: #b0b3b8;
-$dark-border: #444;
-$dark-accent: #3498db;
 
 .page-container {
   padding: 0;
@@ -790,8 +816,6 @@ input[type="number"]::-webkit-outer-spin-button {
       font-family: inherit;
     }
   }
-}
-
 
   .filtro-container-dark {
     background-color: rgb(43, 44, 44);

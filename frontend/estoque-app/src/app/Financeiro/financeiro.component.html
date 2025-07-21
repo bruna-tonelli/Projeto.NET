@@ -1,10 +1,8 @@
 <title>Financeiro</title> <base href="/financeiro">
-
 <div class="page-container" [class.page-container-dark] = "modoEscuroAtivo">
   <header class="page-header" [class.page-header-dark] = "modoEscuroAtivo">
     <div class="search-container" [class.search-container-dark] = "modoEscuroAtivo">
       <div class="search-box" [class.search-box-dark] = "modoEscuroAtivo">
-
         <i class="fas fa-search search-icon"></i>
         <input type="text" placeholder="Pesquise por ID, produto ou tipo" [(ngModel)]="termoBusca" (input)="buscar()" (keyup.enter)="pesquisarPorBotao()">
         <button *ngIf="pesquisaRealizada || termoBusca" class="btn-clear-inline"  (click)="limparPesquisa()" title="Limpar pesquisa">
@@ -91,11 +89,7 @@
           </div>
           <div class="card-section type-section">
             <span class="card-label">Tipo</span>
-            <span class="card-value tipo-badge"
-                  [class.tipo-entrada]="movimentacao.tipo === 'ENTRADA'"
-                  [class.tipo-saida]="movimentacao.tipo === 'SAIDA' || movimentacao.tipo === 'SAÍDA'">
-              {{ movimentacao.tipo }}
-            </span>
+            <span class="card-value">{{ movimentacao.tipo }}</span>
           </div>
           <div class="card-section value-section">
             <span class="card-label">Valor Total</span>

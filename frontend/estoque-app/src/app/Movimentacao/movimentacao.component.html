@@ -1,8 +1,8 @@
 <title>Movimentação</title> <base href="/movimentacao">
-<div class="page-container" [class.app-container]="true" [class.dark-mode]="modoEscuroAtivo">
+<div class="page-container">
   <header class="page-header">
     <div class="search-container">
-      <div class="search-box search-box-small">
+      <div class="search-box search-box-small" [class.search-box-dark]="modoEscuroAtivo">
         <i class="fas fa-search search-icon"></i>
         <input 
           type="text" 
@@ -15,15 +15,15 @@
         </button>
         
       </div>
-      <button class="btn btn-search" (click)="pesquisarPorBotao()" title="Pesquisar">
+      <button class="btn btn-search" [class.btn-search-dark]="modoEscuroAtivo" (click)="pesquisarPorBotao()" title="Pesquisar">
         <i class="fas fa-search"></i>
       </button>
-      <button class="btn btn-filtro" (click)="abrirModalFiltrar()">
+      <button class="btn btn-filtro" [class.btn-filtro-dark]="modoEscuroAtivo" (click)="abrirModalFiltrar()">
         <i class="fa-solid fa-sliders"></i>
       </button>
     </div>
     <div class="actions">
-      <button class="btn btn-primary" (click)="abrirModalAdicionar()">
+      <button class="btn btn-primary" [class.btn-roxo-dark]="modoEscuroAtivo" (click)="abrirModalAdicionar()">
         <i class="fas fa-plus"></i> ADICIONAR MOVIMENTAÇÃO
       </button>
     </div>
@@ -49,21 +49,17 @@
           </div>
           <div class="card-section name-section">
             <span class="card-label">Tipo</span>
-            <span class="card-value tipo-badge" 
-                  [class.tipo-entrada]="movimentacao.tipo === 'ENTRADA'"
-                  [class.tipo-saida]="movimentacao.tipo === 'SAIDA' || movimentacao.tipo === 'SAÍDA'">
-              {{ movimentacao.tipo }}
-            </span>
+            <span class="card-value">{{ movimentacao.tipo }}</span>
           </div>
           <div class="card-section quantity-section">
             <span class="card-label">Quantidade</span>
-            <span class="card-value">{{ movimentacao.quantidade }}</span>
+            <span class="card-value">{{ movimentacao.quantidade | number }}</span>
           </div>
           <div class="card-section product-section">
             <span class="card-label">Produto</span>
-            <span class="card-value">{{ movimentacao.produtoNome }}</span>
+            <span class="card-value">{{ movimentacao.produtoNome || 'Produto não informado' }}</span>
           </div>
-          <div class="card-section date-section">
+          <div class="card-section date-section" *ngIf="movimentacao.dataMovimentacao">
             <span class="card-label">Data</span>
             <span class="card-value">{{ movimentacao.dataMovimentacao | date:'dd/MM/yyyy HH:mm' }}</span>
           </div>
@@ -75,14 +71,9 @@
               title="Editar movimentação">
               <i class="fas fa-edit"></i>
             </button>
-            <button 
-              class="btn btn-delete" 
-              type="button"
-              (click)="excluirMovimentacao(movimentacao.id); $event.stopPropagation()"
-              title="Excluir movimentação">
-              <i class="fas fa-trash"></i>
-            </button>
+            
           </div>
+          
         </div>
       </div>
     </ng-container>
@@ -253,5 +244,5 @@
       </div>
     </div>
   </div>
-</div>
 
+ 
