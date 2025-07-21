@@ -7,6 +7,7 @@ import { MovimentacaoService } from '../services/movimentacao.service';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartType, ChartOptions } from 'chart.js';
 import { FinanceiroService, ResumoMensal } from './financeiro.service';
+import { DarkModeService } from '../services/dark-mode.service';
 
 export interface MovimentacaoFinanceira {
   id: number;
@@ -47,6 +48,7 @@ export class FinanceiroComponent implements OnInit {
   public pesquisaRealizada: boolean = false;
   public caixaDaEmpresa: number = 0;
   public dadosGrafico: boolean = false;
+  public modoEscuroAtivo: boolean = false;
   
   // Controle de visibilidade do gráfico
   public mostrarGrafico: boolean = false;
@@ -82,7 +84,8 @@ export class FinanceiroComponent implements OnInit {
 
   constructor(
     private financeiroService: FinanceiroService,
-    private movimentacaoService: MovimentacaoService
+    private movimentacaoService: MovimentacaoService,
+    private darkModeService: DarkModeService
   ) {}
 
   ngOnInit(): void {
@@ -90,6 +93,9 @@ export class FinanceiroComponent implements OnInit {
     this.isLoading = true;
     this.carregarMovimentacoes();
     this.carregarDadosFinanceiros();
+    this.darkModeService.darkMode$.subscribe(isDark => {
+      this.modoEscuroAtivo = isDark;
+    });
   }
 
   // Método para alternar visibilidade do gráfico

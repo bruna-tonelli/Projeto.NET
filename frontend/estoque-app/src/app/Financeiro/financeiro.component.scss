@@ -40,6 +40,8 @@ $primary: #0353A4;
 $gray: #6c757d;
 $light: #f8f9fa;
 $dark: #343a40;
+$roxo-escuro: #570063;
+$roxo-claro: #601dac;
 
 .page-container {
   padding: 0;
@@ -55,13 +57,7 @@ $dark: #343a40;
   gap: 20px;
   flex-wrap: wrap;
 
-  .page-title {
-    display: flex;
-    justify-content: flex-start;
-    margin: 0;
-    color: $primary;
-    font: 600 1.8rem/1.2 inherit;
-  }
+  
 
   .search-container {
     flex: 1;
@@ -122,6 +118,36 @@ $dark: #343a40;
   }
 }
 
+.search-box-dark {
+  input {
+    background-color: rgb(43, 44, 44);
+    border-color: #6c6575;
+    color: #e2e8f0;
+
+    &::placeholder {
+      color: #a0aec0;
+    }
+
+    &:focus {
+      border-color: $roxo-claro;
+      box-shadow: 0 0 0 3px rgba($roxo-claro, 0.3);
+    }
+  }
+
+  .search-icon {
+    color: #a0aec0;
+  }
+
+  .btn-clear-inline {
+    color: #a0aec0;
+
+    &:hover {
+      background: #4a5568;
+      color: #e53e3e;
+    }
+  }
+}
+
 .btn {
   padding: 12px 20px;
   border: none;
@@ -141,6 +167,25 @@ $dark: #343a40;
     &:hover {
       background: color.adjust($primary, $lightness: -10%);
     }
+  }
+
+  &.btn-search-dark {
+    background: $roxo-claro;
+    color: white;
+    padding: 12px;
+
+    &:hover {
+      background: $roxo-claro;
+    }
+  }
+
+   &.btn-filtro {
+    color: $primary;
+  }
+
+  &.btn-filtro-dark {
+    color: $roxo-claro;
+    background: #bbb6ba;
   }
 
   &.btn-edit {
@@ -517,10 +562,99 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 }
 
+.saldo-empresarial-container-dark {
+  margin: 20px 32px 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.saldo-card-dark {
+  background: #2c2c2c;
+  border: 1px solid #181818;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.664);
+  padding: 24px 32px;
+  min-width: 400px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.saldo-header-dark {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #6b6b6b;
+}
+
+.saldo-title-dark {
+  margin: 0;
+  color: #e0dcdc;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+
+
+.chart-line-dark{
+  color: #b1aeae;
+  font-size: 1.2rem;
+}
+
+.chart-line-dark:hover{
+  color: #c7c3c3;
+}
+
+
+
+.saldo-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid #6b6b6b;
+}
+
+.saldo-descricao {
+  color: #e0dcdc;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.saldo-status {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &.status-positivo {
+    background-color: #a7caaf;
+    color: #129e33;
+  }
+
+  &.status-negativo {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+}
+
 // Estilos para o Gráfico
 .grafico-container {
   background: #ffffff;
   border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 0 32px 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.grafico-container-dark {
+  background: #2c2c2c;
+  border: 1px solid #2c2c2c;
   border-radius: 12px;
   padding: 24px;
   margin: 0 32px 40px;
@@ -532,6 +666,15 @@ input[type="number"]::-webkit-outer-spin-button {
   margin-top: 0;
   margin-bottom: 24px;
   color: #0353A4; // Usando sua cor primária
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.grafico-titulo-dark {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 24px;
+  color: #cccaca; // Usando sua cor primária
   font-weight: 600;
   font-size: 1.2rem;
 }
@@ -642,6 +785,7 @@ input[type="number"]::-webkit-outer-spin-button {
       border: 1px solid #ccc;
     }
   }
+
 }
 
     .aplicar-btn {
@@ -662,6 +806,118 @@ input[type="number"]::-webkit-outer-spin-button {
       margin-top: 40px;
       width: 100%;
       background: #1e3a8a;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+  }
+
+  .filtro-container-dark {
+    background-color: rgb(43, 44, 44);
+    border-radius: 16px;
+    padding: 20px 24px;
+    width: 300px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+    font-family: inherit;
+
+    .filtro-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h2 {
+        color: white;
+        font-size: 25px;
+        font-weight: 700;
+        margin: 0;
+        font-family: inherit;
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: #adadad;
+        border-radius: 50%;
+
+        &:hover {
+          background: $dark;
+          color: #dc3545;
+        }
+      }
+    }
+
+    
+
+    .filtro-body {
+      margin-top: 20px;
+      font-family: inherit;
+
+      label {
+        font-weight: 450;
+        display: block;
+        margin-top: 12px;
+        font-family: inherit;
+      }
+
+      select,
+      input[type="number"] {
+        background-color: #141414;
+        width: 100%;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #3d3d3d;
+        margin-top: 4px;
+        font-family: inherit;
+        color: #c7c6c6;
+      }
+
+
+    }
+
+    .data-range {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 16px;
+
+    select,
+      input[type="date"] {
+        background-color: #141414;
+        width: 100%;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #3d3d3d;
+        margin-top: 4px;
+        font-family: inherit;
+        color: #c7c6c6;
+      }
+  }
+
+  .limpar-btn {
+      margin-top: 40px;
+      width: 100%;
+      background: $roxo-claro;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .aplicar-btn {
+      margin-top: 40px;
+      width: 100%;
+      background: $roxo-claro;
       color: white;
       border: none;
       padding: 10px;
