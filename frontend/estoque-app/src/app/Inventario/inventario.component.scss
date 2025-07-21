@@ -4,6 +4,8 @@ $primary: #0353A4;
 $gray: #6c757d;
 $light: #f8f9fa;
 $dark: #343a40;
+$roxo-escuro: #570063;
+$roxo-claro: #601dac;
 
 .page-container {
   padding: 20px;
@@ -24,7 +26,7 @@ $dark: #343a40;
   
   .page-title {
     font-size: 2rem;
-    color: #2c3e50;
+    color: $primary;
     margin: 0;
     display: flex;
     align-items: center;
@@ -206,7 +208,7 @@ $dark: #343a40;
   justify-content: space-between;
   align-items: center;
   padding: 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: $primary;
   color: white;
   border-radius: 16px 16px 0 0;
   
@@ -525,55 +527,28 @@ $dark: #343a40;
 
 // BOTÕES MELHORADOS
 .btn {
-  padding: 12px 24px;
+  padding: 12px 20px;
   border: none;
   border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font: 600 0.95rem inherit;
   cursor: pointer;
-  display: inline-flex;
+  transition: all 0.2s;
+  display: flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
   
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
   
-  &::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s ease, height 0.3s ease;
-  }
-  
-  &:hover::before {
-    width: 300px;
-    height: 300px;
-  }
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-  
-  &:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    background: $primary;
+    color: white;
+
+    &:hover {
+      background: color.adjust($primary, $lightness: 7%);
+      transform: scale(1.05);
+    }
   }
-}
 
 .btn-secondary {
   background: linear-gradient(135deg, #6c757d 0%, #495057 100%);

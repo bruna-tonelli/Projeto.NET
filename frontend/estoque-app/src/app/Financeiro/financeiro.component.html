@@ -33,7 +33,7 @@
           <div class="saldo-valor" [class.valor-positivo]="caixaDaEmpresa >= 0" [class.valor-negativo]="caixaDaEmpresa < 0">
             {{ caixaDaEmpresa | currency:'BRL':'symbol':'1.2-2' }}
           </div>
-          <div class="saldo-info">
+          <div class="saldo-info" [class.saldo-info-dark]  = "modoEscuroAtivo">
             <span class="saldo-descricao" [class.saldo-descricao-dark] = "modoEscuroAtivo">Fluxo de caixa consolidado</span>
             <span class="saldo-status" [class.saldo-status-dark] = "modoEscuroAtivo" [class.status-positivo]="caixaDaEmpresa >= 0" [class.status-negativo]="caixaDaEmpresa < 0">
               {{ caixaDaEmpresa >= 0 ? 'Positivo' : 'Negativo' }}
@@ -69,31 +69,31 @@
         Nenhuma movimentação registrada.
       </div>
       
-      <div class="item-list">
-        <div class="item-card" *ngFor="let movimentacao of movimentacoesExibidas">
-          <div class="card-section id-section">
-            <span class="card-label">ID</span>
-            <span class="card-value">{{ movimentacao.id }}</span>
+      <div class="item-list" [class.item-list-dark] = "modoEscuroAtivo">
+        <div class="item-card" [class.item-card-dark] = "modoEscuroAtivo" *ngFor="let movimentacao of movimentacoesExibidas">
+          <div class="card-section id-section" [class.card-section-dark] = "modoEscuroAtivo" >
+            <span class="card-label" [class.card-label-dark] = "modoEscuroAtivo">ID</span>
+            <span class="card-value" [class.card-value-dark] = "modoEscuroAtivo">{{ movimentacao.id }}</span>
           </div>
-          <div class="card-section name-section">
-            <span class="card-label">Produto</span>
-            <span class="card-value">{{ movimentacao.produtoNome }}</span>
+          <div class="card-section name-section" [class.card-section-dark] = "modoEscuroAtivo">
+            <span class="card-label" [class.card-label-dark] = "modoEscuroAtivo">Produto</span>
+            <span class="card-value" [class.card-value-dark] = "modoEscuroAtivo">{{ movimentacao.produtoNome }}</span>
           </div>
-          <div class="card-section date-section" *ngIf="movimentacao.dataMovimentacao">
-            <span class="card-label">Data</span>
-            <span class="card-value">{{ movimentacao.dataMovimentacao | date:'dd/MM/yyyy HH:mm' }}</span>
+          <div class="card-section date-section" [class.card-section-dark] = "modoEscuroAtivo" *ngIf="movimentacao.dataMovimentacao">
+            <span class="card-label" [class.card-label-dark] = "modoEscuroAtivo">Data</span>
+            <span class="card-value" [class.card-value-dark] = "modoEscuroAtivo">{{ movimentacao.dataMovimentacao | date:'dd/MM/yyyy HH:mm' }}</span>
           </div>
-          <div class="card-section quantity-section">
-            <span class="card-label">Quantidade</span>
-            <span class="card-value">{{ movimentacao.quantidade }}</span>
+          <div class="card-section quantity-section" [class.card-section-dark] = "modoEscuroAtivo" >
+            <span class="card-label" [class.card-label-dark] = "modoEscuroAtivo">Quantidade</span>
+            <span class="card-value" [class.card-value-dark] = "modoEscuroAtivo">{{ movimentacao.quantidade }}</span>
           </div>
-          <div class="card-section type-section">
-            <span class="card-label">Tipo</span>
-            <span class="card-value">{{ movimentacao.tipo }}</span>
+          <div class="card-section type-section" [class.card-section-dark] = "modoEscuroAtivo" >
+            <span class="card-label" [class.card-label-dark] = "modoEscuroAtivo">Tipo</span>
+            <span class="card-value" [class.card-value-dark] = "modoEscuroAtivo">{{ movimentacao.tipo }}</span>
           </div>
-          <div class="card-section value-section">
-            <span class="card-label">Valor Total</span>
-            <span class="card-value" 
+          <div class="card-section value-section" [class.card-section-dark] = "modoEscuroAtivo" >
+            <span class="card-label" [class.card-label-dark] = "modoEscuroAtivo">Valor Total</span>
+            <span class="card-value" [class.card-value-dark] = "modoEscuroAtivo" 
                   [style.color]="movimentacao.tipo === 'ENTRADA' ? '#dc3545' : '#28a745'">
               {{ (movimentacao.tipo === 'ENTRADA' ? '-' : '+') + (movimentacao.valorTotal | currency:'BRL':'symbol':'1.2-2') }}
             </span>
