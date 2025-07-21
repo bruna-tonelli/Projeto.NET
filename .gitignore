@@ -51,3 +51,10 @@ backend/Shared/bin/
 InventarioService/obj/
 Inventarioservice/bin/
 
+backend/InventarioService/obj/Debug/net8.0/InventarioService.AssemblyInfo.cs
+backend/InventarioService/bin/Debug/net8.0/InventarioService.AssemblyInfoInputs.cache
+
+backend/InventarioService/DTOs/UpdateInventarioDTO.cs
+backend/InventarioService/DTOs/CreateInventarioDTO.cs
+backend/InventarioService/Controllers/WeatherForecastController.cs
+

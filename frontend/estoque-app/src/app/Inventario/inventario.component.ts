@@ -44,6 +44,7 @@ export class InventarioComponent implements OnInit {
 
   // Estado
   usuarioLogado: any;
+  modoEscuroAtivo: boolean = false;
 
   // Modais de confirmação
   modalConfirmacaoExclusao = false;
@@ -51,7 +52,7 @@ export class InventarioComponent implements OnInit {
   inventarioParaExcluir: Inventario | null = null;
   modalConfirmacaoRemocaoProduto = false;
   produtoParaRemover: any = null;
-diferencasEncontradas: any[] = [];
+  diferencasEncontradas: any[] = [];
 
   // Toast notifications
   mensagemToast = '';
@@ -80,40 +81,40 @@ diferencasEncontradas: any[] = [];
   }
 
   private carregarProdutos(): void {
-  console.log('Carregando produtos...');
-  this.inventarioService.obterProdutos().subscribe({
-    next: (produtos) => {
-      console.log('Produtos recebidos do backend:', produtos);
-      this.produtos = produtos;
-    },
-    error: (error) => {
-      console.error('Erro ao carregar produtos:', error);
-    }
-  });
-}
+    console.log('Carregando produtos...');
+    this.inventarioService.obterProdutos().subscribe({
+      next: (produtos) => {
+        console.log('Produtos recebidos do backend:', produtos);
+        this.produtos = produtos;
+      },
+      error: (error) => {
+        console.error('Erro ao carregar produtos:', error);
+      }
+    });
+  }
 
   private carregarInventarios(): void {
-  this.isLoading = true;
-  this.inventarioService.listarInventarios().subscribe({
-    next: (inventarios) => {
-      this.inventarios = inventarios;
-      
-      // Se há um inventário selecionado, atualize-o com os dados mais recentes
-      if (this.inventarioSelecionado) {
-        const inventarioAtualizado = inventarios.find(i => i.id === this.inventarioSelecionado!.id);
-        if (inventarioAtualizado) {
-          this.inventarioSelecionado = inventarioAtualizado;
+    this.isLoading = true;
+    this.inventarioService.listarInventarios().subscribe({
+      next: (inventarios) => {
+        this.inventarios = inventarios;
+        
+        // Se há um inventário selecionado, atualize-o com os dados mais recentes
+        if (this.inventarioSelecionado) {
+          const inventarioAtualizado = inventarios.find(i => i.id === this.inventarioSelecionado!.id);
+          if (inventarioAtualizado) {
+            this.inventarioSelecionado = inventarioAtualizado;
+          }
         }
+        
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Erro ao carregar inventários:', error);
+        this.isLoading = false;
       }
-      
-      this.isLoading = false;
-    },
-    error: (error) => {
-      console.error('Erro ao carregar inventários:', error);
-      this.isLoading = false;
-    }
-  });
-}
+    });
+  }
 
   // === MÉTODOS DE INVENTÁRIO ===
   
@@ -153,15 +154,15 @@ diferencasEncontradas: any[] = [];
   }
 
   editarInventario(inventario: Inventario): void {
-  // Garantir que os produtos estão carregados antes de abrir o modal
-  if (!this.produtos || this.produtos.length === 0) {
-    this.carregarProdutos();
+    // Garantir que os produtos estão carregados antes de abrir o modal
+    if (!this.produtos || this.produtos.length === 0) {
+      this.carregarProdutos();
+    }
+    
+    this.inventarioSelecionado = inventario;
+    this.novoProdutoInventario.inventarioId = inventario.id;
+    this.abrirModalAdicionarProduto();
   }
-  
-  this.inventarioSelecionado = inventario;
-  this.novoProdutoInventario.inventarioId = inventario.id;
-  this.abrirModalAdicionarProduto();
-}
 
   confirmarExclusaoInventario(inventario: Inventario): void {
     this.inventarioParaExcluir = inventario;
@@ -223,19 +224,18 @@ diferencasEncontradas: any[] = [];
     });
   }
 
+  private atualizarQuantidadesProdutos(): void {
+    // Este método não deveria ser chamado separadamente
+    this.finalizacaoCompleta();
+  }
 
-private atualizarQuantidadesProdutos(): void {
-  // Este método não deveria ser chamado separadamente
-  this.finalizacaoCompleta();
-}
-
-private finalizacaoCompleta(): void {
-  this.exibirToastSucesso('Inventário finalizado e estoque atualizado com sucesso!');
-  this.cancelarFinalizacao();
-  this.fecharModalAdicionarProduto();
-  this.carregarInventarios();
-  this.carregarProdutos(); // Recarregar produtos para refletir as novas quantidades
-}
+  private finalizacaoCompleta(): void {
+    this.exibirToastSucesso('Inventário finalizado e estoque atualizado com sucesso!');
+    this.cancelarFinalizacao();
+    this.fecharModalAdicionarProduto();
+    this.carregarInventarios();
+    this.carregarProdutos(); // Recarregar produtos para refletir as novas quantidades
+  }
 
   // === MÉTODOS DE PRODUTOS ===
 
@@ -254,170 +254,169 @@ private finalizacaoCompleta(): void {
   }
 
   resetarFormularioProduto(): void {
-  this.novoProdutoInventario = {
-    produtoId: 0,
-    quantidadeContada: 0,
-    inventarioId: this.inventarioSelecionado?.id || 0
-  };
-}
+    this.novoProdutoInventario = {
+      produtoId: 0,
+      quantidadeContada: 0,
+      inventarioId: this.inventarioSelecionado?.id || 0
+    };
+  }
 
   adicionarProdutoInventario(): void {
-  if (!this.inventarioSelecionado || this.novoProdutoInventario.produtoId <= 0) return;
+    if (!this.inventarioSelecionado || this.novoProdutoInventario.produtoId <= 0) return;
 
     // Verificar se os produtos foram carregados
-  if (!this.produtos || this.produtos.length === 0) {
-    console.warn('Lista de produtos não carregada, recarregando...');
-    this.carregarProdutos();
-    return;
-  }
+    if (!this.produtos || this.produtos.length === 0) {
+      console.warn('Lista de produtos não carregada, recarregando...');
+      this.carregarProdutos();
+      return;
+    }
 
-  // Inicializar array de produtos se não existir
-  if (!this.inventarioSelecionado.produtos) {
-    this.inventarioSelecionado.produtos = [];
-  }
+    // Inicializar array de produtos se não existir
+    if (!this.inventarioSelecionado.produtos) {
+      this.inventarioSelecionado.produtos = [];
+    }
 
-  // Verificar se o produto já foi adicionado
-  const produtoJaAdicionado = this.inventarioSelecionado.produtos.some(p => p.produtoId === this.novoProdutoInventario.produtoId);
-  if (produtoJaAdicionado) {
-    this.exibirToastErro('Este produto já foi adicionado ao inventário.');
-    return;
-  }
+    // Verificar se o produto já foi adicionado
+    const produtoJaAdicionado = this.inventarioSelecionado.produtos.some(p => p.produtoId === this.novoProdutoInventario.produtoId);
+    if (produtoJaAdicionado) {
+      this.exibirToastErro('Este produto já foi adicionado ao inventário.');
+      return;
+    }
 
-  const produtoData: AddProdutoInventarioDto = {
-    inventarioId: this.inventarioSelecionado.id,
-    produtoId: this.novoProdutoInventario.produtoId,
-    quantidadeContada: this.novoProdutoInventario.quantidadeContada
-  };
+    const produtoData: AddProdutoInventarioDto = {
+      inventarioId: this.inventarioSelecionado.id,
+      produtoId: this.novoProdutoInventario.produtoId,
+      quantidadeContada: this.novoProdutoInventario.quantidadeContada
+    };
 
-  this.inventarioService.adicionarProduto(produtoData).subscribe({
-    next: (response) => {
-      console.log('Resposta do backend:', response); // Para debug
-      this.exibirToastSucesso('Produto adicionado ao inventário!');
-      
-      // Atualizar APENAS o inventário selecionado localmente
-      if (this.inventarioSelecionado) {
-        if (!this.inventarioSelecionado.produtos) {
-          this.inventarioSelecionado.produtos = [];
+    this.inventarioService.adicionarProduto(produtoData).subscribe({
+      next: (response) => {
+        console.log('Resposta do backend:', response); // Para debug
+        this.exibirToastSucesso('Produto adicionado ao inventário!');
+        
+        // Atualizar APENAS o inventário selecionado localmente
+        if (this.inventarioSelecionado) {
+          if (!this.inventarioSelecionado.produtos) {
+            this.inventarioSelecionado.produtos = [];
+          }
+          
+          // Adicionar o produto à lista local
+          this.inventarioSelecionado.produtos.push({
+            id: response.id || Date.now(),
+            produtoId: produtoData.produtoId,
+            quantidadeContada: produtoData.quantidadeContada,
+            inventarioId: produtoData.inventarioId
+          });
+          
+          // Atualizar também na lista geral de inventários
+          const index = this.inventarios.findIndex(i => i.id === this.inventarioSelecionado!.id);
+          if (index !== -1) {
+            this.inventarios[index] = { ...this.inventarioSelecionado };
+          }
         }
         
-        // Adicionar o produto à lista local
-        this.inventarioSelecionado.produtos.push({
-          id: response.id || Date.now(),
-          produtoId: produtoData.produtoId,
-          quantidadeContada: produtoData.quantidadeContada,
-          inventarioId: produtoData.inventarioId
-        });
+        // Resetar formulário após atualizar a lista
+        this.resetarFormularioProduto();
         
-        // Atualizar também na lista geral de inventários
-        const index = this.inventarios.findIndex(i => i.id === this.inventarioSelecionado!.id);
-        if (index !== -1) {
-          this.inventarios[index] = { ...this.inventarioSelecionado };
-        }
+        // Atualizar também a lista geral de inventários para manter consistência
+        this.atualizarInventarioNaLista();
+      },
+      error: (error) => {
+        console.error('Erro ao adicionar produto:', error);
+        this.exibirToastErro('Erro ao adicionar produto ao inventário.');
       }
-      
-      // Resetar formulário após atualizar a lista
-      this.resetarFormularioProduto();
-      
-      // Atualizar também a lista geral de inventários para manter consistência
-      this.atualizarInventarioNaLista();
-    },
-    error: (error) => {
-      console.error('Erro ao adicionar produto:', error);
-      this.exibirToastErro('Erro ao adicionar produto ao inventário.');
-    }
-  });
-}
-
-// Novo método para atualizar apenas o inventário específico na lista
-private atualizarInventarioNaLista(): void {
-  if (this.inventarioSelecionado) {
-    const index = this.inventarios.findIndex(i => i.id === this.inventarioSelecionado!.id);
-    if (index !== -1) {
-      // Fazer uma cópia simples sem recarregar dados
-      this.inventarios[index] = { 
-        ...this.inventarios[index],
-        produtos: [...(this.inventarioSelecionado.produtos || [])]
-      };
-    }
-  }
-}
-
-// Modificar o método de remoção também para manter consistência
-removerProdutoInventario(produto: any): void {
-  if (!this.inventarioSelecionado || this.inventarioSelecionado.status === 'Finalizado') {
-    return;
+    });
   }
 
-  // Abrir modal customizado em vez do confirm padrão
-  this.produtoParaRemover = produto;
-  this.modalConfirmacaoRemocaoProduto = true;
-}
-
-// Métodos para remoção de produto
-confirmarRemocaoProduto(): void {
-  if (!this.produtoParaRemover) return;
-
-  const inventarioProdutoId = this.produtoParaRemover.id;
-  
-  this.inventarioService.removerProdutoInventario(inventarioProdutoId).subscribe({
-    next: () => {
-      this.exibirToastSucesso('Produto removido do inventário!');
-      
-      // Remover o produto localmente da lista para atualização imediata
-      if (this.inventarioSelecionado && this.inventarioSelecionado.produtos) {
-        this.inventarioSelecionado.produtos = this.inventarioSelecionado.produtos
-          .filter(p => p.id !== inventarioProdutoId);
+  // Novo método para atualizar apenas o inventário específico na lista
+  private atualizarInventarioNaLista(): void {
+    if (this.inventarioSelecionado) {
+      const index = this.inventarios.findIndex(i => i.id === this.inventarioSelecionado!.id);
+      if (index !== -1) {
+        // Fazer uma cópia simples sem recarregar dados
+        this.inventarios[index] = { 
+          ...this.inventarios[index],
+          produtos: [...(this.inventarioSelecionado.produtos || [])]
+        };
       }
-      
-      // Atualizar também a lista geral de inventários
-      this.atualizarInventarioNaLista();
-      this.cancelarRemocaoProduto();
-    },
-    error: (error: any) => {
-      console.error('Erro ao remover produto:', error);
-      this.exibirToastErro('Erro ao remover produto do inventário.');
     }
-  });
-}
+  }
 
-cancelarRemocaoProduto(): void {
-  this.modalConfirmacaoRemocaoProduto = false;
-  this.produtoParaRemover = null;
-}
+  // Modificar o método de remoção também para manter consistência
+  removerProdutoInventario(produto: any): void {
+    if (!this.inventarioSelecionado || this.inventarioSelecionado.status === 'Finalizado') {
+      return;
+    }
 
-// Métodos para finalização com diferenças
-confirmarFinalizarInventario(): void {
-  if (!this.inventarioSelecionado) return;
+    // Abrir modal customizado em vez do confirm padrão
+    this.produtoParaRemover = produto;
+    this.modalConfirmacaoRemocaoProduto = true;
+  }
 
-  // Calcular diferenças antes de abrir o modal
-  this.calcularDiferencasEstoque();
-  this.modalConfirmacaoFinalizacao = true;
-}
+  // Métodos para remoção de produto
+  confirmarRemocaoProduto(): void {
+    if (!this.produtoParaRemover) return;
 
-private calcularDiferencasEstoque(): void {
-  this.diferencasEncontradas = [];
-  
-  if (!this.inventarioSelecionado?.produtos) return;
-
-  this.inventarioSelecionado.produtos.forEach(produtoInventario => {
-    const produtoReal = this.produtos.find(p => p.id === produtoInventario.produtoId);
+    const inventarioProdutoId = this.produtoParaRemover.id;
     
-    if (produtoReal) {
-      const diferenca = produtoInventario.quantidadeContada - produtoReal.quantidade;
-      
-      if (diferenca !== 0) {
-        this.diferencasEncontradas.push({
-          nome: produtoReal.nome,
-          quantidadeInventario: produtoInventario.quantidadeContada,
-          quantidadeReal: produtoReal.quantidade,
-          diferenca: diferenca,
-          produtoId: produtoReal.id
-        });
+    this.inventarioService.removerProdutoInventario(inventarioProdutoId).subscribe({
+      next: () => {
+        this.exibirToastSucesso('Produto removido do inventário!');
+        
+        // Remover o produto localmente da lista para atualização imediata
+        if (this.inventarioSelecionado && this.inventarioSelecionado.produtos) {
+          this.inventarioSelecionado.produtos = this.inventarioSelecionado.produtos
+            .filter(p => p.id !== inventarioProdutoId);
+        }
+        
+        // Atualizar também a lista geral de inventários
+        this.atualizarInventarioNaLista();
+        this.cancelarRemocaoProduto();
+      },
+      error: (error: any) => {
+        console.error('Erro ao remover produto:', error);
+        this.exibirToastErro('Erro ao remover produto do inventário.');
       }
-    }
-  });
-}
+    });
+  }
 
+  cancelarRemocaoProduto(): void {
+    this.modalConfirmacaoRemocaoProduto = false;
+    this.produtoParaRemover = null;
+  }
+
+  // Métodos para finalização com diferenças
+  confirmarFinalizarInventario(): void {
+    if (!this.inventarioSelecionado) return;
+
+    // Calcular diferenças antes de abrir o modal
+    this.calcularDiferencasEstoque();
+    this.modalConfirmacaoFinalizacao = true;
+  }
+
+  private calcularDiferencasEstoque(): void {
+    this.diferencasEncontradas = [];
+    
+    if (!this.inventarioSelecionado?.produtos) return;
+
+    this.inventarioSelecionado.produtos.forEach(produtoInventario => {
+      const produtoReal = this.produtos.find(p => p.id === produtoInventario.produtoId);
+      
+      if (produtoReal) {
+        const diferenca = produtoInventario.quantidadeContada - produtoReal.quantidade;
+        
+        if (diferenca !== 0) {
+          this.diferencasEncontradas.push({
+            nome: produtoReal.nome,
+            quantidadeInventario: produtoInventario.quantidadeContada,
+            quantidadeReal: produtoReal.quantidade,
+            diferenca: diferenca,
+            produtoId: produtoReal.id
+          });
+        }
+      }
+    });
+  }
 
   // === GETTERS ===
 
@@ -468,14 +467,14 @@ private calcularDiferencasEstoque(): void {
   }
 
   obterNomeProduto(produtoId: number): string {
-  console.log('Procurando produto com ID:', produtoId);
-  console.log('Lista de produtos disponível:', this.produtos);
-  
-  const produto = this.produtos.find(p => p.id === produtoId);
-  console.log('Produto encontrado:', produto);
-  
-  return produto ? produto.nome : `Produto ID: ${produtoId}`;
-}
+    console.log('Procurando produto com ID:', produtoId);
+    console.log('Lista de produtos disponível:', this.produtos);
+    
+    const produto = this.produtos.find(p => p.id === produtoId);
+    console.log('Produto encontrado:', produto);
+    
+    return produto ? produto.nome : `Produto ID: ${produtoId}`;
+  }
 
   obterQuantidadeEstoque(produtoId: number): number {
     const produto = this.produtos.find(p => p.id === produtoId);

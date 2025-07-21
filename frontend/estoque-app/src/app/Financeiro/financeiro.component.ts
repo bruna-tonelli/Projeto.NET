@@ -35,16 +35,16 @@ export class FinanceiroComponent implements OnInit {
   modalFiltroAberto = false;
   
   filtros = {
-  tipo: '',
-  dataInicial: null as string | Date | null,
-  dataFinal: null as string | Date | null,
-};
+    tipo: '',
+    dataInicial: null as string | Date | null,
+    dataFinal: null as string | Date | null,
+  };
   
   public termoBusca: string = '';
   public isLoading: boolean = true;
   public movimentacoesExibidas: MovimentacaoFinanceira[] = [];
   public itemSelecionado: MovimentacaoFinanceira | null = null;
-  public  listaCompletaMovimentacoes: MovimentacaoFinanceira[] = [];
+  public listaCompletaMovimentacoes: MovimentacaoFinanceira[] = [];
   public pesquisaRealizada: boolean = false;
   public caixaDaEmpresa: number = 0;
   public dadosGrafico: boolean = false;
@@ -83,6 +83,7 @@ export class FinanceiroComponent implements OnInit {
   };
 
   constructor(
+
     private financeiroService: FinanceiroService,
     private movimentacaoService: MovimentacaoService,
     private darkModeService: DarkModeService
@@ -97,6 +98,7 @@ export class FinanceiroComponent implements OnInit {
       this.modoEscuroAtivo = isDark;
     });
   }
+
 
   // Método para alternar visibilidade do gráfico
   toggleGrafico(): void {
@@ -268,100 +270,100 @@ export class FinanceiroComponent implements OnInit {
   }
 
   aplicarFiltro(): void {
-  console.log('🔍 Iniciando aplicação de filtros...');
-  
-  // Se não houver filtros, mostrar todas as transações
-  if (!this.filtros.tipo && !this.filtros.dataInicial && !this.filtros.dataFinal) {
-    console.log('📝 Nenhum filtro aplicado, carregando todas as movimentações');
-    this.carregarMovimentacoes();
-    this.fecharModalFiltrar();
-    return;
-  }
-
-  // Validar e converter datas de forma mais segura
-  let dataInicial: Date | undefined = undefined;
-  let dataFinal: Date | undefined = undefined;
-
-  try {
-    if (this.filtros.dataInicial) {
-      if (typeof this.filtros.dataInicial === 'string') {
-        dataInicial = new Date(this.filtros.dataInicial + 'T00:00:00');
-      } else {
-        dataInicial = new Date(this.filtros.dataInicial);
-      }
-      
-      // Validar se a data é válida
-      if (isNaN(dataInicial.getTime())) {
-        console.error('Data inicial inválida:', this.filtros.dataInicial);
-        dataInicial = undefined;
-      }
-    }
-
-    if (this.filtros.dataFinal) {
-      if (typeof this.filtros.dataFinal === 'string') {
-        dataFinal = new Date(this.filtros.dataFinal + 'T23:59:59');
-      } else {
-        dataFinal = new Date(this.filtros.dataFinal);
-        dataFinal.setHours(23, 59, 59, 999);
-      }
-      
-      // Validar se a data é válida
-      if (isNaN(dataFinal.getTime())) {
-        console.error('Data final inválida:', this.filtros.dataFinal);
-        dataFinal = undefined;
-      }
-    }
-  } catch (error) {
-    console.error('Erro ao processar datas:', error);
-    alert('Erro: Datas inválidas. Por favor, verifique os campos de data.');
-    return;
-  }
-
-  console.log('🔍 Aplicando filtros:', {
-    tipo: this.filtros.tipo,
-    dataInicial: dataInicial?.toISOString(),
-    dataFinal: dataFinal?.toISOString()
-  });
-
-  // Verificar se o método existe no service
-  if (typeof this.financeiroService.buscarTransacoesFiltradas !== 'function') {
-    console.error('❌ Método buscarTransacoesFiltradas não encontrado no service');
-    alert('Erro: Funcionalidade de filtro não está disponível.');
-    this.fecharModalFiltrar();
-    return;
-  }
-
-  // Aplicar filtros via service
-  this.financeiroService.buscarTransacoesFiltradas(
-    this.filtros.tipo || undefined,
-    dataInicial,
-    dataFinal
-  ).subscribe({
-    next: (movimentacoes) => {
-      console.log('✅ Movimentações filtradas recebidas:', movimentacoes.length);
-      
-      // Converter para MovimentacaoFinanceira
-      this.listaCompletaMovimentacoes = movimentacoes.map(mov => this.converterParaMovimentacaoFinanceira(mov));
-      this.movimentacoesExibidas = [...this.listaCompletaMovimentacoes];
-      
-      console.log('💰 Filtro aplicado com sucesso:', this.movimentacoesExibidas.length, 'resultados');
+    console.log('🔍 Iniciando aplicação de filtros...');
+    
+    // Se não houver filtros, mostrar todas as transações
+    if (!this.filtros.tipo && !this.filtros.dataInicial && !this.filtros.dataFinal) {
+      console.log('📝 Nenhum filtro aplicado, carregando todas as movimentações');
+      this.carregarMovimentacoes();
       this.fecharModalFiltrar();
-    },
-    error: (error) => {
-      console.error('❌ Erro ao aplicar filtros:', error);
-      alert('Erro ao aplicar filtros. Tente novamente.');
-      this.fecharModalFiltrar();
+      return;
     }
-  });
-}
+
+    // Validar e converter datas de forma mais segura
+    let dataInicial: Date | undefined = undefined;
+    let dataFinal: Date | undefined = undefined;
+
+    try {
+      if (this.filtros.dataInicial) {
+        if (typeof this.filtros.dataInicial === 'string') {
+          dataInicial = new Date(this.filtros.dataInicial + 'T00:00:00');
+        } else {
+          dataInicial = new Date(this.filtros.dataInicial);
+        }
+        
+        // Validar se a data é válida
+        if (isNaN(dataInicial.getTime())) {
+          console.error('Data inicial inválida:', this.filtros.dataInicial);
+          dataInicial = undefined;
+        }
+      }
+
+      if (this.filtros.dataFinal) {
+        if (typeof this.filtros.dataFinal === 'string') {
+          dataFinal = new Date(this.filtros.dataFinal + 'T23:59:59');
+        } else {
+          dataFinal = new Date(this.filtros.dataFinal);
+          dataFinal.setHours(23, 59, 59, 999);
+        }
+        
+        // Validar se a data é válida
+        if (isNaN(dataFinal.getTime())) {
+          console.error('Data final inválida:', this.filtros.dataFinal);
+          dataFinal = undefined;
+        }
+      }
+    } catch (error) {
+      console.error('Erro ao processar datas:', error);
+      alert('Erro: Datas inválidas. Por favor, verifique os campos de data.');
+      return;
+    }
+
+    console.log('🔍 Aplicando filtros:', {
+      tipo: this.filtros.tipo,
+      dataInicial: dataInicial?.toISOString(),
+      dataFinal: dataFinal?.toISOString()
+    });
+
+    // Verificar se o método existe no service
+    if (typeof this.financeiroService.buscarTransacoesFiltradas !== 'function') {
+      console.error('❌ Método buscarTransacoesFiltradas não encontrado no service');
+      alert('Erro: Funcionalidade de filtro não está disponível.');
+      this.fecharModalFiltrar();
+      return;
+    }
+
+    // Aplicar filtros via service
+    this.financeiroService.buscarTransacoesFiltradas(
+      this.filtros.tipo || undefined,
+      dataInicial,
+      dataFinal
+    ).subscribe({
+      next: (movimentacoes) => {
+        console.log('✅ Movimentações filtradas recebidas:', movimentacoes.length);
+        
+        // Converter para MovimentacaoFinanceira
+        this.listaCompletaMovimentacoes = movimentacoes.map(mov => this.converterParaMovimentacaoFinanceira(mov));
+        this.movimentacoesExibidas = [...this.listaCompletaMovimentacoes];
+        
+        console.log('💰 Filtro aplicado com sucesso:', this.movimentacoesExibidas.length, 'resultados');
+        this.fecharModalFiltrar();
+      },
+      error: (error) => {
+        console.error('❌ Erro ao aplicar filtros:', error);
+        alert('Erro ao aplicar filtros. Tente novamente.');
+        this.fecharModalFiltrar();
+      }
+    });
+  }
 
   limparFiltros(): void {
-  this.filtros = {
-    tipo: '',
-    dataInicial: null,
-    dataFinal: null,
-  };
-  this.carregarMovimentacoes();
-  this.fecharModalFiltrar();
-}
+    this.filtros = {
+      tipo: '',
+      dataInicial: null,
+      dataFinal: null,
+    };
+    this.carregarMovimentacoes();
+    this.fecharModalFiltrar();
+  }
 }
