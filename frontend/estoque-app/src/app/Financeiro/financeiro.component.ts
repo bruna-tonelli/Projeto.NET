@@ -83,23 +83,22 @@ export class FinanceiroComponent implements OnInit {
   };
 
   constructor(
-  private financeiroService: FinanceiroService,
-  private movimentacaoService: MovimentacaoService,
-  private darkModeService: DarkModeService
-) {}
+
+    private financeiroService: FinanceiroService,
+    private movimentacaoService: MovimentacaoService,
+    private darkModeService: DarkModeService
+  ) {}
 
   ngOnInit(): void {
-  console.log('🏁 FinanceiroComponent iniciado');
-  
-  // Inscrever-se no serviço de modo escuro
-  this.darkModeService.darkMode$.subscribe(isDark => {
-    this.modoEscuroAtivo = isDark;
-  });
-  
-  this.isLoading = true;
-  this.carregarMovimentacoes();
-  this.carregarDadosFinanceiros();
-}
+    console.log('🏁 FinanceiroComponent iniciado');
+    this.isLoading = true;
+    this.carregarMovimentacoes();
+    this.carregarDadosFinanceiros();
+    this.darkModeService.darkMode$.subscribe(isDark => {
+      this.modoEscuroAtivo = isDark;
+    });
+  }
+
 
   // Método para alternar visibilidade do gráfico
   toggleGrafico(): void {

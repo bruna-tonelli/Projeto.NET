@@ -229,14 +229,7 @@ $roxo-claro: #601dac;
   }
 
 
-  &.btn-filtro {
-    color: $primary;
-  }
-
-  &.btn-filtro-dark {
-    color: $roxo-claro;
-    background: #bbb6ba;
-  }
+ 
 
   &.btn-edit {
     background: $primary;
@@ -523,6 +516,112 @@ $roxo-claro: #601dac;
   }
 }
 
+
+.modal-backdrop-dark{
+
+  .modal-produto-dark{
+    background-color: rgb(43, 44, 44);
+    
+    .form-dark{
+        label{
+          color: #e2e8f0; 
+        }
+
+        input {
+        background-color: rgb(43, 44, 44);
+        border-color: #6c6575;
+        color: #e2e8f0;
+
+        &::placeholder {
+          color: #a0aec0;
+        }
+
+        &:focus {
+          border-color: $roxo-claro;
+          box-shadow: 0 0 0 3px rgba($roxo-claro, 0.3);
+        }
+      }
+
+      .input-readonly-dark {
+        background-color: rgb(43, 44, 44) !important;
+        border-color: #6c6575 !important;
+        color: #e2e8f0 !important;
+
+        &::placeholder {
+          color: #a0aec0 !important;
+        }
+
+        &:focus {
+          border-color: $roxo-claro !important;
+          box-shadow: 0 0 0 3px rgba($roxo-claro, 0.3) !important;
+        }
+      }
+    }
+
+
+    .title-dark{
+      color: white;
+    }
+
+    .descricao-dark{
+      background-color: rgb(43, 44, 44) !important;
+        border-color: #6c6575 !important;
+        color: #e2e8f0 !important;
+
+        &::placeholder {
+          color: #a0aec0 !important;
+        }
+
+        &:focus {
+          border-color: $roxo-claro !important;
+          box-shadow: 0 0 0 3px rgba($roxo-claro, 0.3) !important;
+        }
+    }
+    
+    .btn-primary-dark {
+    background: $roxo-claro;
+    color: white;
+
+    &:hover {
+      background: color.adjust($roxo-claro, $lightness: 7%);
+      transform: scale(1.05);
+    }
+  }
+
+    .modal-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: $gray;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+
+    &:hover {
+      background: $dark;
+      color: #dc3545;
+    }
+
+    i {
+      font-size: 14px;
+    }
+  }
+
+
+  }
+
+
+
+}
 /* Remove as setas dos inputs type="number" */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
@@ -557,7 +656,6 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 }
 
-// Filtro
 
 .modal-filtro {
   position: fixed;
@@ -989,3 +1087,4 @@ input[type="number"]::-webkit-outer-spin-button {
     }
   }
 }
+

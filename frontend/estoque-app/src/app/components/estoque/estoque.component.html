@@ -15,6 +15,7 @@
       <button class="btn btn-search" (click)="pesquisarPorBotao()" title="Pesquisar">
         <i class="fas fa-search"></i>
       </button>
+
     </div>
     <div class="actions">
       <button class="btn btn-primary" (click)="abrirModalAdicionar()">
@@ -76,19 +77,20 @@
     </ng-container>
   </section>
 
-  <div class="modal-backdrop" *ngIf="modalAberto">
-    <div class="modal-produto">
-      <button class="modal-close-btn" type="button" (click)="fecharModal()" title="Fechar">
+  <!--Modal Adicionar produto-->
+  <div class="modal-backdrop" *ngIf="modalAberto" [class.modal-backdrop-dark] = "modoEscuroAtivo">
+    <div class="modal-produto" [class.modal-produto-dark] = "modoEscuroAtivo">
+      <button class="modal-close-btn" [class.modal-close-btn-dark] = "modoEscuroAtivo" type="button" (click)="fecharModal()" title="Fechar">
         <i class="fas fa-times"></i>
       </button>
-      <h2>Novo Produto</h2>
-      <form (ngSubmit)="adicionarProduto()" #formProduto="ngForm">
+      <h2 [class.title-dark] = "modoEscuroAtivo">Novo Produto</h2>
+      <form (ngSubmit)="adicionarProduto()"[class.form-dark] = "modoEscuroAtivo" #formProduto="ngForm">
         <label for="nome">Nome</label>
         <input id="nome" type="text" placeholder="Ex. Mouse Razer X" [(ngModel)]="novoProduto.nome" name="nome"
           required>
 
         <label for="quantidade">Quantidade</label>
-        <input id="quantidade" type="number" value="0" readonly class="input-readonly"
+        <input id="quantidade" type="number" value="0" readonly class="input-readonly" [class.input-readonly-dark] = "modoEscuroAtivo"
           title="A quantidade inicial é sempre 0. Use movimentações para adicionar estoque">
         <small class="info-text">
           <i class="fas fa-info-circle"></i>
@@ -104,14 +106,15 @@
           name="precoVenda" required min="0" step="0.01">
 
         <label for="descricao">Descrição</label>
-        <textarea id="descricao" placeholder="Ex. Mouse modelo XYZ" [(ngModel)]="novoProduto.descricao" name="descricao"
+        <textarea [class.descricao-dark] = "modoEscuroAtivo" id="descricao" placeholder="Ex. Mouse modelo XYZ" [(ngModel)]="novoProduto.descricao" name="descricao"
           rows="4" style="resize: vertical;"></textarea>
 
-        <button class="btn btn-primary" type="submit" [disabled]="formProduto.invalid">Salvar</button>
+        <button class="btn btn-primary" [class.btn-primary-dark] = "modoEscuroAtivo" type="submit" [disabled]="formProduto.invalid">Salvar</button>
       </form>
     </div>
   </div>
 
+  <!--Modal Editar-->
   <div class="modal-backdrop" *ngIf="modalEditarAberto">
     <div class="modal-produto" *ngIf="produtoEditando">
       <button class="modal-close-btn" type="button" (click)="fecharModalEditar()" title="Fechar">
@@ -147,28 +150,7 @@
   </div>
 
 
-  <!--Filtro -->
-
-<div class="modal-filtro" *ngIf="modalFiltroAberto">
-  <div class="filtro-container" [class.filtro-container-dark]  = "modoEscuroAtivo">
-    <div class="filtro-header" [class.filtro-header-dark] = "modoEscuroAtivo">
-      <h2>Filtros</h2>
-      <button class="close-btn" [class.close-btn-dark] = "modoEscuroAtivo" (click)="fecharModalFiltrar()">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-
-    <div class="filtro-body" [class.filtro-body-dark] = "modoEscuroAtivo">
-      <label>Tipo</label>
-      <select [(ngModel)]="filtros.tipo">
-        <option value="">Todos</option>
-        <option value="entrada">Entrada</option>
-        <option value="saida">Saída</option>
-      </select>
-
-      <button class="aplicar-btn" [class.aplicar-btn-dark] = "modoEscuroAtivo" (click)="aplicarFiltro()">Aplicar</button>
-    </div>
-  </div>
+ 
 
 <!--Modal Confirmação-->
   <div class="modal-backdrop" *ngIf="modalConfirmacaoAberto">

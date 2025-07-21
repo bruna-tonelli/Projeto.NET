@@ -1,19 +1,20 @@
 <title>Financeiro</title> <base href="/financeiro">
-<div class="page-container" [class.app-container]="true" [class.dark-mode]="modoEscuroAtivo">
-  <header class="page-header">
-    <h1 class="page-title">Transações</h1>
-    <div class="search-container">
-      <div class="search-box">
+
+<div class="page-container" [class.page-container-dark] = "modoEscuroAtivo">
+  <header class="page-header" [class.page-header-dark] = "modoEscuroAtivo">
+    <div class="search-container" [class.search-container-dark] = "modoEscuroAtivo">
+      <div class="search-box" [class.search-box-dark] = "modoEscuroAtivo">
+
         <i class="fas fa-search search-icon"></i>
         <input type="text" placeholder="Pesquise por ID, produto ou tipo" [(ngModel)]="termoBusca" (input)="buscar()" (keyup.enter)="pesquisarPorBotao()">
-        <button *ngIf="pesquisaRealizada || termoBusca" class="btn-clear-inline" (click)="limparPesquisa()" title="Limpar pesquisa">
+        <button *ngIf="pesquisaRealizada || termoBusca" class="btn-clear-inline"  (click)="limparPesquisa()" title="Limpar pesquisa">
           <i class="fas fa-times"></i>
         </button>
       </div>
-      <button class="btn btn-search" (click)="pesquisarPorBotao()" title="Pesquisar">
+      <button class="btn btn-search" [class.btn-search-dark] = "modoEscuroAtivo" (click)="pesquisarPorBotao()" title="Pesquisar">
         <i class="fas fa-search"></i>
       </button>
-       <button class="btn btn-filtro" (click)="abrirModalFiltrar()">
+       <button class="btn btn-filtro" [class.btn-filtro-dark] = "modoEscuroAtivo" (click)="abrirModalFiltrar()">
         <i class="fa-solid fa-sliders"></i>
       </button>
     </div>
@@ -23,27 +24,27 @@
     <div *ngIf="isLoading" class="status-message">Carregando dados financeiros...</div>
 
     <ng-container *ngIf="!isLoading">
-      <div class="saldo-empresarial-container">
-        <div class="saldo-card">
-          <div class="saldo-header">
-            <h2 class="saldo-title">Saldo Operacional</h2>
-            <div class="saldo-icon" (click)="toggleGrafico()" style="cursor: pointer;" title="Clique para mostrar/esconder gráfico">
-              <i class="fas fa-chart-line"></i>
+      <div class="saldo-empresarial-container" [class.saldo-empresarial-container-dark] = "modoEscuroAtivo">
+        <div class="saldo-card" [class.saldo-card-dark] = "modoEscuroAtivo">
+          <div class="saldo-header" [class.saldo-header-dark] = "modoEscuroAtivo">
+            <h2 class="saldo-title" [class.saldo-title-dark] = "modoEscuroAtivo">Saldo Operacional</h2>
+            <div class="saldo-icon" [class.saldo-icon-dark] = "modoEscuroAtivo" (click)="toggleGrafico()" style="cursor: pointer;" title="Clique para mostrar/esconder gráfico">
+              <i class="fas fa-chart-line" [class.chart-line-dark] = "modoEscuroAtivo"></i>
             </div>
           </div>
           <div class="saldo-valor" [class.valor-positivo]="caixaDaEmpresa >= 0" [class.valor-negativo]="caixaDaEmpresa < 0">
             {{ caixaDaEmpresa | currency:'BRL':'symbol':'1.2-2' }}
           </div>
           <div class="saldo-info">
-            <span class="saldo-descricao">Fluxo de caixa consolidado</span>
-            <span class="saldo-status" [class.status-positivo]="caixaDaEmpresa >= 0" [class.status-negativo]="caixaDaEmpresa < 0">
+            <span class="saldo-descricao" [class.saldo-descricao-dark] = "modoEscuroAtivo">Fluxo de caixa consolidado</span>
+            <span class="saldo-status" [class.saldo-status-dark] = "modoEscuroAtivo" [class.status-positivo]="caixaDaEmpresa >= 0" [class.status-negativo]="caixaDaEmpresa < 0">
               {{ caixaDaEmpresa >= 0 ? 'Positivo' : 'Negativo' }}
             </span>
           </div>
         </div>
       </div>
-      <div class="grafico-container" *ngIf="mostrarGrafico">
-        <h3 class="grafico-titulo">Resumo de entradas e saídas de produtos por mês</h3>
+      <div class="grafico-container" [class.grafico-container-dark] = "modoEscuroAtivo" *ngIf="mostrarGrafico">
+        <h3 class="grafico-titulo" [class.grafico-titulo-dark] = "modoEscuroAtivo">Resumo de entradas e saídas de produtos por mês</h3>
   
         <div *ngIf="!dadosGrafico" class="no-data-message" style="text-align: center; padding: 20px;">
           <p>Nenhum dado disponível para exibir o gráfico.</p>
@@ -108,47 +109,38 @@
     </ng-container>
   </section>
 
-  <!-- Modal de Filtro -->
-  <div class="modal-overlay" *ngIf="modalFiltroAberto" (click)="fecharModalFiltrar()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h3>Filtrar Transações</h3>
-        <button class="btn-fechar" (click)="fecharModalFiltrar()">&times;</button>
+     <!-- Modal de filtro -->
+<div class="modal-filtro" *ngIf="modalFiltroAberto">
+  <div class="filtro-container" [class.filtro-container-dark]  = "modoEscuroAtivo">
+    <div class="filtro-header" [class.filtro-header-dark]  = "modoEscuroAtivo">
+      <h2>Filtros</h2>
+      <button class="close-btn" [class.close-btn-dark]  = "modoEscuroAtivo" (click)="fecharModalFiltrar()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="filtro-body" [class.filtro-body-dark]  = "modoEscuroAtivo">
+      <!-- Filtro Tipo -->
+      <label>Tipo</label>
+      <select [(ngModel)]="filtros.tipo">
+        <option value="">Todos</option>
+        <option value="ENTRADA">Entrada</option>
+        <option value="SAIDA">Saída</option>
+      </select>
+
+      <!-- Filtro por Data -->
+      <div class="data-range" [class.data-range-dark] = "modoEscuroAtivo">
+        <label>Data Inicial</label>
+        <input type="date" [(ngModel)]="filtros.dataInicial" />
+
+        <label>Data Final</label>
+        <input type="date" [(ngModel)]="filtros.dataFinal" />
       </div>
-      
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="tipoFiltro">Tipo de Transação:</label>
-          <select id="tipoFiltro" [(ngModel)]="filtros.tipo" class="form-control">
-            <option value="">Todos</option>
-            <option value="ENTRADA">Entrada</option>
-            <option value="SAIDA">Saída</option>
-          </select>
-        </div>
-        
-        <div class="form-group">
-          <label for="dataInicial">Data Inicial:</label>
-          <input 
-            type="date" 
-            id="dataInicial" 
-            [(ngModel)]="filtros.dataInicial" 
-            class="form-control">
-        </div>
-        
-        <div class="form-group">
-          <label for="dataFinal">Data Final:</label>
-          <input 
-            type="date" 
-            id="dataFinal" 
-            [(ngModel)]="filtros.dataFinal" 
-            class="form-control">
-        </div>
-      </div>
-      
-      <div class="modal-footer">
-        <button class="btn btn-secondary" (click)="limparFiltros()">Limpar</button>
-        <button class="btn btn-primary" (click)="aplicarFiltro()">Aplicar</button>
-      </div>
+    </div>
+
+    <div class="filtro-footer">
+      <button class="limpar-btn" [class.limpar-btn-dark] = "modoEscuroAtivo" (click)="limparFiltros()">Limpar Filtros</button>
+      <button class="aplicar-btn" [class.aplicar-btn-dark] = "modoEscuroAtivo" (click)="aplicarFiltro()">Aplicar</button>
     </div>
   </div>
 </div>
