@@ -20,8 +20,8 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Install a simple HTTP server
-RUN npm install -g http-server
+# Install serve which is better for SPAs
+RUN npm install -g serve
 
 # Copy built app
 COPY --from=builder /app/dist/estoque-app/browser ./public
@@ -29,5 +29,5 @@ COPY --from=builder /app/dist/estoque-app/browser ./public
 # Expose port 8080
 EXPOSE 8080
 
-# Start the server with SPA fallback (--push-state redirects all routes to index.html)
-CMD ["http-server", "public", "-p", "8080", "--cors", "-a", "0.0.0.0", "--push-state"]
+# Start the server with SPA fallback (serve automatically handles SPA routing)
+CMD ["serve", "-s", "public", "-l", "8080"]
