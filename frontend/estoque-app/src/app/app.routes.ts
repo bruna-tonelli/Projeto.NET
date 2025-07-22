@@ -18,13 +18,13 @@ export const routes: Routes = [
 
 
   // Rotas protegidas com AuthGuard
-  { path: 'estoque', component: EstoqueComponent,/* canActivate: [AuthGuard] */ },
-  { path: 'movimentacao', component: MovimentacaoComponent, /* canActivate: [AuthGuard] */ },
-  { path: 'funcionarios', component: FuncionarioComponent, /* canActivate: [AuthGuard] */  },
-  { path: 'financeiro', component: FinanceiroComponent, /* canActivate: [AuthGuard]  */ },
-  { path: 'inventario' , component: InventarioComponent, /* canActivate: [AuthGuard] */  },
+  { path: 'estoque', component: EstoqueComponent, canActivate: [AuthGuard]  },
+  { path: 'movimentacao', component: MovimentacaoComponent,  canActivate: [AuthGuard]  },
+  { path: 'funcionarios', component: FuncionarioComponent,  canActivate: [AuthGuard]  },
+  { path: 'financeiro', component: FinanceiroComponent,  canActivate: [AuthGuard]   },
+  { path: 'inventario' , component: InventarioComponent,  canActivate: [AuthGuard]   },
 
   
   // Rota catch-all: redireciona para login para rotas não encontradas
- // { path: '**', redirectTo: '/login' }
+  { path: '**', redirectTo: '/login' }
 ];
