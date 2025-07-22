@@ -773,3 +773,21 @@ input[type="number"]::-webkit-outer-spin-button {
     }
   }
 }
+.item-card-dark {
+  background: #2c2c2c !important;
+  border: 1px solid #181818 !important;
+  color: #e0dcdc !important;
+  
+  .card-label {
+    color: #e0dcdc !important;
+  }
+  
+  .card-value {
+    color: #e0dcdc !important;
+  }
+  
+  .btn-delete {
+    background: #e53e3e !important;
+    color: white !important;
+  }
+}

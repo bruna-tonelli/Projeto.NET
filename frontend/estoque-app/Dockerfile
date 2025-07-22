@@ -1,5 +1,5 @@
 # Stage 1: Build Angular app
-FROM node:20-alpine as builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
@@ -15,16 +15,19 @@ COPY . .
 # Build the app
 RUN npm run build
 
-# Stage 2: Serve with nginx
-FROM nginx:alpine
+# Stage 2: Serve with a simple HTTP server
+FROM node:20-alpine
 
-# Copy built app to nginx
-COPY --from=builder /app/dist/estoque-app/browser /usr/share/nginx/html
+WORKDIR /app
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Install a simple HTTP server
+RUN npm install -g http-server
 
-# Expose port 80
-EXPOSE 80
+# Copy built app
+COPY --from=builder /app/dist/estoque-app/browser ./public
 
-CMD ["nginx", "-g", "daemon off;"]
+# Expose port 8080
+EXPOSE 8080
+
+# Start the server with SPA fallback (--push-state redirects all routes to index.html)
+CMD ["http-server", "public", "-p", "8080", "--cors", "-a", "0.0.0.0", "--push-state"]

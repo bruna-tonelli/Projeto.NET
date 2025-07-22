@@ -31,9 +31,7 @@
       </div>
       <div *ngIf="usuariosExibidos.length === 0 && !pesquisaRealizada" class="status-message">Nenhum usuário registrado encontrado.</div>
       <div class="item-list">
-        <div 
-          class="item-card" 
-          *ngFor="let usuario of usuariosExibidos; let i = index">
+        <div class="item-card" [class.item-card-dark]="modoEscuroAtivo" *ngFor="let usuario of usuariosExibidos; let i = index">
           <div class="card-section id-section">
             <span class="card-label">ID</span>
             <span class="card-value">{{ i + 1 }}</span>

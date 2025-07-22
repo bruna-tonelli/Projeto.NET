@@ -645,3 +645,30 @@ input[type="number"]::-webkit-outer-spin-button {
     color: #17a2b8;
   }
 }
+.item-card-dark {
+  background: #2c2c2c !important;
+  border: 1px solid #181818 !important;
+  color: #e0dcdc !important;
+  
+  .card-label {
+    color: #e0dcdc !important;
+  }
+  
+  .card-value {
+    color: #e0dcdc !important;
+  }
+  
+  .quantidade {
+    color: #e0dcdc !important;
+  }
+  
+  .btn-editar {
+    background: #4a5568 !important;
+    color: #e0dcdc !important;
+  }
+  
+  .btn-excluir {
+    background: #e53e3e !important;
+    color: white !important;
+  }
+}

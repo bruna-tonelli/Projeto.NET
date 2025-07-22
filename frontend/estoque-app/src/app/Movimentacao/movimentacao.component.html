@@ -40,9 +40,7 @@
       </div>
       <div *ngIf="movimentacoesExibidas.length === 0 && !pesquisaRealizada" class="status-message">Nenhuma movimentação encontrada.</div>
       <div class="item-list">
-        <div 
-          class="item-card" 
-          *ngFor="let movimentacao of movimentacoesExibidas">
+        <div class="item-card" [class.item-card-dark]="modoEscuroAtivo" *ngFor="let movimentacao of movimentacoesExibidas">
           <div class="card-section id-section">
             <span class="card-label">ID</span>
             <span class="card-value">{{ movimentacao.id }}</span>

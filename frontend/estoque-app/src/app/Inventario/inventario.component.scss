@@ -1504,4 +1504,48 @@ $roxo-claro: #601dac;
       border: 1px solid rgba(239, 68, 68, 0.3);
     }
   }
+    // Cards dos produtos no modal
+  .produto-adicionado-dark {
+    background: #2c2c2c !important;
+    border: 1px solid #181818 !important;
+    color: #e0dcdc !important;
+
+    &:hover {
+      background: #3a3d4a !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+      border-color: #667eea !important;
+    }
+
+    .produto-info {
+      .produto-nome {
+        color: #e0dcdc !important;
+        
+        i {
+          color: #667eea !important;
+        }
+      }
+
+      .produto-quantidade {
+        color: #22c55e !important;
+      }
+    }
+
+    .btn-remove-produto {
+      background: #e53e3e !important;
+      border: 1px solid #c53030 !important;
+      color: white !important;
+
+      &:hover {
+        background: #c53030 !important;
+        border-color: #9c2626 !important;
+        transform: scale(1.05) !important;
+      }
+
+      &:disabled {
+        background: #4a4a4a !important;
+        border-color: #666 !important;
+        color: #888 !important;
+      }
+    }
+  }
 }

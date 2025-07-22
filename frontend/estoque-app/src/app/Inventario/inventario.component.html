@@ -207,8 +207,7 @@
             Produtos no Inventário
           </h4>
           <div class="produtos-lista-scroll">
-            <div class="produto-adicionado"
-              *ngFor="let produto of inventarioSelecionado?.produtos; trackBy: trackByProdutoId">
+            <div class="produto-adicionado" [class.produto-adicionado-dark]="modoEscuroAtivo" *ngFor="let produto of inventarioSelecionado?.produtos; trackBy: trackByProdutoId">
               <div class="produto-info">
                 <span class="produto-nome">
                   <i class="fas fa-box"></i>
