@@ -78,15 +78,15 @@
   </section>
 
   <!-- Modal de Adicionar Produto -->
-  <div class="modal-backdrop" *ngIf="modalAberto">
-    <div class="modal-produto">
-      <div class="modal-header">
+  <div class="modal-backdrop" *ngIf="modalAberto" [class.modal-backdrop-dark] = "modoEscuroAtivo">
+    <div class="modal-produto" [class.modal-produto-dark] = "modoEscuroAtivo">
+      <div class="modal-header" [class.modal-header-dark] = "modoEscuroAtivo">
         <h2>Nova Movimentação</h2>
-        <button class="modal-close" type="button" (click)="fecharModal()" title="Fechar">
+        <button class="modal-close" type="button" [class.btn-close-dark] = "modoEscuroAtivo" (click)="fecharModal()" title="Fechar">
           <i class="fas fa-times"></i>
         </button>
       </div>
-      <form (ngSubmit)="adicionarMovimentacao()" #formMovimentacao="ngForm">
+      <form (ngSubmit)="adicionarMovimentacao()" #formMovimentacao="ngForm" [class.form-dark] = "modoEscuroAtivo">
         <label for="tipo">Tipo de Movimentação</label>
         <select id="tipo" [(ngModel)]="novaMovimentacao.tipo" name="tipo" required>
           <option value="">Selecione o tipo</option>
@@ -109,6 +109,7 @@
           [value]="getFuncionarioLogadoNome()" 
           readonly 
           class="input-readonly"
+          [class.input-readonly-dark] = "modoEscuroAtivo"
           title="Este campo é preenchido automaticamente com o usuário logado">
         <input type="hidden" [(ngModel)]="novaMovimentacao.funcionarioId" name="funcionarioId">
 
@@ -122,9 +123,9 @@
         <input id="precoVenda" type="number" placeholder="Ex. R$15,69" [(ngModel)]="novaMovimentacao.precoVenda" name="precoVenda" min="0" step="0.01">
 
         <label for="observacoes">Observações (opcional)</label>
-        <textarea id="observacoes" placeholder="Observações sobre a movimentação..." [(ngModel)]="novaMovimentacao.observacoes" name="observacoes" rows="3"></textarea>
+        <textarea id="observacoes" [class.descricao-dark] = "modoEscuroAtivo" placeholder="Observações sobre a movimentação..." [(ngModel)]="novaMovimentacao.observacoes" name="observacoes" rows="3"></textarea>
 
-        <button class="btn btn-primary" type="submit" [disabled]="formMovimentacao.invalid">Salvar</button>
+        <button class="btn btn-primary" [class.btn-primary-dark] = "modoEscuroAtivo" type="submit" [disabled]="formMovimentacao.invalid">Salvar</button>
       </form>
     </div>
   </div>

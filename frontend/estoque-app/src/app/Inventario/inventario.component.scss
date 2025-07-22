@@ -329,11 +329,11 @@ $roxo-claro: #601dac;
     &:focus {
       outline: none;
       border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      box-shadow: 0 0 0 2px $primary;
     }
 
     &:invalid {
-      border-color: #dc3545;
+      border-color: #d0cfcf;
     }
   }
 
